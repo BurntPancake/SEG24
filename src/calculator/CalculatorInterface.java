@@ -7,8 +7,8 @@ package calculator;
  */
 public interface CalculatorInterface
 {
-	public int[] getImpressionNumber(int interval);
-	public int[] getClickNumber(int interval);
+	public Integer[] getImpressionNumber(int interval);
+	public Integer[] getClickNumber(int interval);
 	public int[] getUniqueNumber(int interval);
 	
 	public int[] getBounceNumber(int interval);//User defined Bounce
