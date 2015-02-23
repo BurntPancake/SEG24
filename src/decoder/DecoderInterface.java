@@ -1,10 +1,10 @@
 package decoder;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
 
 
 public interface DecoderInterface
 {
-	public void readFile(String filename);
-	public Map<Integer, Hashtable<String, String>> getData();
+	public ArrayList<Hashtable<String, String>> getData(String fileName) throws IOException;
 }
