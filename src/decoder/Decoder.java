@@ -6,11 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
 
 public class Decoder implements DecoderInterface
 {
-
+	
 	@Override
 	public ArrayList<Hashtable<String, String>> getData(String fileName) throws IOException
 	{
@@ -26,15 +25,15 @@ public class Decoder implements DecoderInterface
 			Hashtable<String, String> currentRecord = new Hashtable<String, String>();
 			String[] values = parseLine(line);
 			
-			for (int i = 0; i < keys.length; ++i) {
-				currentRecord.put(keys[i], values[i]);
+			// If construct so that only full lines are read in.
+			if (keys.length == values.length){ 
+				for (int i = 0; i < keys.length; ++i)
+					currentRecord.put(keys[i], values[i]);	
+				recordList.add(currentRecord);
 			}
 			
-			recordList.add(currentRecord);
-			
 		}
-		// sort? 
-		return null;
+		return recordList;
 	}
 	
 	private BufferedReader getLineReader(String fileName) throws IOException {
