@@ -39,7 +39,7 @@ public class CalculatorTest
 		Hashtable<String, String>[] serverLog = new Hashtable[5];
 		
 		Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
-		for (int i : cal.getImpressionNumber(2))
+		for (int i : cal.getImpressionNumber(1))
 		{
 			System.out.println(i);
 		}

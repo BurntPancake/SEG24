@@ -8,14 +8,16 @@ import java.util.Hashtable;
 
 /**
  * 
- * The input log entries must be in increasing order of date
+ * The input log entries must be in increasing order of date.
+ * All three log files should be of one campaign.
  * 
  * The calculator considers the first entry of the log's date to be the starting date.
  * parameter intervals are in seconds.
  * 
  * For example starting from 12:00:02, interval 2
- * the first interval: [12:00:02-12:00:04) - including 12:00:02 not including 12:00:04
- * the second: [12:00:04-12:00:06)
+ * the first interval: [12:00:02-12:00:04) - including 12:00:02 excluding 12:00:04
+ * the second interval: [12:00:04-12:00:06)
+ * the third interval: [12:00:06-12:00:08)
  * @author Zd
  *
  */
@@ -46,7 +48,7 @@ public class Calculator implements CalculatorInterface
 	{
 		ArrayList<Integer> dataList = new ArrayList<Integer>();
 		LocalDateTime previousNode = null;
-		for (Hashtable<String, String> h : impressionLog)
+		for (Hashtable<String, String> h : log)
 		{
 			LocalDateTime ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
 			if(previousNode == null)
@@ -68,6 +70,32 @@ public class Calculator implements CalculatorInterface
 		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Integer[].class);
 	}
 	
+	private Float[] getCost(int interval, Hashtable<String, String>[] log, String field)
+	{
+		ArrayList<Float> dataList = new ArrayList<Float>();
+		LocalDateTime previousNode = null;
+		for (Hashtable<String, String> h : log)
+		{
+			LocalDateTime ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
+			if(previousNode == null)
+			{
+				previousNode = ldt;
+				dataList.add(Float.valueOf(h.get(field)));
+			}
+			else
+			{
+				//larger or equal
+				while(ldt.compareTo(previousNode.plusSeconds(interval)) >= 0)
+				{
+					dataList.add(0f);
+					previousNode = previousNode.plusSeconds(interval);	
+				}
+				dataList.set(dataList.size()-1, dataList.get(dataList.size()-1) + Float.valueOf(h.get(field)));
+			}
+		}
+		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Float[].class);
+	}
+	
 	@Override
 	public Integer[] getImpressionNumber(int interval)
 	{
@@ -81,73 +109,147 @@ public class Calculator implements CalculatorInterface
 	}
 
 	@Override
-	public int[] getUniqueNumber(int interval)
+	public Integer[] getUniqueNumber(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		for(int i = 0; i < clickLog.length; i++)
+		{
+			boolean isUnique = true;
+			int j = i-1;
+			while(j >= 0)
+			{
+				if(clickLog[j].get("ID") == clickLog[i].get("ID"))
+				{
+					isUnique = false;
+					break;
+				}
+			}
+			if(isUnique)
+			{
+				newTable.add(clickLog[i]);
+			}
+		}
+		@SuppressWarnings("unchecked")
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		
+		return this.getCount(interval, newLog);
 	}
 
 	@Override
-	public int[] getBounceNumber(int interval)
+	public Integer[] getConversionNumber(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		for(Hashtable<String, String> h : serverLog)
+		{
+			if(h.get("Conversion").equals("Yes"))
+			{
+				newTable.add(h);
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		
+		return this.getCount(interval, newLog);
+	}
+	
+	@Override
+	public Float[] getImpressionCost(int interval)
+	{
+		return getCost(interval, impressionLog, "Impression Cost");
 	}
 
 	@Override
-	public int[] getConversionNumber(int interval)
+	public Float[] getClickCost(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return getCost(interval, clickLog, "Click Cost");
 	}
 
 	@Override
-	public int[] getCTR(int interval)
+	/**
+	 * 
+	 * average number of clicks per impression
+	 */
+	public Float[] getCTR(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Integer[] clickArray = this.getClickNumber(interval);
+		Integer[] impressionArray = this.getImpressionNumber(interval);
+		Float[] CTRArray = new Float[clickArray.length];
+		for(int i = 0; i < clickArray.length; i++)
+		{
+			CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
+		}
+		return CTRArray;
 	}
 
 	@Override
-	public int[] getCPA(int interval)
+	/**
+	 * average cost per conversion
+	 */
+	public Float[] getCPA(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Float[] clickCostArray = this.getClickCost(interval);
+		Integer[] conversionCountArray = this.getConversionNumber(interval);
+		Float[] CPAArray = new Float[clickCostArray.length];
+		for(int i = 0; i < clickCostArray.length; i++)
+		{
+			CPAArray[i] = clickCostArray[i]/(float)conversionCountArray[i];
+		}
+		return CPAArray;
 	}
 
 	@Override
-	public int[] getCPC(int interval)
+	/**
+	 * Average cost per click
+	 */
+	public Float[] getCPC(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Float[] clickCostArray = this.getClickCost(interval);
+		Integer[] clickCountArray = this.getClickNumber(interval);
+		Float[] CPCArray = new Float[clickCostArray.length];
+		for(int i = 0; i < clickCostArray.length; i++)
+		{
+			CPCArray[i] = clickCostArray[i]/(float)clickCountArray[i];
+		}
+		return CPCArray;
+	}
+	
+	/**
+	 * Average cost per thousand impressions
+	 */
+	@Override
+	public Float[] getCPM(int interval)
+	{
+		Float[] impressionCostArray = this.getImpressionCost(interval);
+		Integer[] impressionCountArray = this.getImpressionNumber(interval);
+		Float[] CPMArray = new Float[impressionCostArray.length];
+		for(int i = 0; i < impressionCostArray.length; i++)
+		{
+			CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]/1000f;
+		}
+		return CPMArray;
 	}
 
 	@Override
-	public int[] getCPM(int interval)
+	public Integer[] getBounceNumber(int interval)
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public Float[] getBounceRate(int interval)
+	{
+		Integer[] bounceCountArray = this.getBounceNumber(interval);
+		Integer[] clickCountArray = this.getClickNumber(interval);
+		Float[] bounceRateArray = new Float[bounceCountArray.length];
+		for(int i = 0; i < bounceCountArray.length; i++)
+		{
+			bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+		}
+		return bounceRateArray;
 	}
 
-	@Override
-	public int[] getBounceRate(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public int[] getImpressionCost(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int[] getClickCost(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
