@@ -7,18 +7,17 @@ package calculator;
  */
 public interface CalculatorInterface
 {
-	public int[] getImpressionNumber(int interval);
-	public int[] getClickNumber(int interval);
-	public int[] getUniqueNumber(int interval);
+	public Integer[] getImpressionNumber(int interval);
+	public Integer[] getClickNumber(int interval);
+	public Integer[] getUniqueNumber(int interval);
+	public Integer[] getConversionNumber(int interval);
+	public Float[] getImpressionCost(int interval);
+	public Float[] getClickCost(int interval);
+	public Float[] getCTR(int interval);
+	public Float[] getCPA(int interval);
+	public Float[] getCPC(int interval);
+	public Float[] getCPM(int interval);
 	
-	public int[] getBounceNumber(int interval);//User defined Bounce
-	
-	public int[] getConversionNumber(int interval);
-	public int[] getImpressionCost(int interval);
-	public int[] getClickCost(int interval);
-	public int[] getCTR(int interval);
-	public int[] getCPA(int interval);
-	public int[] getCPC(int interval);
-	public int[] getCPM(int interval);
-	public int[] getBounceRate(int interval);
+	public Integer[] getBounceNumber(int interval);//User defined Bounce
+	public Float[] getBounceRate(int interval);
 }
