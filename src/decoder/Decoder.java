@@ -4,36 +4,41 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Decoder implements DecoderInterface
 {
 	
 	@Override
-	public ArrayList<Hashtable<String, String>> getData(String fileName) throws IOException
+	public Hashtable<String, String>[] getData(String fileName) throws IOException
 	{
+		
 		// Setting up input method
 		BufferedReader csvDataReader = getLineReader(fileName);
-		
-		ArrayList<Hashtable<String, String>> recordList = new ArrayList<Hashtable<String, String>>();
 		String[] keys = parseLine(csvDataReader.readLine());
-		String line;
+		int entries = getLineCount(fileName, keys.length);
 		
-		while ((line = csvDataReader.readLine()) != null) {
-			
+		String line;
+		Hashtable<String, String>[] recordList = (Hashtable<String, String>[]) new Hashtable[entries-1];
+		
+		for (int i = 0; i < entries - 1; ++i) {
+		
+			line = csvDataReader.readLine();
 			Hashtable<String, String> currentRecord = new Hashtable<String, String>();
 			String[] values = parseLine(line);
 			
 			// If construct so that only full lines are read in.
 			if (keys.length == values.length){ 
-				for (int i = 0; i < keys.length; ++i)
-					currentRecord.put(keys[i], values[i]);	
-				recordList.add(currentRecord);
+				for (int j = 0; j < keys.length; ++j)
+					currentRecord.put(keys[j], values[j]);	
 			}
 			
+			recordList[i] = currentRecord;
+				
 		}
+		
 		return recordList;
+	
 	}
 	
 	private BufferedReader getLineReader(String fileName) throws IOException {
@@ -43,6 +48,20 @@ public class Decoder implements DecoderInterface
 	private String[] parseLine(String line) {
 		String[] fields = line.split(",");
 		return fields;
+	}
+	
+	private int getLineCount(String fileName, int keys) throws IOException {
+		
+		BufferedReader lineReader = getLineReader(fileName);
+		int i = 0;
+		String line;
+		while ((line = lineReader.readLine()) != null) {
+			if (parseLine(line).length == keys)
+				i++;
+		}
+		
+		return i;
+		
 	}
 	
 }

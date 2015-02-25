@@ -3,7 +3,6 @@ package decoder;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.junit.Test;
@@ -21,14 +20,14 @@ public class DecoderTest {
 	public void allLinesReadTest() {
 		DecoderInterface dec = new Decoder();
 		try {
-			ArrayList<Hashtable<String, String>> data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/server_log.csv");
-			assertEquals(23865, data.size());
+			Hashtable<String, String>[] data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/server_log.csv");
+			assertEquals(23865, data.length);
 			
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/impression_log.csv");
-			assertEquals(486095, data.size());
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/impression_log.csv");
+			assertEquals(486095, data.length);
 			
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/click_log.csv");
-			assertEquals(23849, data.size());
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/click_log.csv");
+			assertEquals(23849, data.length);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,19 +42,19 @@ public class DecoderTest {
 		DecoderInterface dec = new Decoder();
 		int i = 0;
 		try {
-			ArrayList<Hashtable<String, String>> data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/server_log.csv");
+			Hashtable<String, String>[] data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/server_log.csv");
 			for (Hashtable<String, String> table : data)
 				if (table.size() == 5) i++;
 			assertEquals(23865, i);
 		
 			i = 0;
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/impression_log.csv");
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/impression_log.csv");
 			for (Hashtable<String, String> table : data)
 				if (table.size() == 7) ++i;
 			assertEquals(486095, i);
 		
 			i = 0;
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/click_log.csv");
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/click_log.csv");
 			for (Hashtable<String, String> table : data)
 				if (table.size() == 3) ++i;
 			assertEquals(23849, i);
@@ -74,14 +73,14 @@ public class DecoderTest {
 	public void checkRandomRecords() {
 		DecoderInterface dec = new Decoder();
 		try {
-			ArrayList<Hashtable<String, String>> data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/server_log.csv");
-			assertEquals("8873755804012783616", data.get(10318).get("ID"));
+			Hashtable<String, String>[] data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/server_log.csv");
+			assertEquals("8873755804012783616", data[10318].get("ID"));
 			
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/impression_log.csv");
-			assertEquals("Shopping", data.get(36471).get("Context"));
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/impression_log.csv");
+			assertEquals("Shopping", data[36471].get("Context"));
 		
-			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/click_log.csv");
-			assertEquals("5.682313", data.get(7651).get("Click Cost"));
+			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/click_log.csv");
+			assertEquals("5.682313", data[7651].get("Click Cost"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -6,5 +6,5 @@ import java.util.Hashtable;
 
 public interface DecoderInterface
 {
-	public ArrayList<Hashtable<String, String>> getData(String fileName) throws IOException;
+	public Hashtable<String, String>[] getData(String fileName) throws IOException;
 }
