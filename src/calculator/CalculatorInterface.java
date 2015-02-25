@@ -1,7 +1,7 @@
 package calculator;
 
 /**
- * 
+ * All times are in the unit second
  * @author Zd
  *
  */
@@ -13,11 +13,58 @@ public interface CalculatorInterface
 	public Integer[] getConversionNumber(int interval);
 	public Float[] getImpressionCost(int interval);
 	public Float[] getClickCost(int interval);
+	/**
+	 *  average number of clicks per impression
+	 * @param interval
+	 * @return
+	 */
 	public Float[] getCTR(int interval);
+	/**
+	 * average cost per conversion
+	 * @param interval
+	 * @return
+	 */
 	public Float[] getCPA(int interval);
+	/**
+	 *  Average cost per click
+	 * @param interval
+	 * @return
+	 */
 	public Float[] getCPC(int interval);
+	/**
+	 * Average cost per thousand impressions
+	 * @param interval
+	 * @return
+	 */
 	public Float[] getCPM(int interval);
-	
-	public Integer[] getBounceNumber(int interval);//User defined Bounce
-	public Float[] getBounceRate(int interval);
+
+	//User defined bounces
+	/**
+	 * if smaller or equal => count as a bounce
+	 * @param interval
+	 * @param pageViewed
+	 * @return
+	 */
+	public Float[] getBounceRateByPages(int interval, int pageViewed);
+	/**
+	 * if smaller or equal => count as a bounce
+	 * @param interval
+	 * @param pageViewed
+	 * @return
+	 */
+	public Float[] getBounceRateByTime(int interval, int timeSpent);
+	/**
+	 * if smaller or equal => count as a bounce
+	 * @param interval
+	 * @param pageViewed
+	 * @return
+	 */
+	public Integer[] getBounceNumberByPages(int interval, int pageViewd);
+	/**
+	 * if smaller or equal => count as a bounce
+	 * @param interval
+	 * @param pageViewed
+	 * @return
+	 */
+	public Integer[] getBounceNumberByTime(int interval, int timeSpent);
 }

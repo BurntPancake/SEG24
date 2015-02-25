@@ -13,8 +13,9 @@ public class CalculatorTest
 		//Test date format
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
 		TemporalAccessor lt = fmt.parse("2015-01-01 12:00:02");
-		LocalDateTime ldt = LocalDateTime.from(lt);
-		
+		LocalDateTime date1 = LocalDateTime.from(lt);
+		LocalDateTime date2 = LocalDateTime.from(fmt.parse("2015-01-02 12:00:02"));
+		System.out.println(Duration.between(date1, date2).getSeconds());
 		//Test calculator functions
 		Hashtable<String, String> entry0 = new Hashtable<String, String>();
 		entry0.put("Date", "2015-01-01 12:00:02");
@@ -43,5 +44,6 @@ public class CalculatorTest
 		{
 			System.out.println(i);
 		}
+		
 	}
 }

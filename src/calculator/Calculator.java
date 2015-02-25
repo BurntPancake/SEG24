@@ -1,5 +1,6 @@
 package calculator;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Hashtable;
 public class Calculator implements CalculatorInterface
 {
 	private DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
-	
+							
 	private Hashtable<String, String>[] impressionLog;
 	private Hashtable<String, String>[] clickLog;
 	private Hashtable<String, String>[] serverLog;
@@ -231,16 +232,64 @@ public class Calculator implements CalculatorInterface
 	}
 
 	@Override
-	public Integer[] getBounceNumber(int interval)
+	/**
+	 * if smaller or equal => count as a bounce
+	 */
+	public Integer[] getBounceNumberByPages(int interval, int pageViewed)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		for(int i = 0; i < serverLog.length; i++)
+		{
+			if(Integer.parseInt(serverLog[i].get("Pages Viewed")) <= pageViewed)
+			{
+				newTable.add(serverLog[i]);
+			}
+		}
+		@SuppressWarnings("unchecked")
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		
+		return this.getCount(interval, newLog);
 	}
 	
 	@Override
-	public Float[] getBounceRate(int interval)
+	/**
+	 * if smaller or equal => count as a bounce
+	 */
+	public Integer[] getBounceNumberByTime(int interval, int timeSpent)
 	{
-		Integer[] bounceCountArray = this.getBounceNumber(interval);
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		for(int i = 0; i < serverLog.length; i++)
+		{
+			LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Entry Date")));
+			LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Exit Date")));
+			if(Duration.between(entryDate, exitDate).getSeconds() <= timeSpent)
+			{
+				newTable.add(serverLog[i]);
+			}
+		}
+		@SuppressWarnings("unchecked")
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		
+		return this.getCount(interval, newLog);
+	}
+	
+	@Override
+	public Float[] getBounceRateByPages(int interval, int pageViewed)
+	{
+		Integer[] bounceCountArray = this.getBounceNumberByPages(interval, pageViewed);
+		Integer[] clickCountArray = this.getClickNumber(interval);
+		Float[] bounceRateArray = new Float[bounceCountArray.length];
+		for(int i = 0; i < bounceCountArray.length; i++)
+		{
+			bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+		}
+		return bounceRateArray;
+	}
+
+	@Override
+	public Float[] getBounceRateByTime(int interval, int timeSpent)
+	{
+		Integer[] bounceCountArray = this.getBounceNumberByTime(interval, timeSpent);
 		Integer[] clickCountArray = this.getClickNumber(interval);
 		Float[] bounceRateArray = new Float[bounceCountArray.length];
 		for(int i = 0; i < bounceCountArray.length; i++)
