@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.swing.*;
 
 import controller.Controller;
+import plotter.Plotter;//Wrong architecture!
 
 public class TestGUI {
 
@@ -130,17 +131,6 @@ class DataPanel extends JPanel{
 		this.impressionButton.addActionListener(new DataListener(this.controller, this));
 		this.serverButton.addActionListener(new DataListener(this.controller, this));
 		this.submitButton.addActionListener(new DataListener(this.controller, this));
-		
-	}
-	
-}
-
-class ChartsPanel extends JPanel{
-	
-	ChartsPanel(Controller controller) {
-		
-		this.add(new JButton("Test Button 1"));
-		this.add(new JButton("Button Two"));
 		
 	}
 	
@@ -378,6 +368,65 @@ class MetricListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String[] metrics = controller.calculateMetrics();
 		mp.displayMetrics(metrics);
+	}	
+}
+
+class ChartsPanel extends JPanel
+{
+	private String[] list = {"Click to Access Charts", "Number of Impression", "Number of Clicks",
+			"Number of Uniques", "Number of Bounces", "Number of Conversion", 
+			"Total Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate"};
+	
+	ChartsPanel(Controller controller) 
+	{
+		this.setLayout(new BorderLayout());	
+		
+		final JComboBox l = new JComboBox();
+		
+		for(int i = 0 ; i < list.length ; i++)
+		{
+			l.addItem(list[i]);
+		}		
+		this.add(l , BorderLayout.NORTH);
+		
+		l.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{				
+				String x = (String) l.getSelectedItem();				
+				switch (x)
+				{
+		            case "Number of Impression":	
+		            	Plotter nI = new Plotter("Number of Impression");	
+		            	ChartsPanel.this.add(nI , BorderLayout.CENTER);
+		            	ChartsPanel.this.validate();
+		            	ChartsPanel.this.repaint();
+		            	break;
+		            	
+		            case "Number of Clicks":
+		            	/*Plotter nC = new Plotter("Number of Clicks");
+		            	ChartsPanel.this.add(nC , BorderLayout.CENTER);
+		            	ChartsPanel.this.validate();
+		            	ChartsPanel.this.repaint();
+		            	break;
+		            	
+		            case "Number of Uniques":	
+		            	Plotter nU = new Plotter("Number of Uniques");
+		            	ChartsPanel.this.add(nU , BorderLayout.CENTER);
+		            	ChartsPanel.this.validate();
+		            	ChartsPanel.this.repaint();
+		            	break;
+		            	
+		            case "Number of Bounces":
+		            	Plotter nB = new Plotter("Number of Bounces");
+		            	ChartsPanel.this.add(nB , BorderLayout.CENTER);
+		            	ChartsPanel.this.validate();
+		            	ChartsPanel.this.repaint();
+		            	break;*/
+				}
+			}
+		});		
+		System.out.println(l.getSelectedItem());
 	}
 	
 }

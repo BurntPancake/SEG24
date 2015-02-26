@@ -11,7 +11,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		DecoderInterface decoder = new Decoder();
-		Plotter p = new Plotter("String");
+		Plotter p = new Plotter("Number of Impression");
 		
 		Controller c = new Controller(decoder, p);
 		TestGUI view = new TestGUI(c);

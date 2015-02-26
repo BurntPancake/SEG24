@@ -51,13 +51,16 @@ public class Controller {
 		metrics[3] = Float.toString(getMean(calc.getClickNumber(60)));
 		metrics[4] = Float.toString(getMean(calc.getClickNumber(3600)));
 		metrics[5] = Float.toString(getMean(calc.getClickNumber(86400)));
-		/*
+		System.out.println("getting unique");
 		metrics[6] = Float.toString(getMean(calc.getUniqueNumber(60)));
+		System.out.println("getting unique");
 		metrics[7] = Float.toString(getMean(calc.getUniqueNumber(3600)));
 		metrics[8] = Float.toString(getMean(calc.getUniqueNumber(86400)));
+		System.out.println("getting bounce by pages");
 		metrics[9] = Float.toString(getMean(calc.getBounceNumberByPages(60, 2)));
 		metrics[10] = Float.toString(getMean(calc.getBounceNumberByPages(3600, 2)));
 		metrics[11] = Float.toString(getMean(calc.getBounceNumberByPages(86400, 2)));
+		System.out.println("getting conversion number");
 		metrics[12] = Float.toString(getMean(calc.getConversionNumber(60)));
 		metrics[13] = Float.toString(getMean(calc.getConversionNumber(3600)));
 		metrics[14] = Float.toString(getMean(calc.getConversionNumber(86400)));
@@ -96,7 +99,7 @@ public class Controller {
 		metrics[28] = Float.toString(getMean(calc.getBounceRateByPages(60, 2)));
 		metrics[29] = Float.toString(getMean(calc.getBounceRateByPages(3600, 2)));
 		metrics[30] = Float.toString(getMean(calc.getBounceRateByPages(86400, 2)));
-		*/
+		
 		return metrics;
 	}
 	
@@ -123,5 +126,67 @@ public class Controller {
 		float mean = total / limit;
 		return mean;
 	}
+	
+	public Integer[] getIValues()
+	{
+		Integer[] impressionNumber = calc.getImpressionNumber(3600);
+		return impressionNumber;
+	}
+	
+	public Integer[] getClickValues()
+	{	
+		Integer[] clickNumber = calc.getClickNumber(3600);
+		return clickNumber;
+	}
+	
+	public Integer[] getUValues()
+	{	
+		Integer[] uniqueNumber = calc.getUniqueNumber(3600);
+		return uniqueNumber;
+	}
+	
+	public Integer[] getBValues()
+	{
+		Integer[] bounceNumber = calc.getBounceNumberByPages(3600, 2);
+		return bounceNumber;
+	}
+		
+	public Integer[] getCValues()
+	{
+		Integer[] conversionNumber = calc.getConversionNumber(3600);
+		return conversionNumber;
+	}
+		//Total Cost
+				
+	public Float[] getctrValues()
+	{
+		Float[] ctrNumber = calc.getCTR(3600);
+		return ctrNumber;
+	}
+		
+	public Float[] getcpaValues()
+	{
+		Float[] cpaNumber = calc.getCPA(3600);
+		return cpaNumber;
+	}
+		
+	public Float[] getcpcValues()
+	{
+		Float[] cpcNumber = calc.getCPC(3600);
+		return cpcNumber;
+	}
+		
+	public Float[] getcpmValues()
+	{
+		Float[] cpmNumber = calc.getCPM(3600);
+		return cpmNumber;
+	}
+		
+	public Float[] getBounceRateValues()
+	{
+		Float[] bounceRateNumber = calc.getBounceRateByPages(3600, 2);	
+		return bounceRateNumber;
+	}
+
 	
 }

@@ -63,13 +63,14 @@ public class Calculator implements CalculatorInterface
 				//larger or equal
 				while(ldt.compareTo(previousNode.plusSeconds(interval)) >= 0)
 				{
-					System.out.println("Enter the new interval" + ldt.toString());
+					//System.out.println("Enter the new interval" + ldt.toString());
 					dataList.add(0);
 					previousNode = previousNode.plusSeconds(interval);	
 				}
 				dataList.set(dataList.size()-1, dataList.get(dataList.size()-1) + 1);
 			}
 		}
+		System.out.println("Progressing");
 		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Integer[].class);
 	}
 	
@@ -96,6 +97,7 @@ public class Calculator implements CalculatorInterface
 				dataList.set(dataList.size()-1, dataList.get(dataList.size()-1) + Float.valueOf(h.get(field)));
 			}
 		}
+		System.out.println("Progressing");
 		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Float[].class);
 	}
 	
@@ -265,12 +267,16 @@ public class Calculator implements CalculatorInterface
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
 		for(int i = 0; i < serverLog.length; i++)
 		{
-			LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Entry Date")));
-			LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Exit Date")));
-			if(Duration.between(entryDate, exitDate).getSeconds() <= timeSpent)
+			if(serverLog[i].get("Exit Date") != "n/a")
 			{
-				newTable.add(serverLog[i]);
-			}
+				LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Entry Date")));
+				LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Exit Date")));
+				
+				if(Duration.between(entryDate, exitDate).getSeconds() <= timeSpent)
+				{
+					newTable.add(serverLog[i]);
+				}
+			}	
 		}
 
 		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
