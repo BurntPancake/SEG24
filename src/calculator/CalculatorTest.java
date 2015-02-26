@@ -1,10 +1,13 @@
 package calculator;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Hashtable;
+
+import decoder.Decoder;
 
 public class CalculatorTest
 {
@@ -33,18 +36,39 @@ public class CalculatorTest
 		entry4.put("Date", "2015-01-01 12:00:10");
 		entry4.put("Impression Cost", "0.002064");
 		
+		Decoder dec = new Decoder();
+		Hashtable<String, String>[] impressionLog;
+		Hashtable<String, String>[] clickLog;
+		Hashtable<String, String>[] serverLog;
+		try
+		{
+			impressionLog = dec.getData("ExampleInputData/impression_Log.csv");
+			clickLog = dec.getData("ExampleInputData/click_log.csv");
+			serverLog = dec.getData("ExampleInputData/server_Log.csv");
+			Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
+			Integer[] dataArray = cal.getImpressionNumber(3600);
+			
+			for (int i : dataArray)
+			{
+				System.out.println(i);
+			}
+		} 
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/**
 		Hashtable<String, String>[] impressionLog = new Hashtable[]{
 				entry0, entry1, entry2, entry3, entry4
 		};
 		Hashtable<String, String>[] clickLog = new Hashtable[5];
 		Hashtable<String, String>[] serverLog = new Hashtable[5];
+		*/
 		
-		Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
-		Integer[] dataArray = cal.getImpressionNumber(2);
-		for (int i : dataArray)
-		{
-			System.out.println(i);
-		}
+		
+
 		
 	}
 }
