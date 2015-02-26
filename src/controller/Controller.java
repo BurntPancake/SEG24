@@ -17,10 +17,13 @@ public class Controller {
 	private DecoderInterface decoder;
 	private CalculatorInterface calc;
 	private Plotter plotter;
+	private String bounceNumberPreference, bounceRatePreference;
 
 	public Controller(DecoderInterface decoder, Plotter plotter) {
 		this.decoder = decoder;
 		this.plotter = plotter;
+		this.bounceNumberPreference = "Pages";
+		this.bounceRatePreference = "Pages";
 	}
 	
 	public void setFileLocation(String impressionLogLocation, String clickLogLocation, String serverLogLocation){
@@ -62,11 +65,17 @@ public class Controller {
 		//metrics[6] = "filler";
 		//metrics[7] = "filler";
 		//metrics[8] = "filler";
-		
 		System.out.println("getting bounce by pages");
-		metrics[9] = Float.toString(getMean(calc.getBounceNumberByPages(60, 2)));
-		metrics[10] = Float.toString(getMean(calc.getBounceNumberByPages(3600, 2)));
-		metrics[11] = Float.toString(getMean(calc.getBounceNumberByPages(86400, 2)));
+		if (bounceNumberPreference.equals("Pages")) {
+			metrics[9] = Float.toString(getMean(calc.getBounceNumberByPages(60, 2)));
+			metrics[10] = Float.toString(getMean(calc.getBounceNumberByPages(3600, 2)));
+			metrics[11] = Float.toString(getMean(calc.getBounceNumberByPages(86400, 2)));
+		} else {
+			metrics[9] = Float.toString(getMean(calc.getBounceNumberByTime(60, 120)));
+			metrics[10] = Float.toString(getMean(calc.getBounceNumberByTime(3600, 120)));
+			metrics[11] = Float.toString(getMean(calc.getBounceNumberByTime(86400, 120)));
+		}
+
 		System.out.println("getting conversion number");
 		metrics[12] = Float.toString(getMean(calc.getConversionNumber(60)));
 		metrics[13] = Float.toString(getMean(calc.getConversionNumber(3600)));
@@ -105,9 +114,15 @@ public class Controller {
 		metrics[26] = Float.toString(getMean(calc.getCPM(3600)));
 		metrics[27] = Float.toString(getMean(calc.getCPM(86400)));
 		System.out.println(Float.toString(getMean(calc.getImpressionNumber(60))));
-		metrics[28] = Float.toString(getMean(calc.getBounceRateByPages(60, 2)));
-		metrics[29] = Float.toString(getMean(calc.getBounceRateByPages(3600, 2)));
-		metrics[30] = Float.toString(getMean(calc.getBounceRateByPages(86400, 2)));
+		if (bounceRatePreference.equals("Pages")) {
+			metrics[28] = Float.toString(getMean(calc.getBounceRateByPages(60, 2)));
+			metrics[29] = Float.toString(getMean(calc.getBounceRateByPages(3600, 2)));
+			metrics[30] = Float.toString(getMean(calc.getBounceRateByPages(86400, 2)));
+		} else {
+			metrics[28] = Float.toString(getMean(calc.getBounceRateByTime(60, 120)));
+			metrics[29] = Float.toString(getMean(calc.getBounceRateByTime(3600, 120)));
+			metrics[30] = Float.toString(getMean(calc.getBounceRateByTime(86400, 120)));
+		}
 		
 		int c = 0;
 		for(String f : metrics)
@@ -250,5 +265,20 @@ public class Controller {
 			System.out.println(i);
 		}
 		return data;
+	}
+	
+	public void setBouncePreferences(String numberPreference, String ratePreference) {
+		if (numberPreference.equals("Pages")) {
+			bounceNumberPreference = "Pages";
+		} else if (numberPreference.equals("Time")) {
+			bounceNumberPreference = "Time";
+		}
+		
+		if (ratePreference.equals("Pages")) {
+			bounceRatePreference = "Pages";
+		} else if (ratePreference.equals("Time")) {
+			bounceRatePreference = "Time";
+		}
+		
 	}
 }

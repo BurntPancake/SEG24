@@ -333,7 +333,7 @@ public class Calculator implements CalculatorInterface
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
 		for(int i = 0; i < serverLog.length; i++)
 		{
-			if(serverLog[i].get("Exit Date") != "n/a")
+			if(!serverLog[i].get("Exit Date").equals("n/a"))
 			{
 				LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Entry Date")));
 				LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Exit Date")));

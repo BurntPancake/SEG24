@@ -48,10 +48,13 @@ public class TestGUI {
 		JPanel dataPane = new DataPanel(this.controller);
 		JPanel chartsPane = new ChartsPanel(this.controller);
 		JPanel metricsPane = new MetricsPanel(this.controller);
+		OptionPanel optionPane = new OptionPanel(this.controller);
+		optionPane.init();
 
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
 		tabbedPane.addTab("Metrics", metricsPane);
+		tabbedPane.addTab("Options", optionPane);
 		
 		frame.setContentPane(tabbedPane);
 		frame.setResizable(true);
@@ -454,6 +457,85 @@ class ChartsPanel extends JPanel
             	ChartsPanel.this.repaint();
 			}
 		});		
+	}
+	
+	
+	
+}
+
+class SubmissionListener implements ActionListener {
+	
+	private JRadioButton bounceNumberPages, bounceNumberTime, bounceRatePages, bounceRateTime;
+	private Controller controller;
+	
+	public SubmissionListener(JRadioButton bounceNumberPages, JRadioButton bounceNumberTime,
+						      JRadioButton bounceRatePages, JRadioButton bounceRateTime, Controller controller) {
+		this.bounceNumberPages = bounceNumberPages;
+		this.bounceNumberTime = bounceNumberTime;
+		this.bounceRatePages = bounceRatePages;
+		this.bounceRateTime = bounceRateTime;
+		this.controller = controller;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		String numPref = "";
+		String ratePref = "";
+		
+		if (bounceNumberPages.isSelected()) {
+			numPref = "Pages";
+		} else if (bounceNumberTime.isSelected()) {
+			numPref = "Time";
+		}
+		
+		if (bounceRatePages.isSelected()) {
+			ratePref = "Pages";
+		} else if (bounceRateTime.isSelected()) {
+			ratePref = "Time";
+		}
+		
+		controller.setBouncePreferences(numPref,  ratePref);
+			
+	}
+	
+}
+
+class OptionPanel extends JPanel {
+	
+	private Controller controller;
+	
+	public OptionPanel(Controller controller) {
+		this.controller = controller;
+	}
+	
+	public void init() {
+		
+		GridLayout gl = new GridLayout(5, 0);
+		this.setLayout(gl);
+				
+		JRadioButton bounceNumberByPages = new JRadioButton("Get bounce number by pages.", true);
+		JRadioButton bounceNumberByTime = new JRadioButton("Get bounce number by time.", false);
+		
+		JRadioButton bounceRateByPages = new JRadioButton("Get bounce rate by pages.", true);
+		JRadioButton bounceRateByTime = new JRadioButton("Get bounce rate by time.", false);
+		
+		ButtonGroup bounceNumberGroup = new ButtonGroup();
+		bounceNumberGroup.add(bounceNumberByPages);
+		bounceNumberGroup.add(bounceNumberByTime);
+			
+		ButtonGroup bounceRateGroup = new ButtonGroup();
+		bounceRateGroup.add(bounceRateByPages);
+		bounceRateGroup.add(bounceRateByTime);
+		
+		JButton submit = new JButton("Submit");
+		submit.addActionListener(new SubmissionListener(bounceNumberByPages, bounceNumberByTime, bounceRateByPages, bounceRateByTime, controller));
+		
+		this.add(bounceNumberByPages);
+		this.add(bounceNumberByTime);
+		this.add(bounceRateByPages);
+		this.add(bounceRateByTime);
+		this.add(submit);
+		
 	}
 	
 }
