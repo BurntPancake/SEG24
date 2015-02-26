@@ -1,9 +1,7 @@
 package plotter;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -14,81 +12,19 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import sun.applet.Main;
-import controller.Controller;
-import decoder.DecoderInterface;
-
 public class Plotter extends JPanel
 {
-	Controller controller;
 	ChartPanel chartPanel;
-	DecoderInterface decoder;
-	public Plotter(Controller controller, DecoderInterface decoder)
-	{
-		this.controller = controller;
-		this.decoder = decoder;
-	}
-	public Plotter(String name)
+
+	public Plotter()
 	{
         super(); 
-        switch (name)
-		{
-            case "Number of Impression":	
-            chartPanel = nImpression();
-            break;
-            	
-            case "Number of Clicks":
-            chartPanel = nClicks();
-            break;
-            	
-            case "Number of Uniques":	
-            chartPanel = nUniques();
-            break;
-            	
-            case "Number of Bounces":
-            chartPanel = nBounces();
-            break;
-            	
-            case "Number of Conversions":
-            chartPanel = nConversions();
-            break;
-            	
-            case "Total Cost":
-            
-            break;
-            	
-            case "Number of CTR":
-            chartPanel = nCTR();
-            break;
-            	
-            case "Number of CPA":
-            chartPanel = nCPA();
-            break;
-            	
-            case "CPC":
-            chartPanel = nCPC();
-            break;
-            	
-            case "CPM":
-            chartPanel = nCPM();
-            break;
-            	
-            case "Bounce Rate":
-            chartPanel = bounceRate();
-            break;
-		}
-        
-        chartPanel.setSize(250, 150);
-        this.add(chartPanel);
         this.setVisible(true);
     }
-	
-	private ChartPanel nImpression() 
+
+	public ChartPanel nImpression(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Numer of Impression");
-        System.out.println("222");
-        Integer[] i = controller.getIValues();
-        System.out.println("111");
         for(int j = 0 ; j < i.length ; j++)
         {
         	System.out.println(i[j]);
@@ -101,10 +37,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nClicks() 
+	public ChartPanel nClicks(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Numer of Clicks");
-        Integer[] i = controller.getClickValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -117,10 +52,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nUniques() 
+	public ChartPanel nUniques(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Numer of uniques");
-        Integer[] i = controller.getUValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -133,10 +67,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nBounces() 
+	public ChartPanel nBounces(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Numer of Bounces");
-        Integer[] i = controller.getBValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -149,10 +82,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nConversions() 
+	public ChartPanel nConversions(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Numer of Conversions");
-        Integer[] i = controller.getCValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -165,10 +97,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	/*private ChartPanel totalCost() 
+	public ChartPanel totalCost(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Total Cost");
-        Integer[] i = controller
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -176,15 +107,14 @@ public class Plotter extends JPanel
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Total Cost);
+        JFreeChart chart = createChart(dataSet, "Total Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
-    }*/
+    }
 	
-	private ChartPanel nCTR() 
+	public ChartPanel nCTR(Integer[] i) 
 	{
         XYSeries first = new XYSeries("CTR");
-        Float[] i = controller.getctrValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -197,10 +127,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nCPA() 
+	public ChartPanel nCPA(Integer[] i) 
 	{
         XYSeries first = new XYSeries("CPA");
-        Float[] i = controller.getcpaValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -213,10 +142,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nCPC() 
+	public ChartPanel nCPC(Integer[] i) 
 	{
         XYSeries first = new XYSeries("CPC");
-        Float[] i = controller.getcpcValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -229,10 +157,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel nCPM() 
+	public ChartPanel nCPM(Integer[] i) 
 	{
         XYSeries first = new XYSeries("CPM");
-        Float[] i = controller.getcpmValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -245,10 +172,9 @@ public class Plotter extends JPanel
         return chartPanel;
     }
 	
-	private ChartPanel bounceRate() 
+	public ChartPanel bounceRate(Integer[] i) 
 	{
         XYSeries first = new XYSeries("Bounce Rate");
-        Float[] i = controller.getBounceRateValues();
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -276,7 +202,8 @@ public class Plotter extends JPanel
 		 return chart;
 	 }
 	
-	/*public static void main(String[] args)
+	 /*
+	public static void main(String[] args)
 	{
 		Plotter demo = new Plotter("Title");
         demo.pack();

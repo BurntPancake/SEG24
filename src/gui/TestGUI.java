@@ -397,7 +397,7 @@ class ChartsPanel extends JPanel
 				switch (x)
 				{
 		            case "Number of Impression":	
-		            	Plotter nI = new Plotter("Number of Impression");	
+		            	Plotter nI = new Plotter();	
 		            	ChartsPanel.this.add(nI , BorderLayout.CENTER);
 		            	ChartsPanel.this.validate();
 		            	ChartsPanel.this.repaint();
