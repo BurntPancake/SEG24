@@ -3,6 +3,7 @@ package calculator;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -62,6 +63,7 @@ public class Calculator implements CalculatorInterface
 				//larger or equal
 				while(ldt.compareTo(previousNode.plusSeconds(interval)) >= 0)
 				{
+					System.out.println("Enter the new interval" + ldt.toString());
 					dataList.add(0);
 					previousNode = previousNode.plusSeconds(interval);	
 				}
@@ -302,7 +304,5 @@ public class Calculator implements CalculatorInterface
 		}
 		return bounceRateArray;
 	}
-
-
 	
 }
