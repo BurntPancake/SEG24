@@ -54,6 +54,7 @@ public class TestGUI {
 		tabbedPane.addTab("Metrics", metricsPane);
 		
 		frame.setContentPane(tabbedPane);
+		frame.setResizable(true);
 	
 		frame.pack();
 		frame.setVisible(true);
@@ -374,7 +375,7 @@ class MetricListener implements ActionListener {
 class ChartsPanel extends JPanel
 {
 	private String[] list = {"Click to Access Charts", "Number of Impression", "Number of Clicks",
-			"Number of Uniques", "Number of Bounces", "Number of Conversion", 
+			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
 			"Total Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate"};
 	
 	ChartsPanel(Controller controller) 
@@ -383,50 +384,76 @@ class ChartsPanel extends JPanel
 		this.setLayout(new BorderLayout());	
 		
 		final JComboBox l = new JComboBox();
-		
 		for(int i = 0 ; i < list.length ; i++)
 		{
 			l.addItem(list[i]);
 		}		
 		this.add(l , BorderLayout.NORTH);
 		
+		JPanel chartDisplayPanel = new JPanel();
+		this.add(chartDisplayPanel, BorderLayout.CENTER);
+		chartDisplayPanel.setLayout(new GridLayout());
+		
 		l.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{				
-				String x = (String) l.getSelectedItem();				
+				String x = (String) l.getSelectedItem();
+				chartDisplayPanel.removeAll();
 				switch (x)
-				{
+				{	
 		            case "Number of Impression":	
-		            	ChartsPanel.this.add(plotter.nImpression(controller.getImpressionNumber(60), 60) , BorderLayout.CENTER);
-		            	ChartsPanel.this.validate();
-		            	ChartsPanel.this.repaint();
+		            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(60), 60));
 		            	break;
 		            	
 		            case "Number of Clicks":
-		            	/*Plotter nC = new Plotter("Number of Clicks");
-		            	ChartsPanel.this.add(nC , BorderLayout.CENTER);
-		            	ChartsPanel.this.validate();
-		            	ChartsPanel.this.repaint();
+		            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(60), 60));
 		            	break;
 		            	
 		            case "Number of Uniques":	
-		            	Plotter nU = new Plotter("Number of Uniques");
-		            	ChartsPanel.this.add(nU , BorderLayout.CENTER);
-		            	ChartsPanel.this.validate();
-		            	ChartsPanel.this.repaint();
+		            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(60), 60));
 		            	break;
 		            	
 		            case "Number of Bounces":
-		            	Plotter nB = new Plotter("Number of Bounces");
-		            	ChartsPanel.this.add(nB , BorderLayout.CENTER);
+		            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(60), 60));
+		            	break;
+		            	
+		            case "Number of Conversions":
+		            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(60), 60));
+		            	break;
+		            	
+		            /*case "Total Cost":
+		            	ChartsPanel.this.add(plotter.nBounces(controller.getBounces(60), 60) , BorderLayout.CENTER);
 		            	ChartsPanel.this.validate();
 		            	ChartsPanel.this.repaint();
 		            	break;*/
+		            	
+		            case "CTR":
+		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(60), 60));
+		            	break;
+		            	
+		            case "CPA":
+		            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(60), 60));
+		            	break;
+		            	
+		            case "CPC":
+		            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(60), 60));
+		            	break;
+		            	
+		            case "CPM":
+		            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(60), 60));
+		            	break;
+		            	
+		            case "Bounce Rate":
+		            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(60), 60));
+		            	break;
 				}
+				chartDisplayPanel.revalidate();
+            	chartDisplayPanel.repaint();
+            	ChartsPanel.this.revalidate();
+            	ChartsPanel.this.repaint();
 			}
 		});		
-		System.out.println(l.getSelectedItem());
 	}
 	
 }

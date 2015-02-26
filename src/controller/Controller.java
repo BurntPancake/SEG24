@@ -152,4 +152,103 @@ public class Controller {
 		return data;
 	}
 	
+	public Integer[] getClicks(int interval)
+	{
+		Integer[] data = calc.getClickNumber(interval);
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Integer[] getUniques(int interval)
+	{
+		Integer[] data = calc.getUniqueNumber(interval);
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Integer[] getBounces(int interval)
+	{
+		Integer[] data = calc.getBounceNumberByPages(interval, 2);
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Integer[] getConversions(int interval)
+	{
+		Integer[] data = calc.getConversionNumber(interval);
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	/*public Integer[] getTotalCost(int interval)
+	{
+		Integer[] data = calc.
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}*/
+	
+	public Float[] getCTR(int interval)
+	{
+		Float[] data = calc.getCTR(interval);
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Float[] getCPA(int interval)
+	{
+		Float[] data = calc.getCPA(interval);
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Float[] getCPC(int interval)
+	{
+		Float[] data = calc.getCPC(interval);
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Float[] getCPM(int interval)
+	{
+		Float[] data = calc.getCPM(interval);
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
+	
+	public Float[] getBounceRate(int interval)
+	{
+		Float[] data = calc.getBounceRateByPages(interval, 2);
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
+	}
 }
