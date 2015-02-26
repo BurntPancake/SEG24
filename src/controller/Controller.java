@@ -141,6 +141,9 @@ public class Controller {
 		return mean;
 	}
 	
-	
+	public Integer[] getImpressionNumber(int interval)
+	{
+		return calc.getImpressionNumber(interval);
+	}
 	
 }

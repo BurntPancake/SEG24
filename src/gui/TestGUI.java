@@ -398,7 +398,7 @@ class ChartsPanel extends JPanel
 				{
 		            case "Number of Impression":	
 		            	Plotter nI = new Plotter();	
-		            	ChartsPanel.this.add(nI , BorderLayout.CENTER);
+		            	ChartsPanel.this.add(nI.nImpression(controller.getImpressionNumber(3600), 3600) , BorderLayout.CENTER);
 		            	ChartsPanel.this.validate();
 		            	ChartsPanel.this.repaint();
 		            	break;

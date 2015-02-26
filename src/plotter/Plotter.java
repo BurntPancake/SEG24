@@ -22,13 +22,13 @@ public class Plotter extends JPanel
         this.setVisible(true);
     }
 
-	public ChartPanel nImpression(Integer[] i) 
+	public ChartPanel nImpression(Integer[] i, int time) 
 	{
         XYSeries first = new XYSeries("Numer of Impression");
         for(int j = 0 ; j < i.length ; j++)
         {
         	System.out.println(i[j]);
-	        first.add(i[j].doubleValue(), 3600);
+	        first.add(time * j, i[j].doubleValue());
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
