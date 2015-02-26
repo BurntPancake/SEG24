@@ -40,7 +40,7 @@ public class CalculatorTest
 		Hashtable<String, String>[] serverLog = new Hashtable[5];
 		
 		Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
-		Integer[] dataArray = cal.getCount(2, impressionLog);
+		Integer[] dataArray = cal.getImpressionNumber(2);
 		for (int i : dataArray)
 		{
 			System.out.println(i);
