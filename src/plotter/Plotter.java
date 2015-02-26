@@ -27,8 +27,8 @@ public class Plotter extends JPanel
         XYSeries first = new XYSeries("Numer of Impression");
         for(int j = 0 ; j < i.length ; j++)
         {
-        	System.out.println(i[j]);
-	        first.add(time * j, i[j].doubleValue());
+        	//System.out.println(i[j]);
+	        first.add(time * j, i[j]);
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;

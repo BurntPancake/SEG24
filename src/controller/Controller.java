@@ -29,10 +29,11 @@ public class Controller {
 			Hashtable<String, String>[] serverRecords = decoder.getData(serverLogLocation);
 			Hashtable<String, String>[] clickRecords = decoder.getData(clickLogLocation);
 			
+			/**
 			RecordSorter rs = new RecordSorter();
 			rs.sortRecords(impressionRecords, "Date");
 			rs.sortRecords(serverRecords, "Entry Date");
-			rs.sortRecords(clickRecords, "Date");
+			rs.sortRecords(clickRecords, "Date");*/
 			
 			this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 			
@@ -143,7 +144,12 @@ public class Controller {
 	
 	public Integer[] getImpressionNumber(int interval)
 	{
-		return calc.getImpressionNumber(interval);
+		Integer[] data = calc.getImpressionNumber(interval);
+		for (int i : data)
+		{
+			System.out.println(i);
+		}
+		return data;
 	}
 	
 }
