@@ -379,6 +379,7 @@ class ChartsPanel extends JPanel
 	
 	ChartsPanel(Controller controller) 
 	{
+		Plotter plotter = new Plotter();	
 		this.setLayout(new BorderLayout());	
 		
 		final JComboBox l = new JComboBox();
@@ -397,8 +398,7 @@ class ChartsPanel extends JPanel
 				switch (x)
 				{
 		            case "Number of Impression":	
-		            	Plotter nI = new Plotter();	
-		            	ChartsPanel.this.add(nI.nImpression(controller.getImpressionNumber(60), 60) , BorderLayout.CENTER);
+		            	ChartsPanel.this.add(plotter.nImpression(controller.getImpressionNumber(60), 60) , BorderLayout.CENTER);
 		            	ChartsPanel.this.validate();
 		            	ChartsPanel.this.repaint();
 		            	break;
