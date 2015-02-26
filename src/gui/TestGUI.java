@@ -274,7 +274,7 @@ class MetricsPanel extends JPanel{
 		clickNumber[0].setText(metrics[3]);
 		clickNumber[1].setText(metrics[4]);
 		clickNumber[2].setText(metrics[5]);
-		/*
+		
 		uniqueNumber[0].setText(metrics[6]);
 		uniqueNumber[1].setText(metrics[7]);
 		uniqueNumber[2].setText(metrics[8]);
@@ -300,7 +300,7 @@ class MetricsPanel extends JPanel{
 		bounceRate[0].setText(metrics[28]);
 		bounceRate[1].setText(metrics[29]);
 		bounceRate[2].setText(metrics[30]);
-		*/
+		
 		
 	}
 	

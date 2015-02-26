@@ -58,6 +58,9 @@ public class Controller {
 		metrics[7] = Float.toString(getMean(calc.getUniqueNumber(3600)));
 		System.out.println(metrics[7]);
 		metrics[8] = Float.toString(getMean(calc.getUniqueNumber(86400)));
+		//metrics[6] = "filler";
+		//metrics[7] = "filler";
+		//metrics[8] = "filler";
 		
 		System.out.println("getting bounce by pages");
 		metrics[9] = Float.toString(getMean(calc.getBounceNumberByPages(60, 2)));
@@ -84,10 +87,11 @@ public class Controller {
 		metrics[15] = Float.toString(totalCost);
 		
 		metrics[16] = Float.toString(getMean(calc.getCTR(60)));
+		for(float f : calc.getCTR(60))
+			System.out.println(f);
 		metrics[17] = Float.toString(getMean(calc.getCTR(3600)));
 		metrics[18] = Float.toString(getMean(calc.getCTR(86400)));
-		System.out.println(metrics[16]);
-		
+		System.out.println(metrics[16]);	
 		metrics[19] = Float.toString(getMean(calc.getCPA(60)));
 		metrics[20] = Float.toString(getMean(calc.getCPA(3600)));
 		metrics[21] = Float.toString(getMean(calc.getCPA(86400)));

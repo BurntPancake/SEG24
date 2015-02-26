@@ -137,6 +137,7 @@ public class Calculator implements CalculatorInterface
 		for(int i = 0; i < clickLog.length; i++)
 		{
 			boolean isUnique = true;
+			/*
 			int j = i-1;
 			while(j >= 0)
 			{
@@ -146,6 +147,18 @@ public class Calculator implements CalculatorInterface
 					break;
 				}
 				j = j - 1;
+			}
+			if(isUnique)
+			{
+				newTable.add(clickLog[i]);
+			}*/
+			for(Hashtable<String, String> h : newTable)
+			{
+				if(clickLog[i].get("ID").equals(h.get("ID")))
+				{
+					isUnique = false;
+					break;
+				}
 			}
 			if(isUnique)
 			{
@@ -201,6 +214,11 @@ public class Calculator implements CalculatorInterface
 		Float[] CTRArray = new Float[Math.min(clickArray.length, impressionArray.length)];
 		for(int i = 0; i < CTRArray.length; i++)
 		{
+			/*
+			if(impressionArray[i].equals(0))
+			{
+				CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
+			}*/
 			CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
 		}
 		return CTRArray;
