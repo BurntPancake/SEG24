@@ -20,8 +20,8 @@ public class RecordSorterTest {
 		Decoder dec = new Decoder();
 		RecordSorter rs = new RecordSorter();
 		try {
-			Hashtable<String, String>[] records = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/server_log.csv");
-			records = rs.sortRecords(records, "Entry Date");
+			Hashtable<String, String>[] records = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/server_log.csv");
+			rs.sortRecords(records, "Entry Date");
 			assertTrue(checkOrdering(records, "Entry Date"));
 		} catch (IOException e) {
 			e.printStackTrace();

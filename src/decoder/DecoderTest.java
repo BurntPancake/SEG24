@@ -20,13 +20,13 @@ public class DecoderTest {
 	public void allLinesReadTest() {
 		DecoderInterface dec = new Decoder();
 		try {
-			Hashtable<String, String>[] data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/server_log.csv");
+			Hashtable<String, String>[] data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/server_log.csv");
 			assertEquals(23865, data.length);
 			
-			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/impression_log.csv");
+			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/impression_log.csv");
 			assertEquals(486095, data.length);
 			
-			data = dec.getData("/home/ej1g13/Documents/university/SEG24/ExampleInputData/click_log.csv");
+			data = dec.getData("/home/edward/university/year2/comp2211/SEG24/ExampleInputData/click_log.csv");
 			assertEquals(23849, data.length);
 		} catch (IOException e) {
 			e.printStackTrace();
