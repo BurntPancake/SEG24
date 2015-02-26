@@ -52,7 +52,16 @@ public class Calculator implements CalculatorInterface
 		LocalDateTime previousNode = null;
 		for (Hashtable<String, String> h : log)
 		{
-			LocalDateTime ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
+			LocalDateTime ldt;
+			if(h.get("Date") != null)
+			{
+				ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
+			}
+			else
+			{
+				ldt = LocalDateTime.from(fmt.parse(h.get("Entry Date")));
+			}
+			
 			if(previousNode == null)
 			{
 				previousNode = ldt;
@@ -80,7 +89,15 @@ public class Calculator implements CalculatorInterface
 		LocalDateTime previousNode = null;
 		for (Hashtable<String, String> h : log)
 		{
-			LocalDateTime ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
+			LocalDateTime ldt;
+			if(h.get("Date") != null)
+			{
+				ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
+			}
+			else
+			{
+				ldt = LocalDateTime.from(fmt.parse(h.get("Entry Date")));
+			}
 			if(previousNode == null)
 			{
 				previousNode = ldt;
@@ -181,8 +198,8 @@ public class Calculator implements CalculatorInterface
 	{
 		Integer[] clickArray = this.getClickNumber(interval);
 		Integer[] impressionArray = this.getImpressionNumber(interval);
-		Float[] CTRArray = new Float[clickArray.length];
-		for(int i = 0; i < clickArray.length; i++)
+		Float[] CTRArray = new Float[Math.min(clickArray.length, impressionArray.length)];
+		for(int i = 0; i < CTRArray.length; i++)
 		{
 			CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
 		}
@@ -197,8 +214,12 @@ public class Calculator implements CalculatorInterface
 	{
 		Float[] clickCostArray = this.getClickCost(interval);
 		Integer[] conversionCountArray = this.getConversionNumber(interval);
-		Float[] CPAArray = new Float[clickCostArray.length];
-		for(int i = 0; i < clickCostArray.length; i++)
+		Float[] CPAArray = new Float[Math.min(clickCostArray.length, conversionCountArray.length)];
+		
+		System.out.println(clickCostArray.length);
+		System.out.println(conversionCountArray.length);
+		
+		for(int i = 0; i < CPAArray.length; i++)
 		{
 			CPAArray[i] = clickCostArray[i]/(float)conversionCountArray[i];
 		}

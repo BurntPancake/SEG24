@@ -51,11 +51,14 @@ public class Controller {
 		metrics[3] = Float.toString(getMean(calc.getClickNumber(60)));
 		metrics[4] = Float.toString(getMean(calc.getClickNumber(3600)));
 		metrics[5] = Float.toString(getMean(calc.getClickNumber(86400)));
-		System.out.println("getting unique");
+		System.out.println("getting unique 60");
 		metrics[6] = Float.toString(getMean(calc.getUniqueNumber(60)));
-		System.out.println("getting unique");
+		System.out.println(metrics[6]);
+		System.out.println("getting unique 3600");
 		metrics[7] = Float.toString(getMean(calc.getUniqueNumber(3600)));
+		System.out.println(metrics[7]);
 		metrics[8] = Float.toString(getMean(calc.getUniqueNumber(86400)));
+		
 		System.out.println("getting bounce by pages");
 		metrics[9] = Float.toString(getMean(calc.getBounceNumberByPages(60, 2)));
 		metrics[10] = Float.toString(getMean(calc.getBounceNumberByPages(3600, 2)));
@@ -83,11 +86,12 @@ public class Controller {
 		metrics[16] = Float.toString(getMean(calc.getCTR(60)));
 		metrics[17] = Float.toString(getMean(calc.getCTR(3600)));
 		metrics[18] = Float.toString(getMean(calc.getCTR(86400)));
-		System.out.println(Float.toString(getMean(calc.getImpressionNumber(60))));
+		System.out.println(metrics[16]);
+		
 		metrics[19] = Float.toString(getMean(calc.getCPA(60)));
 		metrics[20] = Float.toString(getMean(calc.getCPA(3600)));
 		metrics[21] = Float.toString(getMean(calc.getCPA(86400)));
-		System.out.println(Float.toString(getMean(calc.getImpressionNumber(60))));
+		System.out.println(metrics[19]);
 		metrics[22] = Float.toString(getMean(calc.getCPC(60)));
 		metrics[23] = Float.toString(getMean(calc.getCPC(3600)));
 		metrics[24] = Float.toString(getMean(calc.getCPC(86400)));
@@ -100,6 +104,12 @@ public class Controller {
 		metrics[29] = Float.toString(getMean(calc.getBounceRateByPages(3600, 2)));
 		metrics[30] = Float.toString(getMean(calc.getBounceRateByPages(86400, 2)));
 		
+		int c = 0;
+		for(String f : metrics)
+		{
+			System.out.println(c + " " + f);
+			c++;
+		}
 		return metrics;
 	}
 	
@@ -127,66 +137,6 @@ public class Controller {
 		return mean;
 	}
 	
-	public Integer[] getIValues()
-	{
-		Integer[] impressionNumber = calc.getImpressionNumber(3600);
-		return impressionNumber;
-	}
 	
-	public Integer[] getClickValues()
-	{	
-		Integer[] clickNumber = calc.getClickNumber(3600);
-		return clickNumber;
-	}
-	
-	public Integer[] getUValues()
-	{	
-		Integer[] uniqueNumber = calc.getUniqueNumber(3600);
-		return uniqueNumber;
-	}
-	
-	public Integer[] getBValues()
-	{
-		Integer[] bounceNumber = calc.getBounceNumberByPages(3600, 2);
-		return bounceNumber;
-	}
-		
-	public Integer[] getCValues()
-	{
-		Integer[] conversionNumber = calc.getConversionNumber(3600);
-		return conversionNumber;
-	}
-		//Total Cost
-				
-	public Float[] getctrValues()
-	{
-		Float[] ctrNumber = calc.getCTR(3600);
-		return ctrNumber;
-	}
-		
-	public Float[] getcpaValues()
-	{
-		Float[] cpaNumber = calc.getCPA(3600);
-		return cpaNumber;
-	}
-		
-	public Float[] getcpcValues()
-	{
-		Float[] cpcNumber = calc.getCPC(3600);
-		return cpcNumber;
-	}
-		
-	public Float[] getcpmValues()
-	{
-		Float[] cpmNumber = calc.getCPM(3600);
-		return cpmNumber;
-	}
-		
-	public Float[] getBounceRateValues()
-	{
-		Float[] bounceRateNumber = calc.getBounceRateByPages(3600, 2);	
-		return bounceRateNumber;
-	}
-
 	
 }
