@@ -214,12 +214,16 @@ public class Calculator implements CalculatorInterface
 		Float[] CTRArray = new Float[Math.min(clickArray.length, impressionArray.length)];
 		for(int i = 0; i < CTRArray.length; i++)
 		{
-			/*
+			
 			if(impressionArray[i].equals(0))
 			{
+				CTRArray[i] = (float)clickArray[i]/1f;
+			}
+			else
+			{
 				CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
-			}*/
-			CTRArray[i] = (float)clickArray[i]/(float)impressionArray[i];
+			}
+			
 		}
 		return CTRArray;
 	}
@@ -239,7 +243,15 @@ public class Calculator implements CalculatorInterface
 		
 		for(int i = 0; i < CPAArray.length; i++)
 		{
-			CPAArray[i] = clickCostArray[i]/(float)conversionCountArray[i];
+			if(conversionCountArray[i].equals(0))
+			{
+				CPAArray[i] = (float)clickCostArray[i]/1f;
+			}
+			else
+			{
+				CPAArray[i] = clickCostArray[i]/(float)conversionCountArray[i];
+			}
+			
 		}
 		return CPAArray;
 	}
@@ -255,7 +267,14 @@ public class Calculator implements CalculatorInterface
 		Float[] CPCArray = new Float[clickCostArray.length];
 		for(int i = 0; i < clickCostArray.length; i++)
 		{
-			CPCArray[i] = clickCostArray[i]/(float)clickCountArray[i];
+			if(clickCountArray[i].equals(0))
+			{
+				CPCArray[i] = (float)clickCostArray[i]/1f;
+			}
+			else
+			{
+				CPCArray[i] = clickCostArray[i]/(float)clickCountArray[i];
+			}	
 		}
 		return CPCArray;
 	}
@@ -271,7 +290,15 @@ public class Calculator implements CalculatorInterface
 		Float[] CPMArray = new Float[impressionCostArray.length];
 		for(int i = 0; i < impressionCostArray.length; i++)
 		{
-			CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]/1000f;
+			if(impressionCountArray[i].equals(0))
+			{
+				CPMArray[i] = impressionCostArray[i]/1000f;
+			}
+			else
+			{
+				CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]/1000f;
+			}
+			
 		}
 		return CPMArray;
 	}
@@ -332,7 +359,15 @@ public class Calculator implements CalculatorInterface
 		Float[] bounceRateArray = new Float[bounceCountArray.length];
 		for(int i = 0; i < bounceCountArray.length; i++)
 		{
-			bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+			if(clickCountArray[i].equals(0))
+			{
+				bounceRateArray[i] = (float)bounceCountArray[i]/1f;
+			}
+			else
+			{
+				bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+			}
+			
 		}
 		return bounceRateArray;
 	}
@@ -345,7 +380,15 @@ public class Calculator implements CalculatorInterface
 		Float[] bounceRateArray = new Float[bounceCountArray.length];
 		for(int i = 0; i < bounceCountArray.length; i++)
 		{
-			bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+			if(clickCountArray[i].equals(0))
+			{
+				bounceRateArray[i] = (float)bounceCountArray[i]/1f;
+			}
+			else
+			{
+				bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+			}
+			
 		}
 		return bounceRateArray;
 	}
