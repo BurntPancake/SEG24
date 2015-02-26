@@ -124,14 +124,16 @@ public class Calculator implements CalculatorInterface
 					isUnique = false;
 					break;
 				}
+				j = j - 1;
 			}
 			if(isUnique)
 			{
 				newTable.add(clickLog[i]);
 			}
 		}
-		@SuppressWarnings("unchecked")
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
+		newTable.toArray(newLog);
 		
 		return this.getCount(interval, newLog);
 	}
@@ -148,8 +150,8 @@ public class Calculator implements CalculatorInterface
 			}
 		}
 		
-		@SuppressWarnings("unchecked")
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
+		newTable.toArray(newLog);
 		
 		return this.getCount(interval, newLog);
 	}
@@ -245,8 +247,9 @@ public class Calculator implements CalculatorInterface
 				newTable.add(serverLog[i]);
 			}
 		}
-		@SuppressWarnings("unchecked")
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
+		newTable.toArray(newLog);
 		
 		return this.getCount(interval, newLog);
 	}
@@ -267,8 +270,9 @@ public class Calculator implements CalculatorInterface
 				newTable.add(serverLog[i]);
 			}
 		}
-		@SuppressWarnings("unchecked")
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) newTable.toArray();
+
+		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
+		newTable.toArray(newLog);
 		
 		return this.getCount(interval, newLog);
 	}

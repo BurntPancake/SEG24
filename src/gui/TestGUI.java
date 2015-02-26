@@ -163,7 +163,7 @@ class MetricsPanel extends JPanel{
 		GridLayout gl = new GridLayout(12, 4);
 		this.setLayout(gl);
 		totalCost = new JLabel("0");
-		
+		//store in 2d array
 		impressionNumber = new JLabel[3];
 		impressionNumber[PER_MINUTE] = new JLabel("0");
 		impressionNumber[PER_HOUR] = new JLabel("0");
@@ -265,9 +265,9 @@ class MetricsPanel extends JPanel{
 		this.add(cpm[PER_DAY]);
 		
 		this.add(new JLabel("Bounce rate:"));
-		this.add(bounceNumber[PER_MINUTE]);
-		this.add(bounceNumber[PER_HOUR]);
-		this.add(bounceNumber[PER_DAY]);
+		this.add(bounceRate[PER_MINUTE]);
+		this.add(bounceRate[PER_HOUR]);
+		this.add(bounceRate[PER_DAY]);
 		
 		this.add(new JLabel("Total Cost:"));
 		this.add(totalCost);
@@ -278,6 +278,39 @@ class MetricsPanel extends JPanel{
 	}
 	
 	public void displayMetrics(String[] metrics) {
+		impressionNumber[0].setText(metrics[0]);
+		impressionNumber[1].setText(metrics[1]);
+		impressionNumber[2].setText(metrics[2]);
+		clickNumber[0].setText(metrics[3]);
+		clickNumber[1].setText(metrics[4]);
+		clickNumber[2].setText(metrics[5]);
+		/*
+		uniqueNumber[0].setText(metrics[6]);
+		uniqueNumber[1].setText(metrics[7]);
+		uniqueNumber[2].setText(metrics[8]);
+		bounceNumber[0].setText(metrics[9]);
+		bounceNumber[1].setText(metrics[10]);
+		bounceNumber[2].setText(metrics[11]);
+		conversionNumber[0].setText(metrics[12]);
+		conversionNumber[1].setText(metrics[13]);
+		conversionNumber[2].setText(metrics[14]);
+		totalCost.setText(metrics[15]);
+		ctr[0].setText(metrics[16]);
+		ctr[1].setText(metrics[17]);
+		ctr[2].setText(metrics[18]);
+		cpa[0].setText(metrics[19]);
+		cpa[1].setText(metrics[20]);
+		cpa[2].setText(metrics[21]);
+		cpc[0].setText(metrics[22]);
+		cpc[1].setText(metrics[23]);
+		cpc[2].setText(metrics[24]);
+		cpm[0].setText(metrics[25]);
+		cpm[1].setText(metrics[26]);
+		cpm[2].setText(metrics[27]);
+		bounceRate[0].setText(metrics[28]);
+		bounceRate[1].setText(metrics[29]);
+		bounceRate[2].setText(metrics[30]);
+		*/
 		
 	}
 	
@@ -338,6 +371,7 @@ class MetricListener implements ActionListener {
 	
 	public MetricListener(Controller controller, MetricsPanel mp) {
 		this.controller = controller;
+		this.mp = mp;
 	}
 
 	@Override
