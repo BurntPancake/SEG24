@@ -2,8 +2,6 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 
@@ -22,21 +20,7 @@ public class TestGUI {
 			}
 		});
 	}
-	
-	/*
-	 * Controlled by controller now.
-	public static void main(String[] args){
 		
-			
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run(){
-				display();
-			}
-		});
-		
-	}
-	*/
-	
 	private void display(){
 		
 		JFrame frame = new JFrame();
@@ -172,12 +156,12 @@ class MetricsPanel extends JPanel{
 				{ 	"Number of Uniques:", "0", "0"	},
 				{ 	"Number of Bounces:", "0", "0"	},
 				{ 	"Number of Conversions:", "0", "0"	},
-				{ 	"Click-through rate:", "0", "0"	},
-				{ 	"Cost-per-aquisition:", "0", "0"	},
-				{ 	"Cost-per-click:", "0", "0"	},
-				{ 	"Cost-per-thousand-impressions:", "0", "0"	},
-				{ 	"Bounce Rate:", "0", "0"	},
-				{ 	"Total Cost:", "0", "0"	}
+				{ 	"Click-through rate (%):", "0", "0"	},
+				{ 	"Cost-per-aquisition (GB Pence):", "0", "0"	},
+				{ 	"Cost-per-click (GB Pence):", "0", "0"	},
+				{ 	"Cost-per-thousand-impressions (GB Pence):", "0", "0"	},
+				{ 	"Bounce Rate (%):", "0", "0"	},
+				{ 	"Total Cost (GBP £):", "0", "0"	}
 		};
 		
 		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
