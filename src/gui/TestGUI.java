@@ -31,14 +31,24 @@ public class TestGUI {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel dataPane = new DataPanel(this.controller);
-		JPanel chartsPane = new ChartsPanel(this.controller);
-		JPanel metricsPane = new MetricsPanel(this.controller);
 		OptionPanel optionPane = new OptionPanel(this.controller);
 		optionPane.init();
 
+		JPanel chartsPane = new JPanel(new GridBagLayout());
+		GridBagConstraints cons = new GridBagConstraints();
+		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		ChartsPanel chartPanel = new ChartsPanel(this.controller);
+		chartPanel.setPreferredSize(new Dimension(600, 300));
+		chartsPane.add(new ChartsPanel(this.controller), cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		chartsPane.add(new MetricsPanel(this.controller), cons);
+		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
-		tabbedPane.addTab("Metrics", metricsPane);
 		tabbedPane.addTab("Options", optionPane);
 		
 		frame.setContentPane(tabbedPane);
@@ -129,28 +139,33 @@ class MetricsPanel extends JPanel{
 	
 	private Controller controller;
 	private JButton calculateButton;
-	private JTable metricTable;
+	private JTable metricTable, costTable;
 	private JLabel[] impressionNumber, clickNumber, uniqueNumber, bounceNumber,
 					 conversionNumber, ctr, cpa, cpc, cpm, bounceRate, totalCost;
 	
 	final int PER_HOUR = 1, PER_DAY = 2, NO_OF_IMPRESSIONS = 0, NO_OF_CLICKS = 1,
 			NO_OF_UNIQUES = 2, NO_OF_BOUNCES = 3, NO_OF_CONVERSIONS = 4, CTR = 5,
-			CPA = 6, CPC = 7, CPM = 8, BOUNCE_RATE = 9, TOTAL_COST = 10;
+			CPA = 6, CPC = 7, CPM = 8, BOUNCE_RATE = 9;
 	
 	MetricsPanel(Controller controller){
 		this.controller = controller;
 		this.calculateButton = new JButton("Calculate Metrics");
 		
-		FlowLayout fl = new FlowLayout();
-		this.setLayout(fl);
+		GridLayout gl = new GridLayout(0, 2);
+		this.setLayout(gl);
 		
-		Object[] columnNames = {
+		Object[] metricColumnNames = {
 				"Metrics",
 				"Per Hour",
 				"Per Day"
 		};
 		
-		Object[][] data = {
+		Object[] costColumnNames = {
+				"Total Campaign Cost of",
+				"Amount (GBP)"
+		};
+		
+		Object[][] metricData = {
 				{ 	"Number of Impressions:", "0", "0"	},
 				{ 	"Number of Clicks:", "0", "0"	},
 				{ 	"Number of Uniques:", "0", "0"	},
@@ -160,35 +175,71 @@ class MetricsPanel extends JPanel{
 				{ 	"Cost-per-aquisition (GB Pence):", "0", "0"	},
 				{ 	"Cost-per-click (GB Pence):", "0", "0"	},
 				{ 	"Cost-per-thousand-impressions (GB Pence):", "0", "0"	},
-				{ 	"Bounce Rate (%):", "0", "0"	},
-				{ 	"Total Cost (GBP £):", "0", "0"	}
+				{ 	"Bounce Rate (%):", "0", "0"	}
 		};
 		
-		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
-		metricTable = new JTable(tableModel);
+		Object[][] costData = {
+				{	"Impressions", "0"	},
+				{	"Clicks",	"0"			}
+		};
+		
+		MetricTableModel metricModel = new MetricTableModel(metricData, metricColumnNames);
+		metricTable = new JTable(metricModel);
+		
+		MetricTableModel costModel = new MetricTableModel(costData, costColumnNames);
+		costTable = new JTable(costModel);
 		
 		TableColumn column = null;
-		for (int i = 0; i < 3; i++) {
-		    column = metricTable.getColumnModel().getColumn(i);
-		    if (i == 0) {
-		        column.setPreferredWidth(300); //third column is bigger
-		    } else {
-		        column.setPreferredWidth(75);
-		    }
-		}
 		
-		Dimension dim = new Dimension(550, 198);
+		column = metricTable.getColumnModel().getColumn(0);
+		column.setPreferredWidth(300);
+		column = metricTable.getColumnModel().getColumn(1);
+		column.setPreferredWidth(75);
+		column = metricTable.getColumnModel().getColumn(2);
+		column.setPreferredWidth(75);
+		
+		column = costTable.getColumnModel().getColumn(0);
+		column.setPreferredWidth(150);
+		column = costTable.getColumnModel().getColumn(1);
+		column.setPreferredWidth(150);
+		
+		Dimension dim = new Dimension(550, 182);
 		JScrollPane sp = new JScrollPane(metricTable);
 		sp.setSize(dim);
 		sp.setMaximumSize(dim);
 		sp.setMinimumSize(dim);
 		sp.setPreferredSize(dim);
 		
+		dim = new Dimension(320, 54);
+		JScrollPane costPane = new JScrollPane(costTable);
+		costPane.setSize(dim);
+		costPane.setMaximumSize(dim);
+		costPane.setMinimumSize(dim);
+		costPane.setPreferredSize(dim);
+		
 		this.add(sp);
-		this.revalidate();
 	
-		this.add(calculateButton);
+		JPanel rightPanel = new JPanel();
+		GridBagLayout rl = new GridBagLayout();
+		rightPanel.setLayout(rl);
+		
+		GridBagConstraints cons = new GridBagConstraints();
+		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.insets = new Insets(50, 0, 50, 0);
+		rightPanel.add(costPane, cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		cons.insets = new Insets(0, 0, 0, 0);
+		rightPanel.add(calculateButton, cons);
+		rightPanel.revalidate();
+		
+		this.add(rightPanel);
 		this.calculateButton.addActionListener(new MetricListener(this.controller, this));
+
+		this.revalidate();
 	}
 	
 	public void displayMetrics(String[] metrics) {
@@ -213,8 +264,8 @@ class MetricsPanel extends JPanel{
 		metricTable.setValueAt(metrics[19], CPM, PER_DAY);
 		metricTable.setValueAt(metrics[20], BOUNCE_RATE, PER_HOUR);
 		metricTable.setValueAt(metrics[21], BOUNCE_RATE, PER_DAY);
-		metricTable.setValueAt(metrics[10], TOTAL_COST, 1);
-		metricTable.setValueAt(metrics[11], TOTAL_COST, 2);
+		costTable.setValueAt(metrics[10], 0, 1);
+		costTable.setValueAt(metrics[11], 1, 1);
 		
 	}
 	
@@ -294,17 +345,27 @@ class ChartsPanel extends JPanel
 	ChartsPanel(Controller controller) 
 	{
 		Plotter plotter = new Plotter();	
-		this.setLayout(new BorderLayout());	
+		this.setLayout(new GridBagLayout());	
+		GridBagConstraints cons = new GridBagConstraints();
 		
-		final JComboBox l = new JComboBox();
+		final JComboBox<String> l = new JComboBox<String>();
 		for(int i = 0 ; i < list.length ; i++)
 		{
 			l.addItem(list[i]);
 		}		
-		this.add(l , BorderLayout.NORTH);
 		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.anchor = GridBagConstraints.PAGE_START;
+		this.add(l, cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		cons.gridheight = 3;
 		JPanel chartDisplayPanel = new JPanel();
-		this.add(chartDisplayPanel, BorderLayout.CENTER);
+		chartDisplayPanel.setPreferredSize(new Dimension(500, 250));
+		this.add(chartDisplayPanel, cons);
+		
 		chartDisplayPanel.setLayout(new GridLayout());
 		
 		l.addActionListener(new ActionListener()
