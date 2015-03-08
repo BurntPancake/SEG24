@@ -31,15 +31,34 @@ public class GUI {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel dataPane = new DataPanel(this.controller);
+<<<<<<< HEAD:src/gui/GUI.java
 		JPanel chartsPane = new ChartsPanel(this.controller);
 //		JPanel metricsPane = new MetricsPanel(this.controller);
 		OptionPanel optionPane = new OptionPanel(this.controller);
 		optionPane.init();
+=======
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 
+		JPanel chartsPane = new JPanel(new GridBagLayout());
+		GridBagConstraints cons = new GridBagConstraints();
+		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		ChartsPanel chartPanel = new ChartsPanel(this.controller);
+		chartPanel.setPreferredSize(new Dimension(600, 300));
+		chartsPane.add(new ChartsPanel(this.controller), cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		chartsPane.add(new MetricsPanel(this.controller), cons);
+		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
+<<<<<<< HEAD:src/gui/GUI.java
 //		tabbedPane.addTab("Metrics", metricsPane);
 		tabbedPane.addTab("Options", optionPane);
+=======
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		frame.setContentPane(tabbedPane);
 		frame.setResizable(true);
@@ -152,28 +171,33 @@ class MetricsPanel extends JPanel{
 	
 	private Controller controller;
 	private JButton calculateButton;
-	private JTable metricTable;
+	private JTable metricTable, costTable;
 	private JLabel[] impressionNumber, clickNumber, uniqueNumber, bounceNumber,
 					 conversionNumber, ctr, cpa, cpc, cpm, bounceRate, totalCost;
 	
 	final int PER_HOUR = 1, PER_DAY = 2, NO_OF_IMPRESSIONS = 0, NO_OF_CLICKS = 1,
 			NO_OF_UNIQUES = 2, NO_OF_BOUNCES = 3, NO_OF_CONVERSIONS = 4, CTR = 5,
-			CPA = 6, CPC = 7, CPM = 8, BOUNCE_RATE = 9, TOTAL_COST = 10;
+			CPA = 6, CPC = 7, CPM = 8, BOUNCE_RATE = 9;
 	
 	MetricsPanel(Controller controller){
 		this.controller = controller;
 		this.calculateButton = new JButton("Calculate Metrics");
 		
-		FlowLayout fl = new FlowLayout();
-		this.setLayout(fl);
+		GridLayout gl = new GridLayout(0, 2);
+		this.setLayout(gl);
 		
-		Object[] columnNames = {
+		Object[] metricColumnNames = {
 				"Metrics",
 				"Per Hour",
 				"Per Day"
 		};
 		
-		Object[][] data = {
+		Object[] costColumnNames = {
+				"Total Campaign Cost of",
+				"Amount (GBP)"
+		};
+		
+		Object[][] metricData = {
 				{ 	"Number of Impressions:", "0", "0"	},
 				{ 	"Number of Clicks:", "0", "0"	},
 				{ 	"Number of Uniques:", "0", "0"	},
@@ -183,36 +207,87 @@ class MetricsPanel extends JPanel{
 				{ 	"Cost-per-aquisition (GB Pence):", "0", "0"	},
 				{ 	"Cost-per-click (GB Pence):", "0", "0"	},
 				{ 	"Cost-per-thousand-impressions (GB Pence):", "0", "0"	},
-				{ 	"Bounce Rate (%):", "0", "0"	},
-				{ 	"Total Cost (GBP £):", "0", "0"	}
+				{ 	"Bounce Rate (%):", "0", "0"	}
 		};
+		
+		Object[][] costData = {
+				{	"Impressions", "0"	},
+				{	"Clicks",	"0"			}
+		};
+<<<<<<< HEAD:src/gui/GUI.java
 /*
 		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
 		metricTable = new JTable(tableModel);
+=======
+		
+		MetricTableModel metricModel = new MetricTableModel(metricData, metricColumnNames);
+		metricTable = new JTable(metricModel);
+		
+		MetricTableModel costModel = new MetricTableModel(costData, costColumnNames);
+		costTable = new JTable(costModel);
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		TableColumn column = null;
-		for (int i = 0; i < 3; i++) {
-		    column = metricTable.getColumnModel().getColumn(i);
-		    if (i == 0) {
-		        column.setPreferredWidth(300); //third column is bigger
-		    } else {
-		        column.setPreferredWidth(75);
-		    }
-		}
 		
-		Dimension dim = new Dimension(550, 198);
+		column = metricTable.getColumnModel().getColumn(0);
+		column.setPreferredWidth(300);
+		column = metricTable.getColumnModel().getColumn(1);
+		column.setPreferredWidth(75);
+		column = metricTable.getColumnModel().getColumn(2);
+		column.setPreferredWidth(75);
+		
+		column = costTable.getColumnModel().getColumn(0);
+		column.setPreferredWidth(150);
+		column = costTable.getColumnModel().getColumn(1);
+		column.setPreferredWidth(150);
+		
+		Dimension dim = new Dimension(550, 182);
 		JScrollPane sp = new JScrollPane(metricTable);
 		sp.setSize(dim);
 		sp.setMaximumSize(dim);
 		sp.setMinimumSize(dim);
 		sp.setPreferredSize(dim);
 		
+		dim = new Dimension(320, 54);
+		JScrollPane costPane = new JScrollPane(costTable);
+		costPane.setSize(dim);
+		costPane.setMaximumSize(dim);
+		costPane.setMinimumSize(dim);
+		costPane.setPreferredSize(dim);
+		
 		this.add(sp);
-		this.revalidate();
 	
-		this.add(calculateButton);
+		JPanel rightPanel = new JPanel();
+		GridBagLayout rl = new GridBagLayout();
+		rightPanel.setLayout(rl);
+		
+		GridBagConstraints cons = new GridBagConstraints();
+		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.gridwidth = 2;
+		rightPanel.add(costPane, cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		cons.gridwidth = 1;
+		cons.insets = new Insets(0, 0, 0, 10);
+		rightPanel.add(new OptionPanel(this.controller), cons);
+		
+		cons.gridx = 1;
+		cons.gridy = 1;
+		cons.anchor = GridBagConstraints.LAST_LINE_END;
+		rightPanel.add(calculateButton, cons);		
+		rightPanel.revalidate();
+		
+		this.add(rightPanel);
 		this.calculateButton.addActionListener(new MetricListener(this.controller, this));
+<<<<<<< HEAD:src/gui/GUI.java
 		*/
+=======
+
+		this.revalidate();
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 	}
 	
 	public void displayMetrics(String[] metrics) {
@@ -237,8 +312,8 @@ class MetricsPanel extends JPanel{
 		metricTable.setValueAt(metrics[19], CPM, PER_DAY);
 		metricTable.setValueAt(metrics[20], BOUNCE_RATE, PER_HOUR);
 		metricTable.setValueAt(metrics[21], BOUNCE_RATE, PER_DAY);
-		metricTable.setValueAt(metrics[10], TOTAL_COST, 1);
-		metricTable.setValueAt(metrics[11], TOTAL_COST, 2);
+		costTable.setValueAt(metrics[10], 0, 1);
+		costTable.setValueAt(metrics[11], 1, 1);
 		
 	}
 	
@@ -311,35 +386,49 @@ class MetricListener implements ActionListener {
 
 class ChartsPanel extends JPanel
 {
-	private String[] list = {"Click to Access Charts", "Number of Impression", "Number of Clicks",
+	private String[] list = {"Click to Access Charts", "Number of Impressions", "Number of Clicks",
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
 			/*"Total Cost",*/ "CTR", "CPA", "CPC", "CPM", "Bounce Rate"};
 	
 	ChartsPanel(Controller controller) 
 	{
 		Plotter plotter = new Plotter();	
-		this.setLayout(new BorderLayout());	
+		this.setLayout(new GridBagLayout());	
+		GridBagConstraints cons = new GridBagConstraints();
 		
-		final JComboBox l = new JComboBox();
+		final JComboBox<String> l = new JComboBox<String>();
 		for(int i = 0 ; i < list.length ; i++)
 		{
 			l.addItem(list[i]);
 		}		
-		this.add(l , BorderLayout.NORTH);
 		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.anchor = GridBagConstraints.PAGE_START;
+		this.add(l, cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 1;
+		cons.gridheight = 3;
 		JPanel chartDisplayPanel = new JPanel();
-		this.add(chartDisplayPanel, BorderLayout.CENTER);
+		chartDisplayPanel.setPreferredSize(new Dimension(500, 250));
+		this.add(chartDisplayPanel, cons);
+		
 		chartDisplayPanel.setLayout(new GridLayout());
 		
 		l.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
-			{				
+			{		
+				if (l.getItemAt(0).equals("Click to Access Charts"))
+					l.removeItemAt(0);
+					
+				
 				String x = (String) l.getSelectedItem();
 				chartDisplayPanel.removeAll();
 				switch (x)
 				{	
-		            case "Number of Impression":	
+		            case "Number of Impressions":	
 		            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(60), 60));
 		            	break;
 		            	
@@ -392,43 +481,22 @@ class ChartsPanel extends JPanel
 			}
 		});		
 	}
-	
-	
-	
 }
 
 class SubmissionListener implements ActionListener {
 	
-	private JRadioButton bounceNumberPages, bounceNumberTime, bounceRatePages, bounceRateTime;
+	private JComboBox numberOptions, rateOptions;
 	private Controller controller;
 	
-	public SubmissionListener(JRadioButton bounceNumberPages, JRadioButton bounceNumberTime,
-						      JRadioButton bounceRatePages, JRadioButton bounceRateTime, Controller controller) {
-		this.bounceNumberPages = bounceNumberPages;
-		this.bounceNumberTime = bounceNumberTime;
-		this.bounceRatePages = bounceRatePages;
-		this.bounceRateTime = bounceRateTime;
+	public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
+		this.numberOptions = numberOptions;
+		this.rateOptions = rateOptions;
 		this.controller = controller;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
-		String numPref = "";
-		String ratePref = "";
-		
-		if (bounceNumberPages.isSelected()) {
-			numPref = "Pages";
-		} else if (bounceNumberTime.isSelected()) {
-			numPref = "Time";
-		}
-		
-		if (bounceRatePages.isSelected()) {
-			ratePref = "Pages";
-		} else if (bounceRateTime.isSelected()) {
-			ratePref = "Time";
-		}
-		
-		controller.setBouncePreferences(numPref,  ratePref);
+		controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
+										(String) rateOptions.getSelectedItem());
 			
 	}
 	
@@ -440,35 +508,48 @@ class OptionPanel extends JPanel {
 	
 	public OptionPanel(Controller controller) {
 		this.controller = controller;
+		this.init();
 	}
 	
 	public void init() {
 		
-		GridLayout gl = new GridLayout(5, 0);
+		GridBagLayout gl = new GridBagLayout();
 		this.setLayout(gl);
-				
-		JRadioButton bounceNumberByPages = new JRadioButton("Get bounce number by pages.", true);
-		JRadioButton bounceNumberByTime = new JRadioButton("Get bounce number by time.", false);
 		
-		JRadioButton bounceRateByPages = new JRadioButton("Get bounce rate by pages.", true);
-		JRadioButton bounceRateByTime = new JRadioButton("Get bounce rate by time.", false);
+		GridBagConstraints cons = new GridBagConstraints();
 		
-		ButtonGroup bounceNumberGroup = new ButtonGroup();
-		bounceNumberGroup.add(bounceNumberByPages);
-		bounceNumberGroup.add(bounceNumberByTime);
-			
-		ButtonGroup bounceRateGroup = new ButtonGroup();
-		bounceRateGroup.add(bounceRateByPages);
-		bounceRateGroup.add(bounceRateByTime);
+		JLabel numberLabel = new JLabel("Get bounce number by:");
+		JComboBox<String> bounceNumberOptions = new JComboBox<String>();
+		bounceNumberOptions.addItem("Pages");
+		bounceNumberOptions.addItem("Time");
+
+		JLabel rateLabel = new JLabel("Get bounce rate by:");
+		JComboBox<String> bounceRateOptions = new JComboBox<String>();
+		bounceRateOptions.addItem("Pages");
+		bounceRateOptions.addItem("Time");
+	
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.insets = new Insets(5, 0, 0, 10);
+		this.add(numberLabel, cons);
 		
-		JButton submit = new JButton("Submit");
-		submit.addActionListener(new SubmissionListener(bounceNumberByPages, bounceNumberByTime, bounceRateByPages, bounceRateByTime, controller));
+		cons.gridy = 1;
+		cons.fill = GridBagConstraints.HORIZONTAL;
+		cons.insets = new Insets(0, 0, 0, 10);
+		this.add(bounceNumberOptions, cons);
 		
-		this.add(bounceNumberByPages);
-		this.add(bounceNumberByTime);
-		this.add(bounceRateByPages);
-		this.add(bounceRateByTime);
-		this.add(submit);
+		cons.gridx = 1;
+		cons.gridy = 0;
+		cons.insets = new Insets(5, 10, 0, 0);
+		this.add(rateLabel, cons);
+		
+		cons.gridy = 1;
+		cons.insets = new Insets(0, 10, 0, 0);
+		this.add(bounceRateOptions, cons);
+		
+		SubmissionListener sub = new SubmissionListener(bounceNumberOptions, bounceRateOptions, controller);
+		bounceNumberOptions.addActionListener(sub);
+		bounceRateOptions.addActionListener(sub);
 		
 	}
 	
