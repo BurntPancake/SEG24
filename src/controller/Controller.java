@@ -1,6 +1,6 @@
 package controller;
 
-import gui.TestGUI;
+import gui.GUI;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

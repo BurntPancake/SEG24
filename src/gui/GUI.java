@@ -8,11 +8,11 @@ import javax.swing.table.TableColumn;
 import controller.Controller;
 import plotter.Plotter;//Wrong architecture!
 
-public class TestGUI {
+public class GUI {
 
 	private Controller controller;
 	
-	public TestGUI(Controller controller){
+	public GUI(Controller controller){
 		this.controller = controller;
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run(){
@@ -32,13 +32,13 @@ public class TestGUI {
 		
 		JPanel dataPane = new DataPanel(this.controller);
 		JPanel chartsPane = new ChartsPanel(this.controller);
-		JPanel metricsPane = new MetricsPanel(this.controller);
+//		JPanel metricsPane = new MetricsPanel(this.controller);
 		OptionPanel optionPane = new OptionPanel(this.controller);
 		optionPane.init();
 
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
-		tabbedPane.addTab("Metrics", metricsPane);
+//		tabbedPane.addTab("Metrics", metricsPane);
 		tabbedPane.addTab("Options", optionPane);
 		
 		frame.setContentPane(tabbedPane);
@@ -85,6 +85,7 @@ class DataPanel extends JPanel{
 		
 		this.setLayout(new GridBagLayout());
 		this.gbc = new GridBagConstraints();
+		this.fc = new JFileChooser();
 
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 0;
@@ -115,6 +116,28 @@ class DataPanel extends JPanel{
 		gbc.gridx = 1;
 		gbc.gridwidth = 3;
 		this.add(this.errorField, gbc);
+		
+		FileFinder ff = new FileFinder();
+		//ff.setNameToSearch(fc.getCurrentDirectory().getAbsolutePath());
+		ff.searchDirectory(fc.getCurrentDirectory(), "impression_log.csv", "click_log.csv", "server_log.csv");
+		
+		//int impfound = 0, clickfound = 0, serverfound = 0;
+		
+		for (String matched : ff.foundFiles){
+			System.out.println("Found: " + matched);
+		
+			if (matched.endsWith("impression_log.csv")){
+				//impfound++;
+				this.impressionField.setText(matched);
+			} else if (matched.endsWith("click_log.csv")){
+				//clickfound++;
+				this.clickField.setText(matched);
+			} else if (matched.endsWith("server_log.csv")){
+				//serverfound++;
+				this.serverField.setText(matched);
+			}
+		}		
+		
 		
 		this.clickButton.addActionListener(new DataListener(this.controller, this));
 		this.impressionButton.addActionListener(new DataListener(this.controller, this));
@@ -163,7 +186,7 @@ class MetricsPanel extends JPanel{
 				{ 	"Bounce Rate (%):", "0", "0"	},
 				{ 	"Total Cost (GBP £):", "0", "0"	}
 		};
-		
+/*
 		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
 		metricTable = new JTable(tableModel);
 		
@@ -189,6 +212,7 @@ class MetricsPanel extends JPanel{
 	
 		this.add(calculateButton);
 		this.calculateButton.addActionListener(new MetricListener(this.controller, this));
+		*/
 	}
 	
 	public void displayMetrics(String[] metrics) {
