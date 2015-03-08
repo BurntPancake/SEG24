@@ -31,8 +31,6 @@ public class TestGUI {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel dataPane = new DataPanel(this.controller);
-		OptionPanel optionPane = new OptionPanel(this.controller);
-		optionPane.init();
 
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
@@ -49,7 +47,6 @@ public class TestGUI {
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
-		tabbedPane.addTab("Options", optionPane);
 		
 		frame.setContentPane(tabbedPane);
 		frame.setResizable(true);
@@ -227,13 +224,19 @@ class MetricsPanel extends JPanel{
 		
 		cons.gridx = 0;
 		cons.gridy = 0;
-		cons.insets = new Insets(50, 0, 50, 0);
+		cons.gridwidth = 2;
 		rightPanel.add(costPane, cons);
 		
 		cons.gridx = 0;
 		cons.gridy = 1;
-		cons.insets = new Insets(0, 0, 0, 0);
-		rightPanel.add(calculateButton, cons);
+		cons.gridwidth = 1;
+		cons.insets = new Insets(0, 0, 0, 10);
+		rightPanel.add(new OptionPanel(this.controller), cons);
+		
+		cons.gridx = 1;
+		cons.gridy = 1;
+		cons.anchor = GridBagConstraints.LAST_LINE_END;
+		rightPanel.add(calculateButton, cons);		
 		rightPanel.revalidate();
 		
 		this.add(rightPanel);
@@ -368,10 +371,15 @@ class ChartsPanel extends JPanel
 		
 		chartDisplayPanel.setLayout(new GridLayout());
 		
+		boolean firstSelection = true;
+		
 		l.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{				
+				if (firstSelection) 
+					l.removeItemAt(0);
+				
 				String x = (String) l.getSelectedItem();
 				chartDisplayPanel.removeAll();
 				switch (x)
@@ -436,36 +444,18 @@ class ChartsPanel extends JPanel
 
 class SubmissionListener implements ActionListener {
 	
-	private JRadioButton bounceNumberPages, bounceNumberTime, bounceRatePages, bounceRateTime;
+	private JComboBox numberOptions, rateOptions;
 	private Controller controller;
 	
-	public SubmissionListener(JRadioButton bounceNumberPages, JRadioButton bounceNumberTime,
-						      JRadioButton bounceRatePages, JRadioButton bounceRateTime, Controller controller) {
-		this.bounceNumberPages = bounceNumberPages;
-		this.bounceNumberTime = bounceNumberTime;
-		this.bounceRatePages = bounceRatePages;
-		this.bounceRateTime = bounceRateTime;
+	public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
+		this.numberOptions = numberOptions;
+		this.rateOptions = rateOptions;
 		this.controller = controller;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
-		String numPref = "";
-		String ratePref = "";
-		
-		if (bounceNumberPages.isSelected()) {
-			numPref = "Pages";
-		} else if (bounceNumberTime.isSelected()) {
-			numPref = "Time";
-		}
-		
-		if (bounceRatePages.isSelected()) {
-			ratePref = "Pages";
-		} else if (bounceRateTime.isSelected()) {
-			ratePref = "Time";
-		}
-		
-		controller.setBouncePreferences(numPref,  ratePref);
+		controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
+										(String) rateOptions.getSelectedItem());
 			
 	}
 	
@@ -477,35 +467,48 @@ class OptionPanel extends JPanel {
 	
 	public OptionPanel(Controller controller) {
 		this.controller = controller;
+		this.init();
 	}
 	
 	public void init() {
 		
-		GridLayout gl = new GridLayout(5, 0);
+		GridBagLayout gl = new GridBagLayout();
 		this.setLayout(gl);
-				
-		JRadioButton bounceNumberByPages = new JRadioButton("Get bounce number by pages.", true);
-		JRadioButton bounceNumberByTime = new JRadioButton("Get bounce number by time.", false);
 		
-		JRadioButton bounceRateByPages = new JRadioButton("Get bounce rate by pages.", true);
-		JRadioButton bounceRateByTime = new JRadioButton("Get bounce rate by time.", false);
+		GridBagConstraints cons = new GridBagConstraints();
 		
-		ButtonGroup bounceNumberGroup = new ButtonGroup();
-		bounceNumberGroup.add(bounceNumberByPages);
-		bounceNumberGroup.add(bounceNumberByTime);
-			
-		ButtonGroup bounceRateGroup = new ButtonGroup();
-		bounceRateGroup.add(bounceRateByPages);
-		bounceRateGroup.add(bounceRateByTime);
+		JLabel numberLabel = new JLabel("Get bounce number by:");
+		JComboBox<String> bounceNumberOptions = new JComboBox<String>();
+		bounceNumberOptions.addItem("Pages");
+		bounceNumberOptions.addItem("Time");
+
+		JLabel rateLabel = new JLabel("Get bounce rate by:");
+		JComboBox<String> bounceRateOptions = new JComboBox<String>();
+		bounceRateOptions.addItem("Pages");
+		bounceRateOptions.addItem("Time");
+	
+		cons.gridx = 0;
+		cons.gridy = 0;
+		cons.insets = new Insets(5, 0, 0, 10);
+		this.add(numberLabel, cons);
 		
-		JButton submit = new JButton("Submit");
-		submit.addActionListener(new SubmissionListener(bounceNumberByPages, bounceNumberByTime, bounceRateByPages, bounceRateByTime, controller));
+		cons.gridy = 1;
+		cons.fill = GridBagConstraints.HORIZONTAL;
+		cons.insets = new Insets(0, 0, 0, 10);
+		this.add(bounceNumberOptions, cons);
 		
-		this.add(bounceNumberByPages);
-		this.add(bounceNumberByTime);
-		this.add(bounceRateByPages);
-		this.add(bounceRateByTime);
-		this.add(submit);
+		cons.gridx = 1;
+		cons.gridy = 0;
+		cons.insets = new Insets(5, 10, 0, 0);
+		this.add(rateLabel, cons);
+		
+		cons.gridy = 1;
+		cons.insets = new Insets(0, 10, 0, 0);
+		this.add(bounceRateOptions, cons);
+		
+		SubmissionListener sub = new SubmissionListener(bounceNumberOptions, bounceRateOptions, controller);
+		bounceNumberOptions.addActionListener(sub);
+		bounceRateOptions.addActionListener(sub);
 		
 	}
 	

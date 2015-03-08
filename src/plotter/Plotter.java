@@ -23,7 +23,7 @@ public class Plotter
 
 	public ChartPanel nImpression(Integer[] i, int time) 
 	{
-        XYSeries first = new XYSeries("Numer of Impression");
+        XYSeries first = new XYSeries("Number of Impressions");
         for(int j = 0 ; j < i.length ; j++)
         {
         	//System.out.println(i[j]);
@@ -31,7 +31,7 @@ public class Plotter
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Numer of Impression");
+        JFreeChart chart = createChart(dataSet, "Number of Impressions");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
@@ -53,7 +53,7 @@ public class Plotter
 	
 	public ChartPanel nUniques(Integer[] i, int time) 
 	{
-        XYSeries first = new XYSeries("Number of uniques");
+        XYSeries first = new XYSeries("Number of Uniques");
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -61,7 +61,7 @@ public class Plotter
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of uniques");
+        JFreeChart chart = createChart(dataSet, "Number of Uniques");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
