@@ -341,7 +341,7 @@ class MetricListener implements ActionListener {
 
 class ChartsPanel extends JPanel
 {
-	private String[] list = {"Click to Access Charts", "Number of Impression", "Number of Clicks",
+	private String[] list = {"Click to Access Charts", "Number of Impressions", "Number of Clicks",
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
 			/*"Total Cost",*/ "CTR", "CPA", "CPC", "CPM", "Bounce Rate"};
 	
@@ -371,20 +371,19 @@ class ChartsPanel extends JPanel
 		
 		chartDisplayPanel.setLayout(new GridLayout());
 		
-		boolean firstSelection = true;
-		
 		l.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
-			{				
-				if (firstSelection) 
+			{		
+				if (l.getItemAt(0).equals("Click to Access Charts"))
 					l.removeItemAt(0);
+					
 				
 				String x = (String) l.getSelectedItem();
 				chartDisplayPanel.removeAll();
 				switch (x)
 				{	
-		            case "Number of Impression":	
+		            case "Number of Impressions":	
 		            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(60), 60));
 		            	break;
 		            	
@@ -437,9 +436,6 @@ class ChartsPanel extends JPanel
 			}
 		});		
 	}
-	
-	
-	
 }
 
 class SubmissionListener implements ActionListener {
