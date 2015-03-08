@@ -145,126 +145,109 @@ class MetricsPanel extends JPanel{
 	private Controller controller;
 	private JButton calculateButton;
 	private JLabel[] impressionNumber, clickNumber, uniqueNumber, bounceNumber,
-					 conversionNumber, ctr, cpa, cpc, cpm, bounceRate;
-	private JLabel totalCost;
+					 conversionNumber, ctr, cpa, cpc, cpm, bounceRate, totalCost;
 	
-	final int PER_MINUTE = 0, PER_HOUR = 1, PER_DAY = 2;
+	final int PER_HOUR = 0, PER_DAY = 1, IMPRESSION_COST = 0, CLICK_COST = 1;
 	
 	MetricsPanel(Controller controller){
 		this.controller = controller;
 		this.calculateButton = new JButton("Calculate Metrics");
 		
-		GridLayout gl = new GridLayout(12, 4);
+		GridLayout gl = new GridLayout(0, 3);
 		this.setLayout(gl);
-		totalCost = new JLabel("0");
+		
+		totalCost = new JLabel[2];
+		totalCost[IMPRESSION_COST] = new JLabel("0");
+		totalCost[CLICK_COST] = new JLabel("0");
+		
 		//store in 2d array
-		impressionNumber = new JLabel[3];
-		impressionNumber[PER_MINUTE] = new JLabel("0");
+		impressionNumber = new JLabel[2];
 		impressionNumber[PER_HOUR] = new JLabel("0");
 		impressionNumber[PER_DAY] = new JLabel("0");		
 		
-		clickNumber = new JLabel[3];
-		clickNumber[PER_MINUTE] = new JLabel("0");
+		clickNumber = new JLabel[2];
 		clickNumber[PER_HOUR] = new JLabel("0");
 		clickNumber[PER_DAY] = new JLabel("0");	
 		
-		uniqueNumber = new JLabel[3];
-		uniqueNumber[PER_MINUTE] = new JLabel("0");
+		uniqueNumber = new JLabel[2];
 		uniqueNumber[PER_HOUR] = new JLabel("0");
 		uniqueNumber[PER_DAY] = new JLabel("0");	
 		
-		bounceNumber = new JLabel[3];
-		bounceNumber[PER_MINUTE] = new JLabel("0");
+		bounceNumber = new JLabel[2];
 		bounceNumber[PER_HOUR] = new JLabel("0");
 		bounceNumber[PER_DAY] = new JLabel("0");	
 		
-		conversionNumber = new JLabel[3];
-		conversionNumber[PER_MINUTE] = new JLabel("0");
+		conversionNumber = new JLabel[2];
 		conversionNumber[PER_HOUR] = new JLabel("0");
 		conversionNumber[PER_DAY] = new JLabel("0");	
 		
-		ctr = new JLabel[3];
-		ctr[PER_MINUTE] = new JLabel("0");
+		ctr = new JLabel[2];
 		ctr[PER_HOUR] = new JLabel("0");
 		ctr[PER_DAY] = new JLabel("0");	
 		
-		cpa = new JLabel[3];
-		cpa[PER_MINUTE] = new JLabel("0");
+		cpa = new JLabel[2];
 		cpa[PER_HOUR] = new JLabel("0");
 		cpa[PER_DAY] = new JLabel("0");	
 		
-		cpc = new JLabel[3];
-		cpc[PER_MINUTE] = new JLabel("0");
+		cpc = new JLabel[2];
 		cpc[PER_HOUR] = new JLabel("0");
 		cpc[PER_DAY] = new JLabel("0");	
 		
-		cpm = new JLabel[3];
-		cpm[PER_MINUTE] = new JLabel("0");
+		cpm = new JLabel[2];
 		cpm[PER_HOUR] = new JLabel("0");
 		cpm[PER_DAY] = new JLabel("0");	
 		
-		bounceRate = new JLabel[3];
-		bounceRate[PER_MINUTE] = new JLabel("0");
+		bounceRate = new JLabel[2];
 		bounceRate[PER_HOUR] = new JLabel("0");
 		bounceRate[PER_DAY] = new JLabel("0");	
 		
 		this.add(new JLabel("Metric"));
-		this.add(new JLabel("Per Minute"));
 		this.add(new JLabel("Per Hour"));
 		this.add(new JLabel("Per Day"));
 		
 		this.add(new JLabel("Number of Impressions:"));
-		this.add(impressionNumber[PER_MINUTE]);
 		this.add(impressionNumber[PER_HOUR]);
 		this.add(impressionNumber[PER_DAY]);
 		
 		this.add(new JLabel("Number of Clicks:"));
-		this.add(clickNumber[PER_MINUTE]);
 		this.add(clickNumber[PER_HOUR]);
 		this.add(clickNumber[PER_DAY]);
 		
 		this.add(new JLabel("Number of Uniques:"));
-		this.add(uniqueNumber[PER_MINUTE]);
 		this.add(uniqueNumber[PER_HOUR]);
 		this.add(uniqueNumber[PER_DAY]);
 		
 		this.add(new JLabel("Number of Bounces:"));
-		this.add(bounceNumber[PER_MINUTE]);
 		this.add(bounceNumber[PER_HOUR]);
 		this.add(bounceNumber[PER_DAY]);
 		
 		this.add(new JLabel("Number of Conv:"));
-		this.add(conversionNumber[PER_MINUTE]);
 		this.add(conversionNumber[PER_HOUR]);
 		this.add(conversionNumber[PER_DAY]);
 		
 		this.add(new JLabel("Click-through-rate:"));
-		this.add(ctr[PER_MINUTE]);
 		this.add(ctr[PER_HOUR]);
 		this.add(ctr[PER_DAY]);
 		
 		this.add(new JLabel("Cost-per-aquisition:"));
-		this.add(cpa[PER_MINUTE]);
 		this.add(cpa[PER_HOUR]);
 		this.add(cpa[PER_DAY]);
 		
 		this.add(new JLabel("Cost-per-click:"));
-		this.add(cpc[PER_MINUTE]);
 		this.add(cpc[PER_HOUR]);
 		this.add(cpc[PER_DAY]);
 		
 		this.add(new JLabel("Cost-per-thousand-impressions:"));
-		this.add(cpm[PER_MINUTE]);
 		this.add(cpm[PER_HOUR]);
 		this.add(cpm[PER_DAY]);
 		
 		this.add(new JLabel("Bounce rate:"));
-		this.add(bounceRate[PER_MINUTE]);
 		this.add(bounceRate[PER_HOUR]);
 		this.add(bounceRate[PER_DAY]);
 		
 		this.add(new JLabel("Total Cost:"));
-		this.add(totalCost);
+		this.add(totalCost[IMPRESSION_COST]);
+		this.add(totalCost[CLICK_COST]);
 		this.add(new JLabel(""));
 		this.add(calculateButton);
 		
@@ -272,40 +255,28 @@ class MetricsPanel extends JPanel{
 	}
 	
 	public void displayMetrics(String[] metrics) {
-		impressionNumber[0].setText(metrics[0]);
-		impressionNumber[1].setText(metrics[1]);
-		impressionNumber[2].setText(metrics[2]);
-		clickNumber[0].setText(metrics[3]);
-		clickNumber[1].setText(metrics[4]);
-		clickNumber[2].setText(metrics[5]);
-		
-		uniqueNumber[0].setText(metrics[6]);
-		uniqueNumber[1].setText(metrics[7]);
-		uniqueNumber[2].setText(metrics[8]);
-		bounceNumber[0].setText(metrics[9]);
-		bounceNumber[1].setText(metrics[10]);
-		bounceNumber[2].setText(metrics[11]);
-		conversionNumber[0].setText(metrics[12]);
-		conversionNumber[1].setText(metrics[13]);
-		conversionNumber[2].setText(metrics[14]);
-		totalCost.setText(metrics[15]);
-		ctr[0].setText(metrics[16]);
-		ctr[1].setText(metrics[17]);
-		ctr[2].setText(metrics[18]);
-		cpa[0].setText(metrics[19]);
-		cpa[1].setText(metrics[20]);
-		cpa[2].setText(metrics[21]);
-		cpc[0].setText(metrics[22]);
-		cpc[1].setText(metrics[23]);
-		cpc[2].setText(metrics[24]);
-		cpm[0].setText(metrics[25]);
-		cpm[1].setText(metrics[26]);
-		cpm[2].setText(metrics[27]);
-		bounceRate[0].setText(metrics[28]);
-		bounceRate[1].setText(metrics[29]);
-		bounceRate[2].setText(metrics[30]);
-		
-		
+		impressionNumber[PER_HOUR].setText(metrics[0]);
+		impressionNumber[PER_DAY].setText(metrics[1]);
+		clickNumber[PER_HOUR].setText(metrics[2]);
+		clickNumber[PER_DAY].setText(metrics[3]);
+		uniqueNumber[PER_HOUR].setText(metrics[4]);
+		uniqueNumber[PER_DAY].setText(metrics[5]);
+		bounceNumber[PER_HOUR].setText(metrics[6]);
+		bounceNumber[PER_DAY].setText(metrics[7]);
+		conversionNumber[PER_HOUR].setText(metrics[8]);
+		conversionNumber[PER_DAY].setText(metrics[9]);
+		totalCost[IMPRESSION_COST].setText(metrics[10]);
+		totalCost[CLICK_COST].setText(metrics[11]);
+		ctr[PER_HOUR].setText(metrics[12]);
+		ctr[PER_DAY].setText(metrics[13]);
+		cpa[PER_HOUR].setText(metrics[14]);
+		cpa[PER_DAY].setText(metrics[15]);
+		cpc[PER_HOUR].setText(metrics[16]);
+		cpc[PER_DAY].setText(metrics[17]);
+		cpm[PER_HOUR].setText(metrics[18]);
+		cpm[PER_DAY].setText(metrics[19]);
+		bounceRate[PER_HOUR].setText(metrics[20]);
+		bounceRate[PER_DAY].setText(metrics[21]);
 	}
 	
 }
