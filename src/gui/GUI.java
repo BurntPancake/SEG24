@@ -8,11 +8,11 @@ import javax.swing.table.TableColumn;
 import controller.Controller;
 import plotter.Plotter;//Wrong architecture!
 
-public class TestGUI {
+public class GUI {
 
 	private Controller controller;
 	
-	public TestGUI(Controller controller){
+	public GUI(Controller controller){
 		this.controller = controller;
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run(){
@@ -31,6 +31,13 @@ public class TestGUI {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel dataPane = new DataPanel(this.controller);
+<<<<<<< HEAD:src/gui/GUI.java
+		JPanel chartsPane = new ChartsPanel(this.controller);
+//		JPanel metricsPane = new MetricsPanel(this.controller);
+		OptionPanel optionPane = new OptionPanel(this.controller);
+		optionPane.init();
+=======
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
@@ -55,6 +62,11 @@ public class TestGUI {
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
+<<<<<<< HEAD:src/gui/GUI.java
+//		tabbedPane.addTab("Metrics", metricsPane);
+		tabbedPane.addTab("Options", optionPane);
+=======
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		frame.setContentPane(tabbedPane);
 		frame.setResizable(true);
@@ -100,6 +112,7 @@ class DataPanel extends JPanel{
 		
 		this.setLayout(new GridBagLayout());
 		this.gbc = new GridBagConstraints();
+		this.fc = new JFileChooser();
 
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 0;
@@ -130,6 +143,28 @@ class DataPanel extends JPanel{
 		gbc.gridx = 1;
 		gbc.gridwidth = 3;
 		this.add(this.errorField, gbc);
+		
+		FileFinder ff = new FileFinder();
+		//ff.setNameToSearch(fc.getCurrentDirectory().getAbsolutePath());
+		ff.searchDirectory(fc.getCurrentDirectory(), "impression_log.csv", "click_log.csv", "server_log.csv");
+		
+		//int impfound = 0, clickfound = 0, serverfound = 0;
+		
+		for (String matched : ff.foundFiles){
+			System.out.println("Found: " + matched);
+		
+			if (matched.endsWith("impression_log.csv")){
+				//impfound++;
+				this.impressionField.setText(matched);
+			} else if (matched.endsWith("click_log.csv")){
+				//clickfound++;
+				this.clickField.setText(matched);
+			} else if (matched.endsWith("server_log.csv")){
+				//serverfound++;
+				this.serverField.setText(matched);
+			}
+		}		
+		
 		
 		this.clickButton.addActionListener(new DataListener(this.controller, this));
 		this.impressionButton.addActionListener(new DataListener(this.controller, this));
@@ -187,12 +222,18 @@ class MetricsPanel extends JPanel{
 				{	"Impressions", "0"	},
 				{	"Clicks",	"0"			}
 		};
+<<<<<<< HEAD:src/gui/GUI.java
+/*
+		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
+		metricTable = new JTable(tableModel);
+=======
 		
 		MetricTableModel metricModel = new MetricTableModel(metricData, metricColumnNames);
 		metricTable = new JTable(metricModel);
 		
 		MetricTableModel costModel = new MetricTableModel(costData, costColumnNames);
 		costTable = new JTable(costModel);
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		TableColumn column = null;
 		
@@ -249,8 +290,12 @@ class MetricsPanel extends JPanel{
 		
 		this.add(rightPanel);
 		this.calculateButton.addActionListener(new MetricListener(this.controller, this));
+<<<<<<< HEAD:src/gui/GUI.java
+		*/
+=======
 
 		this.revalidate();
+>>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 	}
 	
 	public void displayMetrics(String[] metrics) {

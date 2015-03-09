@@ -1,7 +1,7 @@
 import decoder.Decoder;
 import decoder.DecoderInterface;
 import controller.Controller;
-import gui.TestGUI;
+import gui.GUI;
 import plotter.Plotter;
 
 public class Main {
@@ -14,7 +14,7 @@ public class Main {
 		Plotter p = new Plotter();
 		
 		Controller c = new Controller(decoder, p);
-		TestGUI view = new TestGUI(c);
+		GUI view = new GUI(c);
 		
 	}
 
