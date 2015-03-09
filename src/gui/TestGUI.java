@@ -37,12 +37,20 @@ public class TestGUI {
 		
 		cons.gridx = 0;
 		cons.gridy = 0;
+		cons.weightx = 0.65;
 		ChartsPanel chartPanel = new ChartsPanel(this.controller);
 		chartPanel.setPreferredSize(new Dimension(600, 300));
 		chartsPane.add(new ChartsPanel(this.controller), cons);
 		
+		cons.gridx = 1;
+		cons.weightx = 0.35;
+		FilterPanel filterPane = new FilterPanel(this.controller);
+		chartsPane.add(filterPane, cons);
+		
+		
 		cons.gridx = 0;
 		cons.gridy = 1;
+		cons.gridwidth = 2;
 		chartsPane.add(new MetricsPanel(this.controller), cons);
 		
 		tabbedPane.addTab("Data", dataPane);
@@ -505,6 +513,100 @@ class OptionPanel extends JPanel {
 		SubmissionListener sub = new SubmissionListener(bounceNumberOptions, bounceRateOptions, controller);
 		bounceNumberOptions.addActionListener(sub);
 		bounceRateOptions.addActionListener(sub);
+		
+	}
+	
+}
+
+class FilterPanel extends JPanel {
+	
+	private Controller controller;
+	
+	public FilterPanel(Controller controller) {
+		this.controller = controller;
+		init();
+	}
+	
+	public void init() {
+		String[] contexts = { "No preference", "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
+		String[] ages = { "No preference", "Under 25", "25 to 34", "35 to 44", "45 to 54", "Over 54" };
+		String[] incomes = { "No preference", "High", "Medium", "Low" };
+		
+		JLabel contextLabel = new JLabel("Context:");
+		JList contextList = new JList(contexts);
+		contextList.setSelectedIndex(0);
+		
+		JLabel ageLabel = new JLabel("Age Range:");
+		JComboBox<String> ageRange = new JComboBox<String>(ages);
+		
+		JLabel incomeLabel = new JLabel("Income:");
+		JComboBox<String> incomeRange = new JComboBox<String>(incomes);
+		
+		JLabel genderLabel = new JLabel("Gender:");
+		JRadioButton eitherButton = new JRadioButton("Either");
+		JRadioButton maleButton = new JRadioButton("Male");
+		JRadioButton femaleButton = new JRadioButton("Female");
+		
+		ButtonGroup gender = new ButtonGroup();
+		gender.add(eitherButton);
+		gender.add(maleButton);
+		gender.add(femaleButton);
+		eitherButton.setSelected(true);
+		
+		JLabel startLabel = new JLabel("Start date:");
+		JLabel endLabel = new JLabel("End date:");
+		JTextField startDate = new JTextField();
+		JTextField endDate = new JTextField();
+		
+		this.setLayout(new GridBagLayout());
+		
+		GridBagConstraints cons = new GridBagConstraints();
+		
+		cons.gridx = 0;
+		cons.gridy = 0;
+		this.add(contextLabel, cons);
+		
+		cons.gridy = 1;
+		cons.gridheight = 3;
+		cons.fill = GridBagConstraints.HORIZONTAL;
+		this.add(contextList, cons);
+		
+		cons.gridy = 4;
+		cons.gridheight = 1;
+		this.add(ageLabel, cons);
+		
+		cons.gridy = 5;
+		this.add(ageRange, cons);
+		
+		cons.gridy = 6;
+		this.add(incomeLabel, cons);
+		
+		cons.gridy = 7;
+		this.add(incomeRange, cons);
+		
+		cons.gridy = 8;
+		this.add(genderLabel, cons);
+		
+		cons.gridy = 9;
+		this.add(eitherButton, cons);
+		
+		cons.gridy = 10;
+		this.add(maleButton, cons);
+		
+		cons.gridy = 11;
+		this.add(femaleButton, cons);
+		
+		cons.gridy = 12;
+		this.add(startLabel, cons);
+		
+		cons.gridy = 13;
+		this.add(startDate, cons);
+		
+		cons.gridy = 14;
+		this.add(endLabel, cons);
+		
+		cons.gridy = 15;
+		this.add(endDate, cons);
 		
 	}
 	
