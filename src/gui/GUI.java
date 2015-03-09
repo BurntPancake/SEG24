@@ -31,14 +31,6 @@ public class GUI {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
 		JPanel dataPane = new DataPanel(this.controller);
-<<<<<<< HEAD:src/gui/GUI.java
-		JPanel chartsPane = new ChartsPanel(this.controller);
-//		JPanel metricsPane = new MetricsPanel(this.controller);
-		OptionPanel optionPane = new OptionPanel(this.controller);
-		optionPane.init();
-=======
->>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
-
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
 		
@@ -53,8 +45,7 @@ public class GUI {
 		cons.weightx = 0.35;
 		FilterPanel filterPane = new FilterPanel(this.controller);
 		chartsPane.add(filterPane, cons);
-		
-		
+	
 		cons.gridx = 0;
 		cons.gridy = 1;
 		cons.gridwidth = 2;
@@ -62,11 +53,6 @@ public class GUI {
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
-<<<<<<< HEAD:src/gui/GUI.java
-//		tabbedPane.addTab("Metrics", metricsPane);
-		tabbedPane.addTab("Options", optionPane);
-=======
->>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		frame.setContentPane(tabbedPane);
 		frame.setResizable(true);
@@ -222,18 +208,12 @@ class MetricsPanel extends JPanel{
 				{	"Impressions", "0"	},
 				{	"Clicks",	"0"			}
 		};
-<<<<<<< HEAD:src/gui/GUI.java
-/*
-		MetricTableModel tableModel = new MetricTableModel(data, columnNames);
-		metricTable = new JTable(tableModel);
-=======
 		
 		MetricTableModel metricModel = new MetricTableModel(metricData, metricColumnNames);
 		metricTable = new JTable(metricModel);
 		
 		MetricTableModel costModel = new MetricTableModel(costData, costColumnNames);
 		costTable = new JTable(costModel);
->>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
 		
 		TableColumn column = null;
 		
@@ -290,12 +270,9 @@ class MetricsPanel extends JPanel{
 		
 		this.add(rightPanel);
 		this.calculateButton.addActionListener(new MetricListener(this.controller, this));
-<<<<<<< HEAD:src/gui/GUI.java
-		*/
-=======
 
 		this.revalidate();
->>>>>>> 087c3d93a274ea6f37e5234d91d5af61195beb2e:src/gui/TestGUI.java
+
 	}
 	
 	public void displayMetrics(String[] metrics) {
