@@ -42,6 +42,20 @@ public class Calculator implements CalculatorInterface
 	}
 	
 	/**
+	 * This is the actual table we will be working on.
+	 * @param interval
+	 * @param log
+	 * @return
+	 */
+	private ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>>
+				arrangeByInterval(int interval, Hashtable<String, String>[] log)
+	{
+		ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>> arrangedLog = new ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>>();
+		
+		return arrangedLog;	
+	}
+	
+	/**
 	 * Count the entries in the log file, arrange the count number according to interval
 	 * @param interval
 	 * @param log
@@ -49,7 +63,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	private Integer[] getCount(int interval, Hashtable<String, String>[] log)
 	{
-		ArrayList<Integer> dataList = new ArrayList<Integer>();
+		ArrayList<Integer> dataList = new ArrayList<Integer>(log.length);
 		LocalDateTime previousNode = null;
 		for (Hashtable<String, String> h : log)
 		{
@@ -86,7 +100,7 @@ public class Calculator implements CalculatorInterface
 	
 	private Float[] getCost(int interval, Hashtable<String, String>[] log, String field)
 	{
-		ArrayList<Float> dataList = new ArrayList<Float>();
+		ArrayList<Float> dataList = new ArrayList<Float>(log.length);
 		LocalDateTime previousNode = null;
 		for (Hashtable<String, String> h : log)
 		{
@@ -134,7 +148,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Integer[] getUniqueNumber(int interval)
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(clickLog.length);
 		for(int i = 0; i < clickLog.length; i++)
 		{
 			boolean isUnique = true;
@@ -161,7 +175,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Integer[] getConversionNumber(int interval)
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(Hashtable<String, String> h : serverLog)
 		{
 			if(h.get("Conversion").equals("Yes"))
@@ -295,7 +309,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Integer[] getBounceNumberByPages(int interval, int pageViewed)
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(int i = 0; i < serverLog.length; i++)
 		{
 			if(Integer.parseInt(serverLog[i].get("Pages Viewed")) <= pageViewed)
@@ -316,7 +330,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Integer[] getBounceNumberByTime(int interval, int timeSpent)
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(int i = 0; i < serverLog.length; i++)
 		{
 			if(!serverLog[i].get("Exit Date").equals("n/a"))

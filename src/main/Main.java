@@ -5,8 +5,8 @@ import controller.Controller;
 import gui.GUI;
 import plotter.Plotter;
 
-public class Main {
-
+public class Main
+{
 	/**
 	 * @param args
 	 */
@@ -16,7 +16,5 @@ public class Main {
 		
 		Controller c = new Controller(decoder, p);
 		GUI view = new GUI(c);
-		
 	}
-
 }

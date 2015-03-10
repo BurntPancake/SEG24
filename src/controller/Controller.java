@@ -52,6 +52,52 @@ public class Controller {
 		}
 	}
 	
+	public void setBouncePreferences(String numberPreference, String ratePreference) {
+		if (numberPreference.equals("Pages")) {
+			bounceNumberPreference = "Pages";
+		} else if (numberPreference.equals("Time")) {
+			bounceNumberPreference = "Time";
+		}
+		
+		if (ratePreference.equals("Pages")) {
+			bounceRatePreference = "Pages";
+		} else if (ratePreference.equals("Time")) {
+			bounceRatePreference = "Time";
+		}
+	}
+	
+	public void setContext(String[] contexts)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Context", contexts);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setAgeRange(String[] ranges)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setIncomeRange(String[] ranges)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setGender(String[] genders)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Gender", genders);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void SetDateRange(String startDate, String endDate)
+	{
+		impressionRecords = filter.filterTableByTimeInterval(impressionRecords, startDate, endDate);
+		serverRecords = filter.filterTableByTimeInterval(serverRecords, startDate, endDate);
+		clickRecords = filter.filterTableByTimeInterval(clickRecords, startDate, endDate);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
 	public String[] calculateMetrics() {
 		
 		String[] metrics = new String[22];
@@ -220,49 +266,5 @@ public class Controller {
 		return data;
 	}
 	
-	public void setBouncePreferences(String numberPreference, String ratePreference) {
-		if (numberPreference.equals("Pages")) {
-			bounceNumberPreference = "Pages";
-		} else if (numberPreference.equals("Time")) {
-			bounceNumberPreference = "Time";
-		}
-		
-		if (ratePreference.equals("Pages")) {
-			bounceRatePreference = "Pages";
-		} else if (ratePreference.equals("Time")) {
-			bounceRatePreference = "Time";
-		}
-	}
-	
-	public void setContext(String[] contexts)
-	{
-		impressionRecords = filter.filterTablebyField(impressionRecords, "Context", contexts);
-		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
-	}
-	
-	public void setAgeRange(String[] ranges)
-	{
-		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
-		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
-	}
-	
-	public void setIncomeRange(String[] ranges)
-	{
-		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
-		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
-	}
-	
-	public void setGender(String[] genders)
-	{
-		impressionRecords = filter.filterTablebyField(impressionRecords, "Gender", genders);
-		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
-	}
-	
-	public void SetDateRange(String startDate, String endDate)
-	{
-		impressionRecords = filter.filterTableByTimeInterval(impressionRecords, startDate, endDate);
-		serverRecords = filter.filterTableByTimeInterval(serverRecords, startDate, endDate);
-		clickRecords = filter.filterTableByTimeInterval(clickRecords, startDate, endDate);
-		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
-	}
+
 }

@@ -13,6 +13,7 @@ public class CalculatorTest
 {
 	public static void main(String[] args)
 	{
+		/*
 		//Test date format
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
 		TemporalAccessor lt = fmt.parse("2015-01-01 12:00:02");
@@ -35,7 +36,7 @@ public class CalculatorTest
 		Hashtable<String, String> entry4 = new Hashtable<String, String>();
 		entry4.put("Date", "2015-01-01 12:00:10");
 		entry4.put("Impression Cost", "0.002064");
-		
+		*/
 		Decoder dec = new Decoder();
 		Hashtable<String, String>[] impressionLog;
 		Hashtable<String, String>[] clickLog;
@@ -46,7 +47,8 @@ public class CalculatorTest
 			clickLog = dec.getData("ExampleInputData/click_log.csv");
 			serverLog = dec.getData("ExampleInputData/server_Log.csv");
 			Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
-			Integer[] dataArray = cal.getImpressionNumber(3600);
+			System.out.println("Finish readings");
+			Integer[] dataArray = cal.getClickNumber(86400);
 			
 			for (int i : dataArray)
 			{
