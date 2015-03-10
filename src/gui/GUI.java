@@ -374,7 +374,7 @@ class ChartsPanel extends JPanel
 {
 	private String[] list = {"Click to Access Charts", "Number of Impressions", "Number of Clicks",
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
-			/*"Total Cost",*/ "CTR", "CPA", "CPC", "CPM", "Bounce Rate"};
+			"Total Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
 	
 	ChartsPanel(Controller controller) 
 	{
@@ -434,11 +434,9 @@ class ChartsPanel extends JPanel
 		            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(60), 60));
 		            	break;
 		            	
-		            /*case "Total Cost":
-		            	ChartsPanel.this.add(plotter.nBounces(controller.getBounces(60), 60) , BorderLayout.CENTER);
-		            	ChartsPanel.this.validate();
-		            	ChartsPanel.this.repaint();
-		            	break;*/
+		            case "Total Cost":
+		            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalCost(60), 60));
+		            	break;
 		            	
 		            case "CTR":
 		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(60), 60));
@@ -458,6 +456,10 @@ class ChartsPanel extends JPanel
 		            	
 		            case "Bounce Rate":
 		            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(60), 60));
+		            	break;
+		            	
+		            case "Click Cost":
+		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(60), 60));
 		            	break;
 				}
 				chartDisplayPanel.revalidate();

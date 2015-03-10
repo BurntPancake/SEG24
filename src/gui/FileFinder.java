@@ -52,7 +52,7 @@ public class FileFinder {
 			System.out.println("Found: " + f.getAbsolutePath().toLowerCase());
 			this.foundFiles.add(f.getAbsolutePath().toLowerCase());
 		}
-		System.out.println(this.toCheck.peek());
+		//System.out.println(this.toCheck.peek());
 		try{
 			search(this.toCheck.remove());
 		}catch (Exception e){
