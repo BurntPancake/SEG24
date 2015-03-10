@@ -50,7 +50,9 @@ public class FileFinder {
 			this.getNeighbours(f);
 		} else if (f.isFile() && getNamesToSearch().contains(f.getName().toLowerCase())){
 			System.out.println("Found: " + f.getAbsolutePath().toLowerCase());
-			this.foundFiles.add(f.getAbsolutePath().toLowerCase());
+			this.foundFiles.add(f.getAbsolutePath());
+			if (foundFiles.size() == 3) 
+				return;
 		}
 		//System.out.println(this.toCheck.peek());
 		try{

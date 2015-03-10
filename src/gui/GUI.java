@@ -31,26 +31,29 @@ public class GUI {
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		JPanel dataPane = new DataPanel(this.controller);
+		
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
 		
 		cons.gridx = 0;
 		cons.gridy = 0;
-		cons.weightx = 0.65;
+		cons.weightx = 0.6;
 		ChartsPanel chartPanel = new ChartsPanel(this.controller);
 		chartPanel.setPreferredSize(new Dimension(600, 300));
 		chartsPane.add(new ChartsPanel(this.controller), cons);
 		
 		cons.gridx = 1;
-		cons.weightx = 0.35;
+		cons.weightx = 0.4;
 		FilterPanel filterPane = new FilterPanel(this.controller);
 		chartsPane.add(filterPane, cons);
 	
+		MetricsPanel mp = new MetricsPanel(this.controller);
 		cons.gridx = 0;
 		cons.gridy = 1;
 		cons.gridwidth = 2;
-		chartsPane.add(new MetricsPanel(this.controller), cons);
+		chartsPane.add(mp, cons);
+		
+		JPanel dataPane = new DataPanel(this.controller, mp);
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
@@ -79,10 +82,13 @@ class DataPanel extends JPanel{
 	private JFileChooser fc;
 	private GridBagConstraints gbc;
 	private Controller controller;
+	private MetricsPanel metricsPanel;
 	
-	DataPanel(Controller controller){
+	DataPanel(Controller controller, MetricsPanel mp){
 		
 		this.controller = controller;
+		this.metricsPanel = mp;
+		
 		this.clickButton = new JButton("Choose Click Log");
 		this.impressionButton = new JButton("Choose Impression Log");
 		this.serverButton = new JButton("Choose Server Log");
@@ -152,11 +158,11 @@ class DataPanel extends JPanel{
 			}
 		}		
 		
-		
-		this.clickButton.addActionListener(new DataListener(this.controller, this));
-		this.impressionButton.addActionListener(new DataListener(this.controller, this));
-		this.serverButton.addActionListener(new DataListener(this.controller, this));
-		this.submitButton.addActionListener(new DataListener(this.controller, this));
+		DataListener dl = new DataListener(this.controller, this, mp);
+		this.clickButton.addActionListener(new DataListener(this.controller, this, mp));
+		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
+		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));
+		this.submitButton.addActionListener(new DataListener(this.controller, this, mp));
 		
 	}
 	
@@ -262,11 +268,6 @@ class MetricsPanel extends JPanel{
 		cons.gridwidth = 1;
 		cons.insets = new Insets(0, 0, 0, 10);
 		rightPanel.add(new OptionPanel(this.controller), cons);
-		
-		cons.gridx = 1;
-		cons.gridy = 1;
-		cons.anchor = GridBagConstraints.LAST_LINE_END;
-		rightPanel.add(calculateButton, cons);		
 		rightPanel.revalidate();
 		
 		this.add(rightPanel);
@@ -310,10 +311,12 @@ class DataListener implements ActionListener {
 	private Controller controller;
 	private JFileChooser fc;
 	private DataPanel dp;
+	private MetricsPanel mp;
 	
-	public DataListener(Controller controller, DataPanel dp) {
+	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp) {
 		this.controller = controller;
 		this.dp = dp;
+		this.mp = mp;
 	}
 	
 	@Override
@@ -348,6 +351,7 @@ class DataListener implements ActionListener {
 			} else{
 				dp.errorField.setText("");
 				controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
+				mp.displayMetrics(controller.calculateMetrics());
 			}
 		}
 	}
@@ -382,6 +386,10 @@ class ChartsPanel extends JPanel
 		this.setLayout(new GridBagLayout());	
 		GridBagConstraints cons = new GridBagConstraints();
 		
+		JLabel intervalLabel = new JLabel("Time Interval (s):");
+		JTextField timeIntervalField = new JTextField();
+		timeIntervalField.setText("60");
+		
 		final JComboBox<String> l = new JComboBox<String>();
 		for(int i = 0 ; i < list.length ; i++)
 		{
@@ -390,11 +398,19 @@ class ChartsPanel extends JPanel
 		
 		cons.gridx = 0;
 		cons.gridy = 0;
-		cons.anchor = GridBagConstraints.PAGE_START;
+		cons.fill = GridBagConstraints.HORIZONTAL;
+		cons.insets = new Insets(0, 5, 0, 5);
 		this.add(l, cons);
+		
+		cons.gridx = 1;
+		this.add(intervalLabel, cons);
+		
+		cons.gridx = 2;
+		this.add(timeIntervalField, cons);
 		
 		cons.gridx = 0;
 		cons.gridy = 1;
+		cons.gridwidth = 3;
 		cons.gridheight = 3;
 		JPanel chartDisplayPanel = new JPanel();
 		chartDisplayPanel.setPreferredSize(new Dimension(500, 250));
@@ -553,35 +569,33 @@ class FilterPanel extends JPanel {
 	}
 	
 	public void init() {
-		String[] contexts = { "No preference", "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
-		String[] ages = { "No preference", "Under 25", "25 to 34", "35 to 44", "45 to 54", "Over 54" };
+		String[] contexts = { "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
+		String[] ages = { "Under 25", "25 to 34", "35 to 44", "45 to 54", "Over 54" };
 		String[] incomes = { "No preference", "High", "Medium", "Low" };
 		
 		JLabel contextLabel = new JLabel("Context:");
 		JList contextList = new JList(contexts);
-		contextList.setSelectedIndex(0);
+		contextList.setSelectionModel(new MyListSelectionModel());
 		
 		JLabel ageLabel = new JLabel("Age Range:");
-		JComboBox<String> ageRange = new JComboBox<String>(ages);
+		JList ageRange = new JList(ages);
+		ageRange.setSelectionModel(new MyListSelectionModel());		
 		
 		JLabel incomeLabel = new JLabel("Income:");
-		JComboBox<String> incomeRange = new JComboBox<String>(incomes);
+		JCheckBox highBox = new JCheckBox("High");
+		JCheckBox mediumBox = new JCheckBox("Medium");
+		JCheckBox lowBox = new JCheckBox("Low");
 		
-		JLabel genderLabel = new JLabel("Gender:");
-		JRadioButton eitherButton = new JRadioButton("Either");
-		JRadioButton maleButton = new JRadioButton("Male");
-		JRadioButton femaleButton = new JRadioButton("Female");
-		
-		ButtonGroup gender = new ButtonGroup();
-		gender.add(eitherButton);
-		gender.add(maleButton);
-		gender.add(femaleButton);
-		eitherButton.setSelected(true);
+		JCheckBox maleBox = new JCheckBox("Male");
+		JCheckBox femaleBox = new JCheckBox("Female");
 		
 		JLabel startLabel = new JLabel("Start date:");
 		JLabel endLabel = new JLabel("End date:");
 		JTextField startDate = new JTextField();
 		JTextField endDate = new JTextField();
+		
+		JButton resetButton = new JButton("Reset");
+		JButton applyButton = new JButton("Apply");
 		
 		this.setLayout(new GridBagLayout());
 		
@@ -589,50 +603,87 @@ class FilterPanel extends JPanel {
 		
 		cons.gridx = 0;
 		cons.gridy = 0;
+		cons.gridwidth = 1;
+		cons.insets = new Insets(0, 0, 0, 5);
+		cons.fill = GridBagConstraints.HORIZONTAL;
 		this.add(contextLabel, cons);
 		
 		cons.gridy = 1;
 		cons.gridheight = 3;
-		cons.fill = GridBagConstraints.HORIZONTAL;
 		this.add(contextList, cons);
 		
-		cons.gridy = 4;
+		cons.gridy = 0;
+		cons.gridx = 2;
 		cons.gridheight = 1;
+		cons.insets = new Insets(0, 5, 0, 0);
 		this.add(ageLabel, cons);
 		
-		cons.gridy = 5;
+		cons.gridy = 1;
+		cons.gridheight = 3;
 		this.add(ageRange, cons);
 		
-		cons.gridy = 6;
+		cons.gridx = 0;
+		cons.gridy = 4;
+		cons.gridwidth = 3;
+		cons.gridheight = 1;
+		cons.insets = new Insets(0, 0, 0, 0);
 		this.add(incomeLabel, cons);
 		
+		cons.gridy = 5;
+		cons.gridwidth = 1;
+		this.add(highBox, cons);
+		
+		cons.gridx = 1;
+		this.add(mediumBox, cons);
+		
+		cons.gridx = 2;
+		this.add(lowBox, cons);
+		
+		cons.gridx = 0;
+		cons.gridy = 6;
+		cons.gridwidth = 3;
+		this.add(new JLabel("Gender:"), cons);
+		
 		cons.gridy = 7;
-		this.add(incomeRange, cons);
+		cons.gridwidth = 1;
+		this.add(maleBox, cons);
 		
+		cons.gridx = 2;
+		this.add(femaleBox, cons);
+		
+		cons.gridx = 0;
 		cons.gridy = 8;
-		this.add(genderLabel, cons);
-		
-		cons.gridy = 9;
-		this.add(eitherButton, cons);
-		
-		cons.gridy = 10;
-		this.add(maleButton, cons);
-		
-		cons.gridy = 11;
-		this.add(femaleButton, cons);
-		
-		cons.gridy = 12;
+		cons.gridwidth = 3;
 		this.add(startLabel, cons);
 		
-		cons.gridy = 13;
+		cons.gridy = 9;
 		this.add(startDate, cons);
 		
-		cons.gridy = 14;
+		cons.gridy = 10;
 		this.add(endLabel, cons);
 		
-		cons.gridy = 15;
+		cons.gridy = 11;
 		this.add(endDate, cons);
+		
+		cons.gridy = 12;
+		cons.gridwidth = 1;
+		this.add(resetButton, cons);
+		
+		cons.gridx = 2;
+		this.add(applyButton, cons);
 		
 	}
 	
+}
+
+class MyListSelectionModel extends DefaultListSelectionModel {
+    @Override
+    public void setSelectionInterval(int index0, int index1) {
+        if(super.isSelectedIndex(index0)) {
+            super.removeSelectionInterval(index0, index1);
+        }
+        else {
+            super.addSelectionInterval(index0, index1);
+        }
+    }
 }
