@@ -1,5 +1,6 @@
 package controller;
 
+import filter.Filter;
 import gui.GUI;
 
 import java.io.IOException;
@@ -19,6 +20,11 @@ public class Controller {
 	private CalculatorInterface calc;
 	private Plotter plotter;
 	private String bounceNumberPreference, bounceRatePreference;
+	
+	private Filter filter = new Filter();
+	private Hashtable<String, String>[] impressionRecords;
+	private Hashtable<String, String>[] serverRecords;
+	private Hashtable<String, String>[] clickRecords;
 
 	public Controller(DecoderInterface decoder, Plotter plotter) {
 		this.decoder = decoder;
@@ -29,9 +35,9 @@ public class Controller {
 	
 	public void setFileLocation(String impressionLogLocation, String clickLogLocation, String serverLogLocation){
 		try {
-			Hashtable<String, String>[] impressionRecords = decoder.getData(impressionLogLocation);
-			Hashtable<String, String>[] serverRecords = decoder.getData(serverLogLocation);
-			Hashtable<String, String>[] clickRecords = decoder.getData(clickLogLocation);
+			impressionRecords = decoder.getData(impressionLogLocation);
+			serverRecords = decoder.getData(serverLogLocation);
+			clickRecords = decoder.getData(clickLogLocation);
 			
 			/**
 			RecordSorter rs = new RecordSorter();
@@ -226,6 +232,37 @@ public class Controller {
 		} else if (ratePreference.equals("Time")) {
 			bounceRatePreference = "Time";
 		}
-		
+	}
+	
+	public void setContext(String[] contexts)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Context", contexts);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setAgeRange(String[] ranges)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setIncomeRange(String[] ranges)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void setGender(String[] genders)
+	{
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Gender", genders);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
+	}
+	
+	public void SetDateRange(String startDate, String endDate)
+	{
+		impressionRecords = filter.filterTableByTimeInterval(impressionRecords, startDate, endDate);
+		serverRecords = filter.filterTableByTimeInterval(serverRecords, startDate, endDate);
+		clickRecords = filter.filterTableByTimeInterval(clickRecords, startDate, endDate);
+		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 }

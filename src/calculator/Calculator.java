@@ -278,11 +278,11 @@ public class Calculator implements CalculatorInterface
 		{
 			if(impressionCountArray[i].equals(0))
 			{
-				CPMArray[i] = impressionCostArray[i]/1000f;
+				CPMArray[i] = impressionCostArray[i]*1000f;
 			}
 			else
 			{
-				CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]/1000f;
+				CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]*1000f;
 			}
 			
 		}
