@@ -8,6 +8,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -96,9 +97,9 @@ public class Plotter
         return chartPanel;
     }
 	
-	/*public ChartPanel totalCost(Integer[] i, int time) 
+	public ChartPanel totalCost(Float[] i, int time) 
 	{
-        XYSeries first = new XYSeries("Total Cost");
+		XYSeries first = new XYSeries("Total Cost");
         
         for(int j = 0 ; j < i.length ; j++)
         {
@@ -109,7 +110,7 @@ public class Plotter
         JFreeChart chart = createChart(dataSet, "Total Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
-    }*/
+    }
 	
 	public ChartPanel nCTR(Float[] i, int time) 
 	{
@@ -186,6 +187,21 @@ public class Plotter
         return chartPanel;
     }
 	
+	public ChartPanel clickCost(Float[] i, int time) 
+	{
+        XYSeries first = new XYSeries("Click Cost");
+        
+        for(int j = 0 ; j < i.length ; j++)
+        {
+	        first.add(time * j, i[j].doubleValue());
+        }
+        XYSeriesCollection data = new XYSeriesCollection(first);
+        IntervalXYDataset dataSet = data;
+        JFreeChart chart = createHistogram(dataSet, "Click Cost");
+        ChartPanel chartPanel = new ChartPanel(chart);
+        return chartPanel;
+    }
+	
 	 private JFreeChart createChart(XYDataset dataSet, String title)
 	 {	        
 		 JFreeChart chart = ChartFactory.createXYLineChart(title + " Chart",
@@ -201,13 +217,20 @@ public class Plotter
 		 return chart;
 	 }
 	
-	 /*
-	public static void main(String[] args)
-	{
-		Plotter demo = new Plotter("Title");
-        demo.pack();
-        demo.setVisible(true);
-
-	}*/
+	 private JFreeChart createHistogram(IntervalXYDataset dataSet, String title)
+	 {	        
+		 JFreeChart chart = ChartFactory.createHistogram(title + " Chart",
+		            "Time(s)", 
+		            title, 
+		            dataSet,
+		            PlotOrientation.VERTICAL,
+		            false,
+		            true,
+		            false);
+		 
+		 chart.setBackgroundPaint(Color.WHITE);
+		 
+		 return chart;
+	 }
 
 }

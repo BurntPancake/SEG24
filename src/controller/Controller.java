@@ -161,15 +161,17 @@ public class Controller {
 		return data;
 	}
 	
-	/*public Integer[] getTotalCost(int interval)
+	public Float[] getTotalCost(int interval)
 	{
-		Integer[] data = calc.
-		for (int i : data)
-		{
-			System.out.println(i);
+		Float[] data = calc.getClickCost(interval);
+		Float[] imp = calc.getImpressionCost(interval);
+		for (int i = 0; i < data.length; i++)
+		{			
+			data[i] = data[i] + imp[i];
+			System.out.println(i);			
 		}
 		return data;
-	}*/
+	}
 	
 	public Float[] getCTR(int interval)
 	{
@@ -198,6 +200,17 @@ public class Controller {
 	public Float[] getBounceRate(int interval)
 	{
 		Float[] data = calc.getBounceRateByPages(interval, 2);
+		return data;
+	}
+	
+	public Float[] getClickCost(int interval)
+	{
+		Float[] data = calc.getClickCost(interval);
+		
+		for (Float i : data)
+		{
+			System.out.println(i);
+		}
 		return data;
 	}
 	
