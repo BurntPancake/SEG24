@@ -3,7 +3,6 @@ package calculator;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -30,6 +29,8 @@ public class Calculator implements CalculatorInterface
 	private Hashtable<String, String>[] impressionLog;
 	private Hashtable<String, String>[] clickLog;
 	private Hashtable<String, String>[] serverLog;
+	
+	private CachedArrays cache; //Cache previously calculated matrix
 	
 	public Calculator(Hashtable<String, String>[] impressionLog, 
 			Hashtable<String, String>[] clickLog,
@@ -137,21 +138,6 @@ public class Calculator implements CalculatorInterface
 		for(int i = 0; i < clickLog.length; i++)
 		{
 			boolean isUnique = true;
-			/*
-			int j = i-1;
-			while(j >= 0)
-			{
-				if(clickLog[j].get("ID") == clickLog[i].get("ID"))
-				{
-					isUnique = false;
-					break;
-				}
-				j = j - 1;
-			}
-			if(isUnique)
-			{
-				newTable.add(clickLog[i]);
-			}*/
 			for(Hashtable<String, String> h : newTable)
 			{
 				if(clickLog[i].get("ID").equals(h.get("ID")))
