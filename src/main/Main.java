@@ -1,3 +1,4 @@
+package main;
 import decoder.Decoder;
 import decoder.DecoderInterface;
 import controller.Controller;
