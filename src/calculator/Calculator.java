@@ -31,8 +31,6 @@ public class Calculator implements CalculatorInterface
 	private Hashtable<String, String>[] clickLog;
 	private Hashtable<String, String>[] serverLog;
 	
-	private CachedArrays cache; //Cache previously calculated matrix
-	
 	public Calculator(Hashtable<String, String>[] impressionLog, 
 			Hashtable<String, String>[] clickLog,
 			Hashtable<String, String>[] serverLog)
@@ -40,20 +38,6 @@ public class Calculator implements CalculatorInterface
 		this.impressionLog = impressionLog;
 		this.clickLog = clickLog;
 		this.serverLog = serverLog;
-	}
-	
-	/**
-	 * This is the actual table we will be working on.
-	 * @param interval
-	 * @param log
-	 * @return
-	 */
-	private ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>>
-				arrangeByInterval(int interval, Hashtable<String, String>[] log)
-	{
-		ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>> arrangedLog = new ArrayList<Hashtable<LocalDateTime, ArrayList<Hashtable<String, String>>>>();
-		
-		return arrangedLog;	
 	}
 	
 	/**
@@ -156,17 +140,15 @@ public class Calculator implements CalculatorInterface
 		HashSet<String> userIds = new HashSet<String>(clickLog.length);
 		for(int i = 0; i < clickLog.length; i++)
 		{
-			boolean isUnique = true;
-			for(Hashtable<String, String> h : newTable)
+			String userId = clickLog[i].get("ID");
+			
+			if(userIds.contains(userId))
 			{
-				if(clickLog[i].get("ID").equals(h.get("ID")))
-				{
-					isUnique = false;
-					break;
-				}
+				
 			}
-			if(isUnique)
+			else
 			{
+				userIds.add(userId);
 				newTable.add(clickLog[i]);
 			}
 		}
