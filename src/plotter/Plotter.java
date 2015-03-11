@@ -197,7 +197,7 @@ public class Plotter
 	        val[j] = d[j].doubleValue();
         }
 		//HistogramBin bin = new HistogramBin(4,9);
-		data.addSeries("Cost Distribution", val,  10);
+		data.addSeries("Cost Distribution", val,  20);
         JFreeChart chart = createHistogram(data, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
@@ -221,7 +221,7 @@ public class Plotter
 	 private JFreeChart createHistogram(IntervalXYDataset dataSet, String title)
 	 {	        
 		 JFreeChart chart = ChartFactory.createHistogram(title + " Chart",
-		            "Time(s)", 
+		            "", 
 		            title, 
 		            dataSet,
 		            PlotOrientation.VERTICAL,
