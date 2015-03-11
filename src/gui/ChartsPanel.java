@@ -20,7 +20,7 @@ class ChartsPanel extends JPanel
 {
 	private String[] list = {"Click to Access Charts", "Number of Impressions", "Number of Clicks",
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
-			"Total Impression Cost", "Total Clicks Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
+			"Total Impression Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
 	
 	private JTextField timeIntervalField;
 	
@@ -107,12 +107,8 @@ class ChartsPanel extends JPanel
 		            	break;
 		            	
 		            case "Total Impression Cost":
-		            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval()));
-		            	break; 
-		            	
-		            case "Total Click Cost":
-		            	chartDisplayPanel.add(plotter.totalCost(controller.getClickCost(getInterval()), getInterval()));
-		            	break; 
+		            	chartDisplayPanel.add(plotter.totalCost(controller.getImpCost(getInterval()), getInterval()));
+		            	break; 	
 		            	
 		            case "CTR":
 		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval()));
@@ -135,7 +131,7 @@ class ChartsPanel extends JPanel
 		            	break;
 		            	
 		            case "Click Cost":
-		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(getInterval()), getInterval()));
+		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(getInterval())));
 		            	break;
 				}
 				chartDisplayPanel.revalidate();
