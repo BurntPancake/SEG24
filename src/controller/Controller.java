@@ -244,7 +244,7 @@ public class Controller {
 		return data;
 	}
 	
-	public Float[] getImpCost(int interval)
+	public Float[] getTotalImpressionCost(int interval)
 	{
 		//Float[] data = calc.getClickCost(interval);
 		Float[] data = calc.getImpressionCost(interval);
@@ -290,5 +290,7 @@ public class Controller {
 			System.out.println(i);
 		}
 		return data;
-	}	
+	}
+	
+
 }
