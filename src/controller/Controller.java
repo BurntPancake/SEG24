@@ -99,6 +99,36 @@ public class Controller {
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
+	public String[] getUpdatedMetrixBounceNumber()
+	{
+		String[] metrics = new String[2];
+		if (bounceNumberPreference.equals("Pages")) {
+			metrics[0] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(3600, 2))));
+			metrics[1] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(86400, 2))));
+		} else {
+			metrics[0] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(3600, 120))));
+			metrics[1] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(86400, 120))));
+		}
+		
+		return metrics;
+	}
+	
+	public String[] getUpdatedMetrixBounceRate()
+	{
+		DecimalFormat df = new DecimalFormat("###,###.##");
+		
+		String[] metrics = new String[2];
+		if (bounceRatePreference.equals("Pages")) {
+			metrics[0] = df.format(100 * getMean(calc.getBounceRateByPages(3600, 2)));
+			metrics[1] = df.format(100 * getMean(calc.getBounceRateByPages(86400, 2)));
+		} else {
+			metrics[0] = df.format(100 * getMean(calc.getBounceRateByTime(3600, 120)));
+			metrics[1] = df.format(100 * getMean(calc.getBounceRateByTime(86400, 120)));
+		}
+		
+		return metrics;
+	}
+	
 	public String[] calculateMetrics() {
 		
 		String[] metrics = new String[22];

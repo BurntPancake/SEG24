@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -152,6 +153,7 @@ public class Calculator implements CalculatorInterface
 	{
 		System.out.println("Getting unique number");
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(clickLog.length);
+		HashSet<String> userIds = new HashSet<String>(clickLog.length);
 		for(int i = 0; i < clickLog.length; i++)
 		{
 			boolean isUnique = true;

@@ -117,7 +117,7 @@ class MetricsPanel extends JPanel{
 		cons.gridy = 1;
 		cons.gridwidth = 1;
 		cons.insets = new Insets(0, 0, 0, 10);
-		rightPanel.add(new OptionPanel(this.controller), cons);
+		rightPanel.add(new OptionPanel(this.controller, this), cons);
 		rightPanel.revalidate();
 		
 		this.add(rightPanel);
@@ -150,8 +150,19 @@ class MetricsPanel extends JPanel{
 		metricTable.setValueAt(metrics[20], BOUNCE_RATE, PER_HOUR);
 		metricTable.setValueAt(metrics[21], BOUNCE_RATE, PER_DAY);
 		costTable.setValueAt(metrics[10], 0, 1);
-		costTable.setValueAt(metrics[11], 1, 1);
-		
+		costTable.setValueAt(metrics[11], 1, 1);	
+	}
+	
+	public void updateBounceNumber(String[] metrics)
+	{
+		metricTable.setValueAt(metrics[0], NO_OF_BOUNCES, PER_HOUR);
+		metricTable.setValueAt(metrics[1], NO_OF_BOUNCES, PER_DAY);
+	}
+	
+	public void updateBounceRate(String[] metrics)
+	{
+		metricTable.setValueAt(metrics[0], BOUNCE_RATE, PER_HOUR);
+		metricTable.setValueAt(metrics[1], BOUNCE_RATE, PER_DAY);
 	}
 	
 }

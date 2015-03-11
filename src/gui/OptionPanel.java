@@ -15,9 +15,11 @@ import controller.Controller;
 class OptionPanel extends JPanel {
 	
 	private Controller controller;
+	private MetricsPanel mp;
 	
-	public OptionPanel(Controller controller) {
+	public OptionPanel(Controller controller, MetricsPanel mp) {
 		this.controller = controller;
+		this.mp = mp;
 		this.init();
 	}
 	
@@ -63,23 +65,43 @@ class OptionPanel extends JPanel {
 		
 	}
 	
-}
-
-class SubmissionListener implements ActionListener {
-	
-	private JComboBox numberOptions, rateOptions;
-	private Controller controller;
-	
-	public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
-		this.numberOptions = numberOptions;
-		this.rateOptions = rateOptions;
-		this.controller = controller;
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
-										(String) rateOptions.getSelectedItem());
+	class SubmissionListener implements ActionListener {
+		
+		private JComboBox<String> numberOptions, rateOptions;
+		private Controller controller;
+		
+		private String previousNumberOption;
+		private String previousRateOption;
+		
+		public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
+			this.numberOptions = numberOptions;
+			this.rateOptions = rateOptions;
+			this.controller = controller;
 			
+			 previousNumberOption = (String) numberOptions.getSelectedItem();
+			 previousRateOption = (String) rateOptions.getSelectedItem();
+		}
+
+		public void actionPerformed(ActionEvent e) 
+		{
+			controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
+											(String) rateOptions.getSelectedItem());
+			if(!previousNumberOption.equals(numberOptions.getSelectedItem()))
+			{
+				mp.updateBounceNumber(controller.getUpdatedMetrixBounceNumber());
+			}
+			
+			if(!previousRateOption.equals(rateOptions.getSelectedItem()))
+			{
+				mp.updateBounceRate(controller.getUpdatedMetrixBounceRate());
+			}
+			
+			 previousNumberOption = (String) numberOptions.getSelectedItem();
+			 previousRateOption = (String) rateOptions.getSelectedItem();		
+		}
+		
 	}
 	
 }
+
+
