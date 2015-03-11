@@ -5,6 +5,7 @@ import gui.GUI;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import decoder.Decoder;
@@ -66,25 +67,25 @@ public class Controller {
 		}
 	}
 	
-	public void setContext(String[] contexts)
+	public void setContext(ArrayList<String> contexts)
 	{
 		impressionRecords = filter.filterTablebyField(impressionRecords, "Context", contexts);
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
-	public void setAgeRange(String[] ranges)
+	public void setAgeRange(ArrayList<String> ranges)
 	{
 		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
-	public void setIncomeRange(String[] ranges)
+	public void setIncomeRange(ArrayList<String> ranges)
 	{
-		impressionRecords = filter.filterTablebyField(impressionRecords, "Age", ranges);
+		impressionRecords = filter.filterTablebyField(impressionRecords, "Income", ranges);
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
-	public void setGender(String[] genders)
+	public void setGender(ArrayList<String> genders)
 	{
 		impressionRecords = filter.filterTablebyField(impressionRecords, "Gender", genders);
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
@@ -155,7 +156,7 @@ public class Controller {
 			metrics[20] = df.format(100 * getMean(calc.getBounceRateByTime(3600, 120)));
 			metrics[21] = df.format(100 * getMean(calc.getBounceRateByTime(86400, 120)));
 		}
-		
+		System.out.println("****Done****");
 		return metrics;
 	}
 	
@@ -213,6 +214,9 @@ public class Controller {
 		return data;
 	}
 	
+	//Do not enable this because the click cost and impression cost are not corresponding to each other and thus can
+	//not be simply added
+	/*
 	public Float[] getTotalCost(int interval)
 	{
 		Float[] data = calc.getClickCost(interval);
@@ -223,7 +227,7 @@ public class Controller {
 			System.out.println(i);			
 		}
 		return data;
-	}
+	}*/
 	
 	public Float[] getCTR(int interval)
 	{

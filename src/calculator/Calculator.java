@@ -94,7 +94,7 @@ public class Calculator implements CalculatorInterface
 				dataList.set(dataList.size()-1, dataList.get(dataList.size()-1) + 1);
 			}
 		}
-		System.out.println("Progressing");
+		//System.out.println("Progressing");
 		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Integer[].class);
 	}
 	
@@ -129,25 +129,28 @@ public class Calculator implements CalculatorInterface
 				dataList.set(dataList.size()-1, dataList.get(dataList.size()-1) + Float.valueOf(h.get(field)));
 			}
 		}
-		System.out.println("Progressing");
+//		/System.out.println("Progressing");
 		return Arrays.copyOf(dataList.toArray(), dataList.toArray().length, Float[].class);
 	}
 	
 	@Override
 	public Integer[] getImpressionNumber(int interval)
 	{
+		System.out.println("Getting impression number");
 		return this.getCount(interval, impressionLog);
 	}
 
 	@Override
 	public Integer[] getClickNumber(int interval)
 	{
+		System.out.println("Getting click number");
 		return this.getCount(interval, clickLog);
 	}
 
 	@Override
 	public Integer[] getUniqueNumber(int interval)
 	{
+		System.out.println("Getting unique number");
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(clickLog.length);
 		for(int i = 0; i < clickLog.length; i++)
 		{
@@ -175,6 +178,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Integer[] getConversionNumber(int interval)
 	{
+		System.out.println("Getting conversion number");
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(Hashtable<String, String> h : serverLog)
 		{
@@ -193,12 +197,14 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Float[] getImpressionCost(int interval)
 	{
+		System.out.println("Getting impression cost");
 		return getCost(interval, impressionLog, "Impression Cost");
 	}
 
 	@Override
 	public Float[] getClickCost(int interval)
 	{
+		System.out.println("Getting click cost");
 		return getCost(interval, clickLog, "Click Cost");
 	}
 
@@ -209,6 +215,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Float[] getCTR(int interval)
 	{
+		System.out.println("Getting CTR");
 		Integer[] clickArray = this.getClickNumber(interval);
 		Integer[] impressionArray = this.getImpressionNumber(interval);
 		Float[] CTRArray = new Float[Math.min(clickArray.length, impressionArray.length)];
@@ -234,6 +241,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Float[] getCPA(int interval)
 	{
+		System.out.println("Getting CPA");
 		Float[] clickCostArray = this.getClickCost(interval);
 		Integer[] conversionCountArray = this.getConversionNumber(interval);
 		Float[] CPAArray = new Float[Math.min(clickCostArray.length, conversionCountArray.length)];
@@ -262,6 +270,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Float[] getCPC(int interval)
 	{
+		System.out.println("Getting CPC");
 		Float[] clickCostArray = this.getClickCost(interval);
 		Integer[] clickCountArray = this.getClickNumber(interval);
 		Float[] CPCArray = new Float[clickCostArray.length];
@@ -285,6 +294,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Float[] getCPM(int interval)
 	{
+		System.out.println("Getting CPM");
 		Float[] impressionCostArray = this.getImpressionCost(interval);
 		Integer[] impressionCountArray = this.getImpressionNumber(interval);
 		Float[] CPMArray = new Float[impressionCostArray.length];
@@ -309,6 +319,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Integer[] getBounceNumberByPages(int interval, int pageViewed)
 	{
+		System.out.println("Getting bounce number by pages");
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(int i = 0; i < serverLog.length; i++)
 		{
@@ -330,6 +341,7 @@ public class Calculator implements CalculatorInterface
 	 */
 	public Integer[] getBounceNumberByTime(int interval, int timeSpent)
 	{
+		System.out.println("Getting bounce number by time");
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
 		for(int i = 0; i < serverLog.length; i++)
 		{
@@ -354,6 +366,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Float[] getBounceRateByPages(int interval, int pageViewed)
 	{
+		System.out.println("Getting bounce rate by pages");
 		Integer[] bounceCountArray = this.getBounceNumberByPages(interval, pageViewed);
 		Integer[] clickCountArray = this.getClickNumber(interval);
 		Float[] bounceRateArray = new Float[bounceCountArray.length];
@@ -375,6 +388,7 @@ public class Calculator implements CalculatorInterface
 	@Override
 	public Float[] getBounceRateByTime(int interval, int timeSpent)
 	{
+		System.out.println("Getting bounce rate by time");
 		Integer[] bounceCountArray = this.getBounceNumberByTime(interval, timeSpent);
 		Integer[] clickCountArray = this.getClickNumber(interval);
 		Float[] bounceRateArray = new Float[bounceCountArray.length];

@@ -3,6 +3,8 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -105,7 +107,57 @@ class DataPanel extends JPanel{
 		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.submitButton.addActionListener(new DataListener(this.controller, this, mp));
-		
+	}
+}
+
+class DataListener implements ActionListener {
+
+	private Controller controller;
+	private JFileChooser fc;
+	private DataPanel dp;
+	private MetricsPanel mp;
+	
+	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp) {
+		this.controller = controller;
+		this.dp = dp;
+		this.mp = mp;
 	}
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource().equals(dp.clickButton)){
+			
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.clickField.setText(filePath);
+			}
+		} else if (e.getSource().equals(dp.impressionButton)){
+			
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.impressionField.setText(filePath);
+			}
+		} else if (e.getSource().equals(dp.serverButton)){
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.serverField.setText(filePath);
+			}
+		} else if (e.getSource().equals(dp.submitButton)){
+			if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals("")){
+				dp.errorField.setText("All three logs must be submitted");
+			} else{
+				dp.errorField.setText("");
+				controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
+				mp.displayMetrics(controller.calculateMetrics());
+			}
+		}
+	}
 }
+

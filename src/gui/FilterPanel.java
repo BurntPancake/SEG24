@@ -3,6 +3,9 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
@@ -14,43 +17,95 @@ import javax.swing.JTextField;
 
 import controller.Controller;
 
-class FilterPanel extends JPanel {
+class FilterPanel extends JPanel 
+{
 	
 	private Controller controller;
+	
+	private String[] contexts = { "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
+	private String[] ages = { "<25", "25-34", "35-44", "45-54", ">54" };
+	//private String[] incomes = { "No preference", "High", "Medium", "Low" };
+	JList<String> contextList;
+	JList<String> ageRange;
+	
+	JCheckBox highBox;
+	JCheckBox mediumBox;
+	JCheckBox lowBox;
+	
+	JCheckBox maleBox;
+	JCheckBox femaleBox;
+	
+	JTextField startDate;
+	JTextField endDate;
 	
 	public FilterPanel(Controller controller) {
 		this.controller = controller;
 		init();
 	}
 	
-	public void init() {
-		String[] contexts = { "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
-		String[] ages = { "Under 25", "25 to 34", "35 to 44", "45 to 54", "Over 54" };
-		String[] incomes = { "No preference", "High", "Medium", "Low" };
+	private void selectAllFileds(JList jlist)
+	{
+		for(int i = 0; i < jlist.getModel().getSize(); i++)
+		{
+			if(!jlist.isSelectedIndex(i))
+			{
+				jlist.setSelectedIndex(i);
+			}
+		}
+	}
+	
+	private void resetPanel()
+	{
+		selectAllFileds(contextList);
+		selectAllFileds(ageRange);
 		
+		highBox.setSelected(true);
+		mediumBox.setSelected(true);
+		lowBox.setSelected(true);
+		
+		maleBox.setSelected(true);
+		femaleBox.setSelected(true);
+		
+		startDate.setText("2015-01-01 12:00:00");
+		endDate.setText("2015-01-14 12:00:00");
+	}
+	
+	public void init() 
+	{
 		JLabel contextLabel = new JLabel("Context:");
-		JList contextList = new JList(contexts);
+		contextList = new JList<String>(contexts);
 		contextList.setSelectionModel(new MyListSelectionModel());
 		
+		
 		JLabel ageLabel = new JLabel("Age Range:");
-		JList ageRange = new JList(ages);
-		ageRange.setSelectionModel(new MyListSelectionModel());		
+		ageRange = new JList<String>(ages);
+		ageRange.setSelectionModel(new MyListSelectionModel());	
+		
 		
 		JLabel incomeLabel = new JLabel("Income:");
-		JCheckBox highBox = new JCheckBox("High");
-		JCheckBox mediumBox = new JCheckBox("Medium");
-		JCheckBox lowBox = new JCheckBox("Low");
+		highBox = new JCheckBox("High");
+		mediumBox = new JCheckBox("Medium");
+		lowBox = new JCheckBox("Low");
 		
-		JCheckBox maleBox = new JCheckBox("Male");
-		JCheckBox femaleBox = new JCheckBox("Female");
+		
+		maleBox = new JCheckBox("Male");
+		femaleBox = new JCheckBox("Female");
 		
 		JLabel startLabel = new JLabel("Start date:");
 		JLabel endLabel = new JLabel("End date:");
-		JTextField startDate = new JTextField();
-		JTextField endDate = new JTextField();
+		startDate = new JTextField();
+		endDate = new JTextField();
+		
+		resetPanel();
 		
 		JButton resetButton = new JButton("Reset");
+		resetButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{resetPanel();}});
+		
 		JButton applyButton = new JButton("Apply");
+		applyButton.addActionListener(new ApplyListener());
 		
 		this.setLayout(new GridBagLayout());
 		
@@ -125,10 +180,68 @@ class FilterPanel extends JPanel {
 		this.add(resetButton, cons);
 		
 		cons.gridx = 2;
-		this.add(applyButton, cons);
-		
+		this.add(applyButton, cons);	
 	}
 	
+	class ApplyListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			//Context
+			int[] selects = contextList.getSelectedIndices();
+			ArrayList<String> contextSelections = new ArrayList<String>(6);
+			for(int i = 0; i < selects.length; i++)
+			{
+				contextSelections.add((String) contextList.getModel().getElementAt(selects[i]));	
+				//System.out.println((String) contextList.getModel().getElementAt(selects[i]));
+			}
+			controller.setContext(contextSelections);
+			
+			//Age range
+			selects = ageRange.getSelectedIndices();
+			ArrayList<String> ageSelections = new ArrayList<String>(5);
+			for(int i = 0; i < selects.length; i++)
+			{
+				ageSelections.add((String) ageRange.getModel().getElementAt(selects[i]));	
+			}
+			controller.setAgeRange(ageSelections);
+			
+			//Income
+			ArrayList<String> incomeSelections = new ArrayList<String>(3);
+			if(highBox.isSelected())
+			{
+				incomeSelections.add("High");
+			}
+			
+			if(mediumBox.isSelected())
+			{
+				incomeSelections.add("Medium");
+			}
+			
+			if(lowBox.isSelected())
+			{
+				incomeSelections.add("Low");
+			}
+			controller.setIncomeRange(incomeSelections);
+			
+			//Gender
+			ArrayList<String> genderSelections = new ArrayList<String>(2);
+			if(maleBox.isSelected())
+			{
+				genderSelections.add("Male");
+			}
+			
+			if(femaleBox.isSelected())
+			{
+				genderSelections.add("Female");
+			}
+			controller.setGender(genderSelections);
+			
+			//Date
+			controller.SetDateRange(startDate.getText(), endDate.getText());
+		}
+	}
 }
 
 class MyListSelectionModel extends DefaultListSelectionModel {
@@ -142,3 +255,12 @@ class MyListSelectionModel extends DefaultListSelectionModel {
         }
     }
 }
+
+
+
+
+
+
+
+
+

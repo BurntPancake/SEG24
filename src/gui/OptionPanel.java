@@ -3,6 +3,8 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -59,6 +61,25 @@ class OptionPanel extends JPanel {
 		bounceNumberOptions.addActionListener(sub);
 		bounceRateOptions.addActionListener(sub);
 		
+	}
+	
+}
+
+class SubmissionListener implements ActionListener {
+	
+	private JComboBox numberOptions, rateOptions;
+	private Controller controller;
+	
+	public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
+		this.numberOptions = numberOptions;
+		this.rateOptions = rateOptions;
+		this.controller = controller;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
+										(String) rateOptions.getSelectedItem());
+			
 	}
 	
 }

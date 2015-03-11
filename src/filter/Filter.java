@@ -82,16 +82,19 @@ public class Filter
 	 * @return
 	 */
 	public Hashtable<String, String>[] filterTablebyField(
-			Hashtable<String, String>[] log, String field, String[] values)
+			Hashtable<String, String>[] log, String field, ArrayList<String> values)
 	{
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
 		for (Hashtable<String, String> h : log)
 		{
+			
 			for(String v : values)
 			{
+				//System.out.println(v + h.get(field));
 				if(h.get(field).equals(v))
 				{
 					newTable.add(h);
+					break;
 				}
 			}
 		}

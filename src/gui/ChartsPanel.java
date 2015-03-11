@@ -91,10 +91,10 @@ class ChartsPanel extends JPanel
 		            case "Number of Conversions":
 		            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(60), 60));
 		            	break;
-		            	
+		            	/*
 		            case "Total Cost":
 		            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalCost(60), 60));
-		            	break;
+		            	break; */
 		            	
 		            case "CTR":
 		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(60), 60));
@@ -127,23 +127,4 @@ class ChartsPanel extends JPanel
 			}
 		});		
 	}
-}
-
-class SubmissionListener implements ActionListener {
-	
-	private JComboBox numberOptions, rateOptions;
-	private Controller controller;
-	
-	public SubmissionListener(JComboBox<String> numberOptions, JComboBox<String> rateOptions, Controller controller) {
-		this.numberOptions = numberOptions;
-		this.rateOptions = rateOptions;
-		this.controller = controller;
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		controller.setBouncePreferences((String) numberOptions.getSelectedItem(),
-										(String) rateOptions.getSelectedItem());
-			
-	}
-	
 }
