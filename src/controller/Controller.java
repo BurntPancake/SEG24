@@ -26,14 +26,6 @@ public class Controller {
 	private Hashtable<String, String>[] impressionRecords;
 	private Hashtable<String, String>[] serverRecords;
 	private Hashtable<String, String>[] clickRecords;
-	
-		
-	private Hashtable<String, String>[] originalImpressionRecords;
-	private Hashtable<String, String>[] originalServerRecords;
-	private Hashtable<String, String>[] originalClickRecords;
-	
-	private CalculatorInterface originalCalc;
-
 
 	public Controller(DecoderInterface decoder, Plotter plotter) {
 		this.decoder = decoder;
