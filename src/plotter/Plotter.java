@@ -8,6 +8,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -187,20 +188,20 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel clickCost(Float[] i, int time) 
+	public ChartPanel clickCost(Float[] d) 
 	{
-        XYSeries first = new XYSeries("Click Cost");
-        
-        for(int j = 0 ; j < i.length ; j++)
+		HistogramDataset data = new HistogramDataset();            
+		double[] val = new double[d.length];
+		for(int j = 0 ; j < d.length ; j++)
         {
-	        first.add(time * j, i[j].doubleValue());
+	        val[j] = d[j].doubleValue();
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        IntervalXYDataset dataSet = data;
-        JFreeChart chart = createHistogram(dataSet, "Click Cost");
+		//HistogramBin bin = new HistogramBin(4,9);
+		data.addSeries("Cost Distribution", val,  10);
+        JFreeChart chart = createHistogram(data, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
-    }
+    }	
 	
 	 private JFreeChart createChart(XYDataset dataSet, String title)
 	 {	        
