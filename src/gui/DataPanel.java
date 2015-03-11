@@ -80,20 +80,29 @@ class DataPanel extends JPanel{
 		gbc.gridx = 1;
 		gbc.gridwidth = 3;
 		this.add(this.errorField, gbc);
+		
 		FileFinder ff = new FileFinder();
+		//ff.setNameToSearch(fc.getCurrentDirectory().getAbsolutePath());
 		ff.searchDirectory(fc.getCurrentDirectory(), "impression_log.csv", "click_log.csv", "server_log.csv");
 		
+		//int impfound = 0, clickfound = 0, serverfound = 0;
+		
 		for (String matched : ff.foundFiles){
+			System.out.println("Found: " + matched);
+		
 			if (matched.endsWith("impression_log.csv")){
+				//impfound++;
 				this.impressionField.setText(matched);
 			} else if (matched.endsWith("click_log.csv")){
+				//clickfound++;
 				this.clickField.setText(matched);
 			} else if (matched.endsWith("server_log.csv")){
+				//serverfound++;
 				this.serverField.setText(matched);
 			}
 		}		
 		
-		//DataListener dl = new DataListener(this.controller, this, mp);
+		DataListener dl = new DataListener(this.controller, this, mp);
 		this.clickButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));

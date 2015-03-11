@@ -102,8 +102,7 @@ class FilterPanel extends JPanel
 		resetButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e)
-			{resetPanel();
-			controller.resetFilterOptions();}});
+			{resetPanel();}});
 		
 		JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(new ApplyListener());
@@ -189,24 +188,22 @@ class FilterPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("-----Apply Filter-----");
-			controller.resetFilterOptions();
 			//Context
-			int[] contextSelects = contextList.getSelectedIndices();
+			int[] selects = contextList.getSelectedIndices();
 			ArrayList<String> contextSelections = new ArrayList<String>(6);
-			for(int i = 0; i < contextSelects.length; i++)
+			for(int i = 0; i < selects.length; i++)
 			{
-				contextSelections.add((String) contextList.getModel().getElementAt(contextSelects[i]));	
+				contextSelections.add((String) contextList.getModel().getElementAt(selects[i]));	
 				//System.out.println((String) contextList.getModel().getElementAt(selects[i]));
 			}
 			controller.setContext(contextSelections);
 			
 			//Age range
-			int[] ageSelects = ageRange.getSelectedIndices();
+			selects = ageRange.getSelectedIndices();
 			ArrayList<String> ageSelections = new ArrayList<String>(5);
-			for(int i = 0; i < ageSelects.length; i++)
+			for(int i = 0; i < selects.length; i++)
 			{
-				ageSelections.add((String) ageRange.getModel().getElementAt(ageSelects[i]));	
+				ageSelections.add((String) ageRange.getModel().getElementAt(selects[i]));	
 			}
 			controller.setAgeRange(ageSelections);
 			
@@ -215,19 +212,16 @@ class FilterPanel extends JPanel
 			if(highBox.isSelected())
 			{
 				incomeSelections.add("High");
-				System.out.println("high selected");
 			}
 			
 			if(mediumBox.isSelected())
 			{
 				incomeSelections.add("Medium");
-				System.out.println("medium selected");
 			}
 			
 			if(lowBox.isSelected())
 			{
 				incomeSelections.add("Low");
-				System.out.println("low selected");
 			}
 			controller.setIncomeRange(incomeSelections);
 			
@@ -236,20 +230,16 @@ class FilterPanel extends JPanel
 			if(maleBox.isSelected())
 			{
 				genderSelections.add("Male");
-				System.out.println("male selected");
 			}
 			
 			if(femaleBox.isSelected())
 			{
 				genderSelections.add("Female");
-				System.out.println("female selected");
 			}
 			controller.setGender(genderSelections);
 			
 			//Date
 			controller.SetDateRange(startDate.getText(), endDate.getText());
-			
-			System.out.println("-----Filter Applied-----");
 		}
 	}
 }

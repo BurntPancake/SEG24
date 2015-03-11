@@ -12,7 +12,7 @@ public class Decoder implements DecoderInterface
 	@Override
 	public Hashtable<String, String>[] getData(String fileName) throws IOException
 	{
-		System.out.println("Getting data from " + fileName + "...");
+		
 		// Setting up input method
 		BufferedReader csvDataReader = getLineReader(fileName);
 		String[] keys = parseLine(csvDataReader.readLine());
@@ -36,7 +36,7 @@ public class Decoder implements DecoderInterface
 			recordList[i] = currentRecord;
 				
 		}
-		System.out.println("Getting data done!");
+		
 		return recordList;
 	
 	}
