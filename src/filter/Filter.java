@@ -25,7 +25,7 @@ public class Filter
 	
 	/**
 	 * The returned hashtable will contain
-	 * entries after or equal to the start date, before the end date
+	 * entries after or equal to the start date, before or equal the end date
 	 * 
 	 * Date should be in the format of the input csv files.
 	 * eg. 
