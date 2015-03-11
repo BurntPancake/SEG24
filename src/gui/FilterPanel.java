@@ -197,7 +197,7 @@ class FilterPanel extends JPanel
 			for(int i = 0; i < contextSelects.length; i++)
 			{
 				contextSelections.add((String) contextList.getModel().getElementAt(contextSelects[i]));	
-				//System.out.println((String) contextList.getModel().getElementAt(selects[i]));
+				System.out.println((String) contextList.getModel().getElementAt(contextSelects[i]));
 			}
 			controller.setContext(contextSelections);
 			
@@ -208,6 +208,7 @@ class FilterPanel extends JPanel
 			for(int i = 0; i < ageSelects.length; i++)
 			{
 				ageSelections.add((String) ageRange.getModel().getElementAt(ageSelects[i]));	
+				System.out.println((String) ageRange.getModel().getElementAt(ageSelects[i]));
 			}
 			controller.setAgeRange(ageSelections);
 			

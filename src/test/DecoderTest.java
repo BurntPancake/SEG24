@@ -1,4 +1,4 @@
-package decoder;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 import org.junit.Test;
+
+import decoder.Decoder;
+import decoder.DecoderInterface;
 
 public class DecoderTest {
 
