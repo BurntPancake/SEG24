@@ -40,11 +40,6 @@ public class Calculator implements CalculatorInterface
 		this.serverLog = serverLog;
 	}
 	
-	public void updateImpressionLog(Hashtable<String, String>[] impressionLog)
-	{
-		
-	}
-	
 	/**
 	 * Count the entries in the log file, arrange the count number according to interval
 	 * @param interval
