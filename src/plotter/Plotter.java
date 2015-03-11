@@ -197,7 +197,7 @@ public class Plotter
 	        val[j] = d[j].doubleValue();
         }
 		//HistogramBin bin = new HistogramBin(4,9);
-		data.addSeries("Cost Distribution", val,  20);
+		data.addSeries("Cost Distribution", val,  10);
         JFreeChart chart = createHistogram(data, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
