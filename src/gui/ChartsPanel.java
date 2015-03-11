@@ -20,7 +20,21 @@ class ChartsPanel extends JPanel
 {
 	private String[] list = {"Click to Access Charts", "Number of Impressions", "Number of Clicks",
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
-			"Total Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
+			"Total Impression Cost", "Total Clicks Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
+	
+	private JTextField timeIntervalField;
+	
+	private int getInterval()
+	{
+		if(timeIntervalField.getText() != null)
+		{
+			 return Integer.decode(timeIntervalField.getText());
+		}
+		else
+		{
+			return 3600;
+		}
+	}
 	
 	ChartsPanel(Controller controller) 
 	{
@@ -29,8 +43,8 @@ class ChartsPanel extends JPanel
 		GridBagConstraints cons = new GridBagConstraints();
 		
 		JLabel intervalLabel = new JLabel("Time Interval (s):");
-		JTextField timeIntervalField = new JTextField();
-		timeIntervalField.setText("60");
+		timeIntervalField = new JTextField();
+		timeIntervalField.setText("3600");
 		
 		final JComboBox<String> l = new JComboBox<String>();
 		for(int i = 0 ; i < list.length ; i++)
@@ -73,51 +87,55 @@ class ChartsPanel extends JPanel
 				switch (x)
 				{	
 		            case "Number of Impressions":	
-		            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(60), 60));
+		            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Number of Clicks":
-		            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(60), 60));
+		            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Number of Uniques":	
-		            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(60), 60));
+		            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Number of Bounces":
-		            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(60), 60));
+		            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Number of Conversions":
-		            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(60), 60));
+		            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(getInterval()), getInterval()));
 		            	break;
-		            	/*
-		            case "Total Cost":
-		            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalCost(60), 60));
-		            	break; */
+		            	
+		            case "Total Impression Cost":
+		            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval()));
+		            	break; 
+		            	
+		            case "Total Click Cost":
+		            	chartDisplayPanel.add(plotter.totalCost(controller.getClickCost(getInterval()), getInterval()));
+		            	break; 
 		            	
 		            case "CTR":
-		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(60), 60));
+		            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "CPA":
-		            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(60), 60));
+		            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "CPC":
-		            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(60), 60));
+		            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "CPM":
-		            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(60), 60));
+		            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Bounce Rate":
-		            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(60), 60));
+		            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(getInterval()), getInterval()));
 		            	break;
 		            	
 		            case "Click Cost":
-		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(60), 60));
+		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(getInterval()), getInterval()));
 		            	break;
 				}
 				chartDisplayPanel.revalidate();

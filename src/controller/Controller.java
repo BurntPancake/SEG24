@@ -214,20 +214,12 @@ public class Controller {
 		return data;
 	}
 	
-	//Do not enable this because the click cost and impression cost are not corresponding to each other and thus can
-	//not be simply added
-	/*
-	public Float[] getTotalCost(int interval)
+	public Float[] getTotalImpressionCost(int interval)
 	{
-		Float[] data = calc.getClickCost(interval);
-		Float[] imp = calc.getImpressionCost(interval);
-		for (int i = 0; i < data.length; i++)
-		{			
-			data[i] = data[i] + imp[i];
-			System.out.println(i);			
-		}
+		//Float[] data = calc.getClickCost(interval);
+		Float[] data = calc.getImpressionCost(interval);
 		return data;
-	}*/
+	}
 	
 	public Float[] getCTR(int interval)
 	{
