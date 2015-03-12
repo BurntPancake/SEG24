@@ -8,6 +8,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
@@ -190,16 +191,22 @@ public class Plotter
 	
 	public ChartPanel clickCost(Integer[] d) 
 	{
-		HistogramDataset data = new HistogramDataset();            
+		/*HistogramDataset data = new HistogramDataset();            
 		double[] val = new double[d.length];
 		for(int j = 0 ; j < d.length ; j++)
         {
-			System.out.println(d[j]);
+			
 	        val[j] = d[j].doubleValue();
+	        System.out.println(d[j] + "**");
         }
 		//HistogramBin bin = new HistogramBin(4,9);
-		data.addSeries("Cost Distribution", val,  10);
-        JFreeChart chart = createHistogram(data, "Click Cost");
+		data.addSeries("Cost Distribution", val,  4);*/
+		DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+		dataSet.addValue(d[0], "Frequency", "0 - 5");
+		dataSet.addValue(d[1], "Frequency", "5 - 10");
+		dataSet.addValue(d[2], "Frequency", "10 - 15");
+		dataSet.addValue(d[3], "Frequency", "15 - 20");
+        JFreeChart chart = createHistogram(dataSet, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }	
@@ -219,9 +226,9 @@ public class Plotter
 		 return chart;
 	 }
 	
-	 private JFreeChart createHistogram(IntervalXYDataset dataSet, String title)
+	 private JFreeChart createHistogram(DefaultCategoryDataset dataSet, String title)
 	 {	        
-		 JFreeChart chart = ChartFactory.createHistogram(title + " Chart",
+		 JFreeChart chart = ChartFactory.createBarChart("Click Cost Distribution",
 		            "", 
 		            title, 
 		            dataSet,

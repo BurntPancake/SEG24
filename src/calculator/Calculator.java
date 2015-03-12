@@ -402,7 +402,7 @@ public class Calculator implements CalculatorInterface
 				max = cost;
 			}
 		}
-		System.out.println(max);
+		
 		return max;
 	}
 
@@ -411,17 +411,26 @@ public class Calculator implements CalculatorInterface
 	{
 		System.out.println("Getting click cost distribution");
 		Integer[] dataSet = new Integer[(int) (getLargestClickCost()/costInterval) + 1];
-		
-		for(int i = 0; i < dataSet.length; i++)
-		{
-			dataSet[i] = 0;
-		}
-		
 		for(Hashtable<String, String> h : clickLog)
 		{
 			float cost = Float.valueOf(h.get("Click Cost"));
 			Integer currentCostInterval = (int) (cost/costInterval); //Not round! Only the integer part matters!
-			dataSet[currentCostInterval] = dataSet[currentCostInterval]+1;
+			if(dataSet[currentCostInterval] == null)
+			{
+				dataSet[currentCostInterval] = 1;
+			}
+			else
+			{
+				dataSet[currentCostInterval] = dataSet[currentCostInterval]+1;
+			}
+			
+			for(Integer i : dataSet)
+			{
+				if (i == null)
+				{
+					i = 0;
+				}
+			}
 		}
 		
 		return dataSet;
