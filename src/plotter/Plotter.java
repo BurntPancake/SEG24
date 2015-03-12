@@ -7,7 +7,9 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
@@ -15,6 +17,7 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleInsets;
 
 public class Plotter
 {
@@ -189,7 +192,7 @@ public class Plotter
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
-	
+
 	public ChartPanel clickCost(double[] d) 
 	{
 		
@@ -223,5 +226,6 @@ public class Plotter
 		 
 		 return chart;
 	 }
+
 
 }
