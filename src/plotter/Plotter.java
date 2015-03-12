@@ -198,7 +198,7 @@ public class Plotter
 		
 		HistogramDataset hd = new HistogramDataset();
 		hd.setType(HistogramType.FREQUENCY);
-		hd.addSeries("Click Cost", d, 4);
+		hd.addSeries("Click Cost", d, 5);
 		JFreeChart chart = ChartFactory.createHistogram("Click Cost Histogram", 
 				"Cost of Click (GB Pence)", 
 				"Frequency", 
