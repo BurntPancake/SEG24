@@ -38,6 +38,9 @@ public class CalculatorTest
 			
 			//Test get cost ability
 			assertTrue(Arrays.equals(new Float[]{(float) (11.794442+11.718663+11.718663+11.718663)}, calc.getClickCost(3600)));
+			
+			//Test get distribution ability
+			assertTrue(Arrays.equals(new Integer[]{4, 4}, calc.getClickCostDistribution(10f)));
 
 		} catch (IOException e) {
 			e.printStackTrace();

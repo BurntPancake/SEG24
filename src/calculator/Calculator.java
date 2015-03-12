@@ -391,4 +391,49 @@ public class Calculator implements CalculatorInterface
 		return bounceRateArray;
 	}
 	
+	private float getLargestClickCost()
+	{
+		float max = 0f;
+		for(Hashtable<String, String> h : clickLog)
+		{
+			float cost = Float.parseFloat(h.get("Click Cost"));
+			if(cost > max)
+			{
+				max = cost;
+			}
+		}
+		
+		return max;
+	}
+
+	@Override
+	public Integer[] getClickCostDistribution(float costInterval)
+	{
+		System.out.println("Getting click cost distribution");
+		Integer[] dataSet = new Integer[(int) (getLargestClickCost()/costInterval) + 1];
+		for(Hashtable<String, String> h : clickLog)
+		{
+			float cost = Float.valueOf(h.get("Click Cost"));
+			Integer currentCostInterval = (int) (cost/costInterval); //Not round! Only the integer part matters!
+			if(dataSet[currentCostInterval] == null)
+			{
+				dataSet[currentCostInterval] = 1;
+			}
+			else
+			{
+				dataSet[currentCostInterval] = dataSet[currentCostInterval]+1;
+			}
+			
+			for(Integer i : dataSet)
+			{
+				if (i == null)
+				{
+					i = 0;
+				}
+			}
+		}
+		
+		return dataSet;
+	}
+	
 }

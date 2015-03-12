@@ -67,4 +67,15 @@ public interface CalculatorInterface
 	 * @return
 	 */
 	public Integer[] getBounceNumberByTime(int interval, int timeSpent);
+
+	/**
+	 * Including small excluding big.
+	 * 
+	 * 0.002 cost interval ->
+	 * [0.000, 0.002)
+	 * [0.002, 0.004)
+	 * @param costInterval
+	 * @return
+	 */
+	public Integer[] getClickCostDistribution(float costInterval);
 }
