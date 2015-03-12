@@ -193,17 +193,7 @@ public class Plotter
     }
 	
 	public ChartPanel clickCost(Integer[] d) 
-	{
-		/*HistogramDataset data = new HistogramDataset();            
-		double[] val = new double[d.length];
-		for(int j = 0 ; j < d.length ; j++)
-        {
-			
-	        val[j] = d[j].doubleValue();
-	        System.out.println(d[j] + "**");
-        }
-		//HistogramBin bin = new HistogramBin(4,9);
-		data.addSeries("Cost Distribution", val,  4);*/
+	{		
 		for(int j = 0 ; j < d.length ; j++)
         {
 			System.out.println(d[j] + "***");
@@ -216,11 +206,7 @@ public class Plotter
 			dataSet.addValue(d[j], "Frequency", a + " " + "-"+ " " + b);
 			a +=2;
 			b +=2;
-        }
-		/*dataSet.addValue(d[1], "Frequency", "5 - 10");
-		dataSet.addValue(d[2], "Frequency", "10 - 15");
-		dataSet.addValue(d[3], "Frequency", "15 - 20");*/
-		
+        }		
         JFreeChart chart = createHistogram(dataSet, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
