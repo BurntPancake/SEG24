@@ -135,7 +135,7 @@ class ChartsPanel extends JPanel
 		            	break;
 		            	
 		            case "Click Cost":
-		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost(getInterval())));
+		            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost()));
 		            	break;
 				}
 				chartDisplayPanel.revalidate();

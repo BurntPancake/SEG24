@@ -188,12 +188,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel clickCost(Float[] d) 
+	public ChartPanel clickCost(Integer[] d) 
 	{
 		HistogramDataset data = new HistogramDataset();            
 		double[] val = new double[d.length];
 		for(int j = 0 ; j < d.length ; j++)
         {
+			System.out.println(d[j]);
 	        val[j] = d[j].doubleValue();
         }
 		//HistogramBin bin = new HistogramBin(4,9);

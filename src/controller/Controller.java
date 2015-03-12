@@ -300,11 +300,11 @@ public class Controller {
 		return data;
 	}
 	
-	public Float[] getClickCost(int interval)
+	public Integer[] getClickCost()
 	{
-		Float[] data = calc.getClickCost(interval);
+		Integer[] data = calc.getClickCostDistribution(10f);
 		
-		for (Float i : data)
+		for (Integer i : data)
 		{
 			System.out.println(i);
 		}
