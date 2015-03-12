@@ -300,15 +300,15 @@ public class Controller {
 		return data;
 	}
 	
-	public Integer[] getClickCost()
+	public double[] getClickCost()
 	{
-		Integer[] data = calc.getClickCostDistribution(5f);
-		
-		for (Integer i : data)
-		{
-			System.out.println(i);
+		Float[] temp = calc.getHistogramClicks();
+		double[] vals = new double[temp.length];
+		for (int i = 0; i < temp.length; i++) {
+			vals[i] = temp[i];
 		}
-		return data;
+		
+		return vals;
 	}
 	
 

@@ -10,6 +10,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.statistics.HistogramType;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -189,26 +190,23 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel clickCost(Integer[] d) 
+	public ChartPanel clickCost(double[] d) 
 	{
-		/*HistogramDataset data = new HistogramDataset();            
-		double[] val = new double[d.length];
-		for(int j = 0 ; j < d.length ; j++)
-        {
-			
-	        val[j] = d[j].doubleValue();
-	        System.out.println(d[j] + "**");
-        }
-		//HistogramBin bin = new HistogramBin(4,9);
-		data.addSeries("Cost Distribution", val,  4);*/
-		DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-		dataSet.addValue(d[0], "Frequency", "0 - 5");
-		dataSet.addValue(d[1], "Frequency", "5 - 10");
-		dataSet.addValue(d[2], "Frequency", "10 - 15");
-		dataSet.addValue(d[3], "Frequency", "15 - 20");
-        JFreeChart chart = createHistogram(dataSet, "Click Cost");
-        ChartPanel chartPanel = new ChartPanel(chart);
-        return chartPanel;
+		
+		HistogramDataset hd = new HistogramDataset();
+		hd.setType(HistogramType.FREQUENCY);
+		hd.addSeries("Click Cost", d, 4);
+		JFreeChart chart = ChartFactory.createHistogram("Click Cost Histogram", 
+				"Cost of Click (GB Pence)", 
+				"Frequency", 
+				hd, 
+				PlotOrientation.VERTICAL, 
+				false, 
+				false, 
+				false);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		return chartPanel;
+
     }	
 	
 	 private JFreeChart createChart(XYDataset dataSet, String title)
@@ -221,22 +219,6 @@ public class Plotter
 		            true,
 		            true,
 		            false);
-		 chart.setBackgroundPaint(Color.WHITE);
-		 
-		 return chart;
-	 }
-	
-	 private JFreeChart createHistogram(DefaultCategoryDataset dataSet, String title)
-	 {	        
-		 JFreeChart chart = ChartFactory.createBarChart("Click Cost Distribution",
-		            "", 
-		            title, 
-		            dataSet,
-		            PlotOrientation.VERTICAL,
-		            false,
-		            true,
-		            false);
-		 
 		 chart.setBackgroundPaint(Color.WHITE);
 		 
 		 return chart;

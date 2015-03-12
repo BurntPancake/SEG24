@@ -78,4 +78,5 @@ public interface CalculatorInterface
 	 * @return
 	 */
 	public Integer[] getClickCostDistribution(float costInterval);
+	public Float[] getHistogramClicks();
 }

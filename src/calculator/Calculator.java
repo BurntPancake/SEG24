@@ -191,6 +191,21 @@ public class Calculator implements CalculatorInterface
 		System.out.println("Getting click cost");
 		return getCost(interval, clickLog, "Click Cost");
 	}
+	
+	public Float[] getHistogramClicks() {
+		ArrayList<Float> temp = new ArrayList<Float>(clickLog.length);
+		for (Hashtable<String, String> entry : clickLog) {
+			temp.add(Float.valueOf(entry.get("Click Cost")));
+		}
+		Float[] values = new Float[temp.size()];
+		int counter = 0;
+		for (Float f : temp) {
+			values[counter] = f;
+			counter++;
+		}
+		
+		return values;
+	}
 
 	@Override
 	/**
