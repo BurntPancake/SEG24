@@ -44,13 +44,13 @@ public class CalculatorTest
 		try
 		{
 			impressionLog = dec.getData("ExampleInputData/impression_Log_test.csv");
-			clickLog = dec.getData("ExampleInputData/click_log_test.csv");
+			clickLog = dec.getData("ExampleInputData/click_log.csv");
 			serverLog = dec.getData("ExampleInputData/server_Log_test.csv");
 			Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
 			System.out.println("Finish readings");
 			//Integer[] dataArray = cal.getClickNumber(86400);
 			
-			Integer[] dataArray = cal.getClickCostDistribution(10f);
+			Integer[] dataArray = cal.getClickCostDistribution(1f);
 			
 			for (int i : dataArray)
 			{
