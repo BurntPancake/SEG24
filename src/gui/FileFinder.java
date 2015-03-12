@@ -8,13 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 
 public class FileFinder {
 
 	private Set<String> namesToSearch;
 	List<String> foundFiles = new ArrayList<String>();
-	Queue<File> toCheck = new LinkedList<File>();
+	Stack<File> children;
 
 	public Set<String> getNamesToSearch() {
 		return namesToSearch;
@@ -24,10 +25,12 @@ public class FileFinder {
 		this.namesToSearch = namesToSearch;
 	}
 	
-	public void getNeighbours(File directory){
+	public Stack<File> getNeighbours(File directory){
+		children = new Stack<File>();
 		for (File f: directory.listFiles()){
-			toCheck.add(f);
+			children.add(f);
 		}
+		return children;
 	}
 	
 	public void searchDirectory(File directory, String file1, String file2, String file3){
@@ -35,7 +38,19 @@ public class FileFinder {
 		setNamesToSearch(new HashSet<String>(Arrays.asList(new String[] {file1, file2, file3})));
 		
 		if (directory.isDirectory()) {
-			search(directory);
+			int max = 5;
+			int curr = 1;
+			while (curr <= max){
+				//System.out.println("curr = " + curr);
+				search(directory, curr);
+				if (foundFiles.size() < 3){
+					curr ++;
+				} else {
+					System.out.println("All files found at depth: " + curr);
+					break;
+				}
+			}
+				
 		} else {
 			System.out.println(directory.getAbsoluteFile() + " is not a directory!");
 		}
@@ -43,23 +58,25 @@ public class FileFinder {
 	}
 	
 	
-	public void search (File f){
+	public void search (File f, int depthLeft){
 		
-		//System.out.println(f.getAbsoluteFile());
-		if (f.isDirectory()){
-			this.getNeighbours(f);
-		} else if (f.isFile() && getNamesToSearch().contains(f.getName().toLowerCase())){
-			System.out.println("Found: " + f.getAbsolutePath().toLowerCase());
-			this.foundFiles.add(f.getAbsolutePath());
-			if (foundFiles.size() == 3) 
-				return;
+		if (depthLeft >= 0){
+			if (f.isDirectory()){
+				for(File child: this.getNeighbours(f)){
+					search(child, depthLeft - 1);
+				}
+			} else if (f.isFile() && getNamesToSearch().contains(f.getName().toLowerCase())){
+				System.out.println("Found: " + f.getAbsolutePath().toLowerCase());
+				Set<String> newSet = this.getNamesToSearch();
+				newSet.remove(f.getName().toLowerCase());
+				this.setNamesToSearch(newSet);
+				this.foundFiles.add(f.getAbsolutePath());
+				if (foundFiles.size() == 3) 
+					return;
+			}
+
 		}
-		//System.out.println(this.toCheck.peek());
-		try{
-			search(this.toCheck.remove());
-		}catch (Exception e){
-			System.out.println("Search completed!");
-		}
+		
 	}
 
 	
