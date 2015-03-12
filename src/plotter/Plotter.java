@@ -7,13 +7,16 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleInsets;
 
 public class Plotter
 {
@@ -201,11 +204,23 @@ public class Plotter
         }
 		//HistogramBin bin = new HistogramBin(4,9);
 		data.addSeries("Cost Distribution", val,  4);*/
+		for(int j = 0 ; j < d.length ; j++)
+        {
+			System.out.println(d[j] + "***");
+        }
 		DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-		dataSet.addValue(d[0], "Frequency", "0 - 5");
-		dataSet.addValue(d[1], "Frequency", "5 - 10");
+		int a = 0;
+		int b = 2;
+		for(int j = 0 ; j < d.length ; j++)
+        {			
+			dataSet.addValue(d[j], "Frequency", a + " " + "-"+ " " + b);
+			a +=2;
+			b +=2;
+        }
+		/*dataSet.addValue(d[1], "Frequency", "5 - 10");
 		dataSet.addValue(d[2], "Frequency", "10 - 15");
-		dataSet.addValue(d[3], "Frequency", "15 - 20");
+		dataSet.addValue(d[3], "Frequency", "15 - 20");*/
+		
         JFreeChart chart = createHistogram(dataSet, "Click Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
@@ -229,14 +244,14 @@ public class Plotter
 	 private JFreeChart createHistogram(DefaultCategoryDataset dataSet, String title)
 	 {	        
 		 JFreeChart chart = ChartFactory.createBarChart("Click Cost Distribution",
-		            "", 
-		            title, 
+		            "Click Cost", 
+		            "Frequency", 
 		            dataSet,
 		            PlotOrientation.VERTICAL,
 		            false,
-		            true,
+		            false,
 		            false);
-		 
+		
 		 chart.setBackgroundPaint(Color.WHITE);
 		 
 		 return chart;

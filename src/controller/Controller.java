@@ -302,7 +302,7 @@ public class Controller {
 	
 	public Integer[] getClickCost()
 	{
-		Integer[] data = calc.getClickCostDistribution(5f);
+		Integer[] data = calc.getClickCostDistribution(2f);
 		
 		for (Integer i : data)
 		{
