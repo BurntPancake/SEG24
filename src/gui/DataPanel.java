@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 import controller.Controller;
 
-class DataPanel extends JPanel{
+public class DataPanel extends JPanel{
 	
 	JButton submitButton;
 	JButton clickButton;
@@ -28,7 +28,7 @@ class DataPanel extends JPanel{
 	private Controller controller;
 	private MetricsPanel metricsPanel;
 	
-	DataPanel(Controller controller, MetricsPanel mp){
+	public DataPanel(Controller controller, MetricsPanel mp){
 		
 		this.controller = controller;
 		this.metricsPanel = mp;
@@ -82,22 +82,16 @@ class DataPanel extends JPanel{
 		this.add(this.errorField, gbc);
 		
 		FileFinder ff = new FileFinder();
-		//ff.setNameToSearch(fc.getCurrentDirectory().getAbsolutePath());
 		ff.searchDirectory(fc.getCurrentDirectory(), "impression_log.csv", "click_log.csv", "server_log.csv");
-		
-		//int impfound = 0, clickfound = 0, serverfound = 0;
 		
 		for (String matched : ff.foundFiles){
 			System.out.println("Found: " + matched);
 		
 			if (matched.endsWith("impression_log.csv")){
-				//impfound++;
 				this.impressionField.setText(matched);
 			} else if (matched.endsWith("click_log.csv")){
-				//clickfound++;
 				this.clickField.setText(matched);
 			} else if (matched.endsWith("server_log.csv")){
-				//serverfound++;
 				this.serverField.setText(matched);
 			}
 		}		
@@ -107,6 +101,18 @@ class DataPanel extends JPanel{
 		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.submitButton.addActionListener(new DataListener(this.controller, this, mp));
+	}
+	
+	public String getClickField(){
+		return this.clickField.getText();
+	}
+	
+	public String getImpressionField(){
+		return this.impressionField.getText();
+	}
+	
+	public String getServerField(){
+		return this.serverField.getText();
 	}
 }
 
