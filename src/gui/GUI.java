@@ -1,7 +1,9 @@
 package gui;
 
 import java.awt.*;
+
 import javax.swing.*;
+
 import controller.Controller;
 
 public class GUI {
@@ -26,7 +28,6 @@ public class GUI {
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
 		
@@ -48,7 +49,7 @@ public class GUI {
 		cons.gridwidth = 2;
 		chartsPane.add(mp, cons);
 		
-		JPanel dataPane = new DataPanel(this.controller, mp);
+		JPanel dataPane = new DataPanel(this.controller, mp, frame);
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
@@ -59,4 +60,5 @@ public class GUI {
 		frame.pack();
 		frame.setVisible(true);		
 	}	
+	
 }

@@ -1,15 +1,20 @@
 package gui;
 
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.Controller;
 
@@ -23,12 +28,13 @@ public class DataPanel extends JPanel{
 	JTextField impressionField;
 	JTextField serverField;
 	JTextField errorField;
+	JLabel blankLabel, loadingField, loadingLabel;
 	private JFileChooser fc;
 	private GridBagConstraints gbc;
 	private Controller controller;
 	private MetricsPanel metricsPanel;
-	
-	public DataPanel(Controller controller, MetricsPanel mp){
+
+	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame){
 		
 		this.controller = controller;
 		this.metricsPanel = mp;
@@ -81,6 +87,19 @@ public class DataPanel extends JPanel{
 		gbc.gridwidth = 3;
 		this.add(this.errorField, gbc);
 		
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.gridwidth = 4;
+		
+		JLabel loadingField = new JLabel("");
+		
+
+		blankLabel = new JLabel("");
+		ImageIcon loadingGif = new ImageIcon(this.getClass().getResource("/images/ajax-loader.gif"));
+		loadingLabel = new JLabel("Loading...", loadingGif, JLabel.CENTER);
+		this.add(loadingLabel, gbc);
+		loadingLabel.setVisible(false);
+		
 		FileFinder ff = new FileFinder();
 		ff.searchDirectory(fc.getCurrentDirectory(), "impression_log.csv", "click_log.csv", "server_log.csv");
 		
@@ -101,6 +120,7 @@ public class DataPanel extends JPanel{
 		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));
 		this.submitButton.addActionListener(new DataListener(this.controller, this, mp));
+		
 	}
 	
 	public String getClickField(){
@@ -132,38 +152,59 @@ class DataListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource().equals(dp.clickButton)){
-			
-			fc = new JFileChooser();
-			int returnVal = fc.showOpenDialog(dp);
-			if (returnVal == JFileChooser.APPROVE_OPTION){
-				String filePath = fc.getSelectedFile().getAbsolutePath();
-				dp.clickField.setText(filePath);
-			}
-		} else if (e.getSource().equals(dp.impressionButton)){
-			
-			fc = new JFileChooser();
-			int returnVal = fc.showOpenDialog(dp);
-			if (returnVal == JFileChooser.APPROVE_OPTION){
-				String filePath = fc.getSelectedFile().getAbsolutePath();
-				dp.impressionField.setText(filePath);
-			}
-		} else if (e.getSource().equals(dp.serverButton)){
-			fc = new JFileChooser();
-			int returnVal = fc.showOpenDialog(dp);
-			if (returnVal == JFileChooser.APPROVE_OPTION){
-				String filePath = fc.getSelectedFile().getAbsolutePath();
-				dp.serverField.setText(filePath);
-			}
-		} else if (e.getSource().equals(dp.submitButton)){
-			if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals("")){
-				dp.errorField.setText("All three logs must be submitted");
-			} else{
-				dp.errorField.setText("");
-				controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
-				mp.displayMetrics(controller.calculateMetrics());
-			}
-		}
+		dp.loadingLabel.setVisible(true);;
+		new Thread(new Runnable(){
+
+		    @Override
+		    public void run(){
+		       
+		    	if (e.getSource().equals(dp.clickButton)){
+					
+					fc = new JFileChooser();
+					int returnVal = fc.showOpenDialog(dp);
+					if (returnVal == JFileChooser.APPROVE_OPTION){
+						String filePath = fc.getSelectedFile().getAbsolutePath();
+						dp.clickField.setText(filePath);
+					}
+				} else if (e.getSource().equals(dp.impressionButton)){
+					
+					fc = new JFileChooser();
+					int returnVal = fc.showOpenDialog(dp);
+					if (returnVal == JFileChooser.APPROVE_OPTION){
+						String filePath = fc.getSelectedFile().getAbsolutePath();
+						dp.impressionField.setText(filePath);
+					}
+				} else if (e.getSource().equals(dp.serverButton)){
+					fc = new JFileChooser();
+					int returnVal = fc.showOpenDialog(dp);
+					if (returnVal == JFileChooser.APPROVE_OPTION){
+						String filePath = fc.getSelectedFile().getAbsolutePath();
+						dp.serverField.setText(filePath);
+					}
+				} else if (e.getSource().equals(dp.submitButton)){
+					if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals("")){
+						dp.errorField.setText("All three logs must be submitted");
+					} else{
+						
+						dp.errorField.setText("");
+						controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
+						mp.displayMetrics(controller.calculateMetrics());
+						
+					}
+				} 
+		    	
+		    	boolean done = true;
+		    	
+		    	if(done){
+		    		SwingUtilities.invokeLater(new Runnable(){
+		    			@Override public void run(){
+		                dp.loadingLabel.setVisible(false);      
+		    			}
+		    		});
+		    	}
+		    }
+
+		}).start();
+		
 	}
 }
-
