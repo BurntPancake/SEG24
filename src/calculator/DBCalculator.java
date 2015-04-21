@@ -15,6 +15,8 @@ import decoder.Decoder;
 
 public class DBCalculator
 {
+	private final int MAX_BATCH = 2000;
+	int count = 0;
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Connection conn = null;
 	
@@ -35,7 +37,10 @@ public class DBCalculator
         {
             String sql = "";
             Statement stmt;
-            stmt = conn.createStatement();
+            //http://stackoverflow.com/questions/16235493/out-of-memory-when-doing-a-big-query
+            stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                    java.sql.ResultSet.CONCUR_READ_ONLY);
+            stmt.setFetchSize(1);
             conn.setAutoCommit(false);
            
             sql = "CREATE TABLE IF NOT EXISTS CLICKLOG" +
@@ -50,14 +55,19 @@ public class DBCalculator
             CSVReader reader = decoder.getRawData(clickLogLocation, "ClickLog");
             String[] nextLine;
             int i = 0;
+            
+            System.out.println("Read Click log lines");
             while ((nextLine = reader.readNext()) != null)
     		{
-    			System.out.println("Read Click log line");
     			sql = "INSERT INTO CLICKLOG (ID,UID,DATE,COST) " +
                         "VALUES (" + i + ",'" + nextLine[1] + "','" + fmt.parse(nextLine[0]) +
                         "'," + nextLine[2] + ");";
     			stmt.addBatch(sql);
     			i++;
+    			if(++count % MAX_BATCH == 0)
+    			{
+    				 stmt.executeBatch();
+    			}
     			
              }
 
@@ -76,14 +86,17 @@ public class DBCalculator
             conn.commit();
 
            reader = decoder.getRawData(impressionLogLocation, "ImpressionLog");
-
+           System.out.println("Read Impression log lines");
            while ((nextLine = reader.readNext()) != null)
-           {
-   				System.out.println("Read Impression log line");
+           {	
    				sql = "INSERT INTO IMPRESSIONLOG (UID,GENDER,INCOME,CONTEXT,AGE,DATE,COST) " +
    						"VALUES ('" + nextLine[1] + "','" + nextLine[2] + "','" + nextLine[4] + "','" + nextLine[5]
    						+ "','" + nextLine[3] + "','" + fmt.parse(nextLine[0]) + "'," + nextLine[6] + ");";
    				stmt.addBatch(sql);
+    			if(++count % MAX_BATCH == 0)
+    			{
+    				 stmt.executeBatch();
+    			}
             }
 
             stmt.executeBatch();
@@ -101,6 +114,7 @@ public class DBCalculator
             
             reader = decoder.getRawData(serverLogLocation, "ImpressionLog");
             i = 0;
+			System.out.println("Read Server log lines");
             while ((nextLine = reader.readNext()) != null)
             {
             	int conversion = 0;
@@ -114,12 +128,16 @@ public class DBCalculator
                 } else {
                     endDate = fmt.parse(nextLine[2]);
                 }
-    			System.out.println("Read Server log line");
+
     			sql = "INSERT INTO SERVERLOG (ID,UID,DATESTART,DATEEND,PAGEVIEW,CONVERSION) " +
                            "VALUES (" + i + ",'" + nextLine[1] + "','" + fmt.parse(nextLine[0]) +
                            "','" + endDate + "'," + nextLine[3] + "," + conversion + ");";
                 stmt.addBatch(sql);
     			i++;
+    			if(++count % MAX_BATCH == 0)
+    			{
+    				 stmt.executeBatch();
+    			}
     			
              }
 
