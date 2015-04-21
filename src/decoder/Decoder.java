@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+
+import com.opencsv.CSVReader;
 
 public class Decoder implements DecoderInterface
 {
@@ -13,55 +16,33 @@ public class Decoder implements DecoderInterface
 	public Hashtable<String, String>[] getData(String fileName) throws IOException
 	{
 		
-		// Setting up input method
-		BufferedReader csvDataReader = getLineReader(fileName);
-		String[] keys = parseLine(csvDataReader.readLine());
-		int entries = getLineCount(fileName, keys.length);
+		CSVReader reader = new CSVReader(new FileReader(fileName));
 		
-		String line;
-		Hashtable<String, String>[] recordList = (Hashtable<String, String>[]) new Hashtable[entries-1];
-		
-		for (int i = 0; i < entries - 1; ++i) {
-		
-			line = csvDataReader.readLine();
+		//Getting the fields
+		String[] keys = reader.readNext();
+		ArrayList<Hashtable<String, String>> recordList = new ArrayList<Hashtable<String, String>>();
+
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null)
+		{
 			Hashtable<String, String> currentRecord = new Hashtable<String, String>();
-			String[] values = parseLine(line);
-			
-			// If construct so that only full lines are read in.
-			if (keys.length == values.length){ 
-				for (int j = 0; j < keys.length; ++j)
-					currentRecord.put(keys[j], values[j]);	
+			for (int j = 0; j < keys.length; ++j)
+			{
+				currentRecord.put(keys[j], nextLine[j]);	
 			}
-			
-			recordList[i] = currentRecord;
-				
+					
+			recordList.add(currentRecord);
+         }
+		
+		Hashtable<String, String>[] result = new Hashtable[recordList.size()];
+	
+		for(int i = 0; i < recordList.size(); i++)
+		{
+			result[i] = recordList.get(i);
 		}
-		
-		return recordList;
+		System.out.println("Finish Decoding " + fileName);
+		return result;
 	
-	}
-	
-	private BufferedReader getLineReader(String fileName) throws IOException {
-		return new BufferedReader(new FileReader (new File(fileName)));
-	}
-	
-	private String[] parseLine(String line) {
-		String[] fields = line.split(",");
-		return fields;
-	}
-	
-	private int getLineCount(String fileName, int keys) throws IOException {
-		
-		BufferedReader lineReader = getLineReader(fileName);
-		int i = 0;
-		String line;
-		while ((line = lineReader.readLine()) != null) {
-			if (parseLine(line).length == keys)
-				i++;
-		}
-		
-		return i;
-		
 	}
 	
 }
