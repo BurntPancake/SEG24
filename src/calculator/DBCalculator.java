@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 import com.opencsv.CSVReader;
 
@@ -14,19 +14,15 @@ public class DBCalculator
 {
 	private DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
 	
-	private Hashtable<String, String>[] impressionLog;
-	private Hashtable<String, String>[] clickLog;
-	private Hashtable<String, String>[] serverLog;
-	
-	public DBCalculator(String impressionLogLocation, 
-			String clickLogLocation,
+	public DBCalculator(String DBName, String clickLogLocation,
+			String impressionLogLocation, 	
 			String serverLogLocation)
 	{
 		Connection conn = null;
         try 
         {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:"+ DBName + ".db");
         } catch (Exception e) 
         {
             System.err.println(e);
@@ -57,7 +53,7 @@ public class DBCalculator
     			sql = "INSERT INTO CLICKCOST (ID,UID,DATE,COST) " +
                         "VALUES (" + i + ",'" + nextLine[1] + "','" + fmt.parse(nextLine[0]) +
                         "'," + nextLine[2] + ");";
-    			  stmt.addBatch(sql);
+    			stmt.addBatch(sql);
     			i++;
     			
              }
@@ -77,7 +73,7 @@ public class DBCalculator
             conn.commit();
 
            reader = decoder.getRawData(impressionLogLocation, "ImpressionLog");
-           i = 0;
+
            while ((nextLine = reader.readNext()) != null)
            {
    				System.out.println("Read Impression log line");
@@ -85,8 +81,6 @@ public class DBCalculator
    						"VALUES ('" + nextLine[1] + "','" + nextLine[2] + "','" + nextLine[4] + "','" + nextLine[5]
    						+ "','" + nextLine[3] + "','" + fmt.parse(nextLine[0]) + "'," + nextLine[6] + ");";
    				stmt.addBatch(sql);
-   				i++;
-   			
             }
 
             stmt.executeBatch();
@@ -102,14 +96,19 @@ public class DBCalculator
             stmt.executeUpdate(sql);
             conn.commit();
             
-            reader = decoder.getRawData(impressionLogLocation, "ImpressionLog");
+            reader = decoder.getRawData(serverLogLocation, "ImpressionLog");
             i = 0;
             while ((nextLine = reader.readNext()) != null)
             {
+            	int conversion = 0;
+            	if(nextLine[4].equals("Yes"))
+            	{
+            		conversion = 1;
+            	}
     				System.out.println("Read Server log line");
     				sql = "INSERT INTO SERVERLOG (ID,UID,DATESTART,DATEEND,PAGEVIEW,CONVERSATION) " +
                             "VALUES (" + i + ",'" + nextLine[1] + "','" + fmt.parse(nextLine[0]) +
-                            "','" + fmt.parse(nextLine[2]) + "'," + nextLine[3] + "," + nextLine[4] + ");";
+                            "','" + fmt.parse(nextLine[2]) + "'," + nextLine[3] + "," + conversion + ");";
                     stmt.addBatch(sql);
     				i++;
     			
@@ -135,4 +134,46 @@ public class DBCalculator
            e.printStackTrace();
         }
 	}
+	
+	private String makeQuery(ArrayList<String> query){
+        String ret = "";
+        for (int i = 0; i < query.size(); ++i) 
+        {
+            if (i == 0) 
+            {
+                ret += "WHERE ";
+            } 
+            else
+            {
+            	ret += " AND ";
+           	}
+           
+            ret += query.get(i);
+        }
+        ret += ";";
+        return ret;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
