@@ -1,3 +1,13 @@
 /bin/
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+*.csv
+
+*.jar
+
+*.db
+
+*.db-journal
+
+*.csv

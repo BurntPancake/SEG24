@@ -15,7 +15,7 @@ import decoder.Decoder;
 
 public class DBCalculator
 {
-	private final int MAX_BATCH = 2000;
+	private final int MAX_BATCH = 3200000;
 	int count = 0;
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Connection conn = null;
@@ -66,7 +66,8 @@ public class DBCalculator
     			i++;
     			if(++count % MAX_BATCH == 0)
     			{
-    				 stmt.executeBatch();
+    				System.out.println("Clear Batch");
+    				stmt.executeBatch();
     			}
     			
              }
@@ -86,6 +87,7 @@ public class DBCalculator
             conn.commit();
 
            reader = decoder.getRawData(impressionLogLocation, "ImpressionLog");
+           long x = System.currentTimeMillis();
            System.out.println("Read Impression log lines");
            while ((nextLine = reader.readNext()) != null)
            {	
@@ -95,7 +97,10 @@ public class DBCalculator
    				stmt.addBatch(sql);
     			if(++count % MAX_BATCH == 0)
     			{
-    				 stmt.executeBatch();
+    				System.out.println("Clear Batch" +  (System.currentTimeMillis() - x));
+    				stmt.executeBatch();
+    				stmt.clearBatch();
+    				
     			}
             }
 
@@ -136,7 +141,8 @@ public class DBCalculator
     			i++;
     			if(++count % MAX_BATCH == 0)
     			{
-    				 stmt.executeBatch();
+    				System.out.println("Clear Batch");
+    				stmt.executeBatch();
     			}
     			
              }
