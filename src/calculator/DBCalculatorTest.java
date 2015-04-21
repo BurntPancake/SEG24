@@ -6,5 +6,7 @@ public class DBCalculatorTest
 	{
 		DBCalculator dbc = new DBCalculator("testDB", "ExampleInputData/click_log.csv", 
 				"ExampleInputData/impression_Log.csv", "ExampleInputData/server_Log.csv");
+		System.out.println(dbc.getClickCount(new FilterOption()));
+		dbc.close();
 	}
 }
