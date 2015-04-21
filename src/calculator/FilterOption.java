@@ -7,13 +7,15 @@ import java.util.Date;
 public class FilterOption
 {
 	public Date startDate;
-	public Date endDate;
+	public Date endDate; // Notice the difference of these two between the start time & end time in server log(the bounces)!
 	public String id;
 	public String gender;
     public String income;
     public String age;
     public String context;
     public Integer isConversion;//Da fuk SQLite no have boolean
+    public Integer bouncePages;
+    public Integer bounceSeconds;
     
     public FilterOption clone()
     {
@@ -26,6 +28,8 @@ public class FilterOption
     	fo.age = age;
     	fo.context = context;
     	fo.isConversion = isConversion;
+    	fo.bouncePages = bouncePages;
+    	fo.bounceSeconds = bounceSeconds;
     	return fo;
     }
 	

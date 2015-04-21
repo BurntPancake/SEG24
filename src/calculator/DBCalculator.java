@@ -13,7 +13,7 @@ import com.opencsv.CSVReader;
 
 import decoder.Decoder;
 
-public class DBCalculator implements CalculatorInterface
+public class DBCalculator
 {
 	private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Connection conn = null;
@@ -228,11 +228,13 @@ public class DBCalculator implements CalculatorInterface
     {
         ArrayList<Double> countList = new ArrayList<>();
         Date date1 = filter.startDate;
-        if(date1 == null) {
+        if(date1 == null)
+        {
             date1 = getMinDate("DATE", "CLICKLOG");
         }
         Date date2 = filter.endDate;
-        if(date2 == null) {
+        if(date2 == null)
+        {
             date2 = getMaxDate("DATE", "CLICKLOG");
         }
         for(int i=(int) (date1.getTime()/1000/interval); i <= (date2.getTime()/1000/interval); i++)
@@ -251,13 +253,16 @@ public class DBCalculator implements CalculatorInterface
     	ArrayList<String> query = new ArrayList<>();
         String sql = "SELECT " + option + " AS total FROM CLICKLOG ";
 
-        if (filter.id != null) {
+        if (filter.id != null) 
+        {
             query.add("UID = '" + filter.id + "'");
         }
-        if (filter.startDate != null) {
+        if (filter.startDate != null) 
+        {
             query.add("DATE >= '" + fmt.format((TemporalAccessor) filter.startDate) + "'");
         }
-        if (filter.endDate != null) {
+        if (filter.endDate != null) 
+        {
             query.add("DATE <= '" + fmt.format((TemporalAccessor) filter.endDate) + "'");
         }
         sql += makeQuery(query);
@@ -277,47 +282,169 @@ public class DBCalculator implements CalculatorInterface
         }
     }
 
+	/**
+	 * 
+	 * @param filter
+	 * @param option
+	 * @param interval in seconds
+	 * @return
+	 */
+    public ArrayList<Double> getServerCount(FilterOption filter, String option, int interval) 
+    {
+        ArrayList<Double> countList = new ArrayList<>();
+        Date date1 = filter.startDate;
+        if(date1 == null) 
+        {
+            date1 = getMinDate("DATE", "SERVERLOG");
+        }
+        Date date2 = filter.endDate;
+        if(date2 == null)
+        {
+            date2 = getMaxDate("DATE", "SERVERLOG");
+        }
+        for(int i=(int) (date1.getTime()/1000/interval); i <= (date2.getTime()/1000/interval); i++)
+        {
+            FilterOption fo = filter.clone();
+            fo.startDate = new Date(i*interval*1000);
+            fo.endDate = new Date(((i+1)*interval - 1)*1000);
 
-	@Override
-	public Integer[] getImpressionNumber(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+            double count = getFilteredServerLog(fo, option);
+            countList.add(count);
+        }
+        return countList;
+    }
+    
+    private Double getFilteredServerLog(FilterOption filter, String option) 
+    {
+    	ArrayList<String> query = new ArrayList<>();
+        String sql = "SELECT " + option + " AS total FROM SERVERLOG ";
 
-	@Override
-	public Integer[] getClickNumber(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+        if (filter.id != null)
+        {
+            query.add("UID = '" + filter.id + "'");
+        }
+        if (filter.bouncePages != null) 
+        {
+            query.add("PAGEVIEW >= " + filter.bouncePages + " ");
+        }
+        if (filter.bounceSeconds != null)
+        {
+        	query.add("strftime(\"%s\", DATEEND) - strftime(\"%s\", DATESTART) > " + (filter.bounceSeconds) + " AND strftime(\"%s\", DATEEND) - strftime(\"%s\", DATESTART) >= 0");
+        }
+        if (filter.startDate != null)
+        {
+            query.add("DATE >= '" + fmt.format((TemporalAccessor) filter.startDate) + "'");
+        }
+        if (filter.endDate != null)
+        {
+            query.add("DATE <= '" + fmt.format((TemporalAccessor) filter.endDate) + "'");
+        }
+        if (filter.isConversion != null) 
+        {
+            query.add("CONVERSATION = " + filter.isConversion + " ");
+        }
+        
+        sql += makeQuery(query);
+        try 
+        {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            double ret = rs.getDouble("total");
+            stmt.close();
+            return (ret);
+        } 
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+	 * 
+	 * @param filter
+	 * @param option
+	 * @param interval in seconds
+	 * @return
+	 */
+    public ArrayList<Double> getImpCount(FilterOption filter, String option, int interval) 
+    {
+        ArrayList<Double> countList = new ArrayList<>();
+        Date date1 = filter.startDate;
+        if(date1 == null)
+        {
+            date1 = getMinDate("DATE", "IMPRESSIONLOG");
+        }
+        Date date2 = filter.endDate;
+        if(date2 == null)
+        {
+            date2 = getMaxDate("DATE", "IMPRESSIONLOG");
+        }
+        for(int i=(int) (date1.getTime()/1000/interval); i <= (date2.getTime()/1000/interval); i++)
+        {
+            FilterOption fo = filter.clone();
+            fo.startDate = new Date(i*interval*1000);
+            fo.endDate = new Date(((i+1)*interval - 1)*1000);
 
-	@Override
+            double count = getFilteredImpLog(fo, option);
+            countList.add(count);
+        }
+        return countList;
+    }
+    private Double getFilteredImpLog(FilterOption filter, String option) 
+    {
+    	ArrayList<String> query = new ArrayList<>();
+        String sql = "SELECT " + option + " AS total FROM IMPRESSIONLOG ";
+
+        if (filter.id != null) 
+        {
+            query.add("UID = '" + filter.id + "'");
+        }
+        if (filter.startDate != null) 
+        {
+            query.add("DATE >= '" + fmt.format((TemporalAccessor) filter.startDate) + "'");
+        }
+        if (filter.endDate != null) 
+        {
+            query.add("DATE <= '" + fmt.format((TemporalAccessor) filter.endDate) + "'");
+        }
+        if (filter.age != null) 
+        {
+            query.add("GENDER = '" + filter.age + "' ");
+        }
+        if (filter.income != null) 
+        {
+            query.add("INCOME = '" + filter.income + "' ");
+        }
+        if (filter.context != null) 
+        {
+            query.add("CONTEXT = '" + filter.context + "' ");
+        }
+        if (filter.age != null)
+        {
+            query.add("AGE = '" + filter.age + "' ");
+        }
+        sql += makeQuery(query);
+        try 
+        {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            double ret = rs.getDouble("total");
+            stmt.close();
+            return (ret);
+        } 
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 	public Integer[] getUniqueNumber(int interval)
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer[] getConversionNumber(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Float[] getImpressionCost(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Float[] getClickCost(int interval)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
@@ -362,19 +489,6 @@ public class DBCalculator implements CalculatorInterface
 		return null;
 	}
 
-	@Override
-	public Integer[] getBounceNumberByPages(int interval, int pageViewd)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer[] getBounceNumberByTime(int interval, int timeSpent)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Integer[] getClickCostDistribution(float costInterval)
