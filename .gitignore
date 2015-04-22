@@ -5,3 +5,11 @@
 Increment2.jar
 
 testDB.db
+
+.classpath
+
+*.prefs
+
+*.csv
+
+.classpath
