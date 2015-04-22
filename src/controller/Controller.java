@@ -6,6 +6,7 @@ import gui.GUI;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 import decoder.Decoder;
@@ -84,6 +85,18 @@ public class Controller {
 		clickRecords = originalClickRecords;
 		serverRecords = originalServerRecords;
 		this.calc = originalCalc;
+	}
+	
+	public void clearIDs()
+	{
+		HashSet<String> idList = new HashSet<String>(impressionRecords.length);
+		for(int i = 0; i < impressionRecords.length; i++)
+		{
+			idList.add(impressionRecords[i].get("ID"));
+		}
+		
+		clickRecords = filter.filterTablebyID(clickRecords, idList);
+		serverRecords = filter.filterTablebyID(serverRecords, idList);
 	}
 	
 	public void setContext(ArrayList<String> contexts)

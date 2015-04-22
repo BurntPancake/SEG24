@@ -369,6 +369,7 @@ class FilterPanel extends JPanel
 			}
 			
 			controller.SetDateRange(chosenStart, chosenEnd);
+			controller.clearIDs();
 			System.out.println("-----Filter Applied-----");
 		}
 		
