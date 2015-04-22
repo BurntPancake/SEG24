@@ -2,7 +2,7 @@ package decoder;
 
 public class Server
 {
-	public String entryDate;
+	public String date;
 	public String endDate;
 	public long id;
 	public int page;
@@ -19,7 +19,7 @@ public class Server
 	
 	private void setEntryDate(String date)
 	{
-		this.entryDate = date;
+		this.date = date;
 	}
 	
 	private void setEndDate(String date)

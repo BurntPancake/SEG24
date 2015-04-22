@@ -2,29 +2,31 @@ package decoder;
 
 public class Click
 {
-	public String date;
 	public long id;
+	public String date;
 	public float cost;
 	
 	public Click(String[] raw)
 	{
 		setDate(raw[0]);
-		setID(raw[1]);
+		setID(Long.valueOf(raw[1]));
 		setCost(raw[2]);
 	}
 	
-	private void setDate(String date)
+	private void setID(long s)
 	{
-		this.date = date;
+		//System.out.println(s);
+		id = s;
 	}
 	
-	private void setID(String id)
+	private void setDate(String s)
 	{
-		this.id = Long.getLong(id);
+		date = s;
 	}
 	
 	private void setCost(String s)
 	{
 		cost = Float.valueOf(s);
 	}
+	
 }

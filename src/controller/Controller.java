@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
+import decoder.Click;
 import decoder.Decoder;
 import decoder.DecoderInterface;
+import decoder.Impression;
+import decoder.Server;
 import calculator.Calculator;
 import calculator.CalculatorInterface;
 import plotter.Plotter;
@@ -24,13 +27,13 @@ public class Controller {
 	private String bounceNumberPreference, bounceRatePreference;
 	
 	private Filter filter = new Filter();
-	private Hashtable<String, String>[] impressionRecords;
-	private Hashtable<String, String>[] serverRecords;
-	private Hashtable<String, String>[] clickRecords;
+	private Impression[] impressionRecords;
+	private Server[] serverRecords;
+	private Click[] clickRecords;
 	
-	private Hashtable<String, String>[] originalImpressionRecords;
-	private Hashtable<String, String>[] originalServerRecords;
-	private Hashtable<String, String>[] originalClickRecords;
+	private Impression[] originalImpressionRecords;
+	private Server[] originalServerRecords;
+	private Click[] originalClickRecords;
 	
 	private CalculatorInterface originalCalc;
 
@@ -43,9 +46,9 @@ public class Controller {
 	
 	public void setFileLocation(String impressionLogLocation, String clickLogLocation, String serverLogLocation){
 		try {
-			impressionRecords = decoder.getData(impressionLogLocation);
-			serverRecords = decoder.getData(serverLogLocation);
-			clickRecords = decoder.getData(clickLogLocation);
+			impressionRecords = decoder.getImpressionLogData(impressionLogLocation);
+			serverRecords = decoder.getServerLogData(serverLogLocation);
+			clickRecords = decoder.getClickLogData(clickLogLocation);
 			
 			originalImpressionRecords = impressionRecords;
 			originalServerRecords = serverRecords;
@@ -92,7 +95,7 @@ public class Controller {
 		HashSet<String> idList = new HashSet<String>(impressionRecords.length);
 		for(int i = 0; i < impressionRecords.length; i++)
 		{
-			idList.add(impressionRecords[i].get("ID"));
+			idList.add(impressionRecords[i].id);
 		}
 		
 		clickRecords = filter.filterTablebyID(clickRecords, idList);
