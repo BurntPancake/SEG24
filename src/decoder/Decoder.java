@@ -10,7 +10,7 @@ import com.opencsv.CSVReader;
 
 public class Decoder implements DecoderInterface
 {
-	
+	/**
 	@Override
 	public Hashtable<String, String>[] getData(String fileName) throws IOException
 	{
@@ -41,7 +41,7 @@ public class Decoder implements DecoderInterface
 		System.out.println("Finish Decoding " + fileName);
 		return result;
 	
-	}
+	}**/
 	
 	public Impression[] getImpressionLogData(String fileName) throws IOException
 	{
