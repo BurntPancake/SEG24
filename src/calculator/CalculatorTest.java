@@ -43,7 +43,7 @@ public class CalculatorTest
 		Hashtable<String, String>[] serverLog;
 		try
 		{
-			impressionLog = dec.getData("ExampleInputData/impression_log.csv");
+			impressionLog = dec.getData("LongInput/impression_log.csv");
 			System.out.println("Finish readings");
 			clickLog = dec.getData("ExampleInputData/click_log.csv");
 			System.out.println("Finish readings");

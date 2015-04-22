@@ -28,13 +28,38 @@ public class Decoder implements DecoderInterface
 		while ((nextLine = reader.readNext()) != null)
 		{
 			currentRecord = new Hashtable<String, String>();
-
+			//System.out.println("Decoding imp log line " + i);
 			for (int j = 0; j < keys.length; ++j)
 			{
 				currentRecord.put(keys[j], nextLine[j]);	
 			}
 					
 			result[i] = currentRecord;
+			i++;
+		}
+		
+		System.out.println("Finish Decoding " + fileName);
+		return result;
+	
+	}
+	
+	public Impression[] getImpressionLogData(String fileName) throws IOException
+	{
+		
+		CSVReader reader = new CSVReader(new FileReader(fileName));
+		
+		//Getting the fields
+		String[] keys = reader.readNext();
+		Impression[] result = new Impression[getLogSize(new File(fileName))];
+
+		String[] nextLine;
+
+		int i = 0;
+		while ((nextLine = reader.readNext()) != null)
+		{
+			System.out.println("Decoding imp log line " + i);
+					
+			result[i] = new Impression(nextLine);
 			i++;
 		}
 		
