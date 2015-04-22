@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -159,7 +160,7 @@ class FilterPanel extends JPanel
 			controller.resetFilterOptions();}});
 		
 		JButton applyButton = new JButton("Apply");
-		applyButton.addActionListener(new ApplyListener());
+		applyButton.addActionListener(new ApplyListener(this));
 		
 		this.setLayout(new GridBagLayout());
 		
@@ -282,6 +283,13 @@ class FilterPanel extends JPanel
 	
 	class ApplyListener implements ActionListener
 	{
+		
+		private FilterPanel fp;
+		
+		public ApplyListener(FilterPanel fp) {
+			this.fp = fp;
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
@@ -368,8 +376,18 @@ class FilterPanel extends JPanel
 				chosenEnd = chosenYear + "-" + chosenMonth + "-" + chosenDay + " " + chosenHour + ":" + chosenMinute + ":00";
 			}
 			
-			controller.SetDateRange(chosenStart, chosenEnd);
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+			LocalDateTime chosenStartRange = LocalDateTime.from(fmt.parse(chosenStart));
+			LocalDateTime chosenEndRange = LocalDateTime.from(fmt.parse(chosenEnd));
+			
+			if (chosenStartRange.isAfter(chosenEndRange)) {
+				JOptionPane.showMessageDialog(fp, "The end date is after the beginning date!");
+			} else {
+				controller.SetDateRange(chosenStart, chosenEnd);
+			}
+			
 			System.out.println("-----Filter Applied-----");
+		
 		}
 		
 		private boolean validDate(int y, int m, int d) {
@@ -405,9 +423,11 @@ class FilterPanel extends JPanel
 			} else {
 				return true;
 			}
+			
 		}
 		
 	}
+	
 }
 
 class MyListSelectionModel extends DefaultListSelectionModel {
