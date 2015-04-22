@@ -22,18 +22,20 @@ class ChartsPanel extends JPanel
 			"Number of Uniques", "Number of Bounces", "Number of Conversions", 
 			"Total Impression Cost", "CTR", "CPA", "CPC", "CPM", "Bounce Rate", "Click Cost"};
 	
-	private JTextField timeIntervalField;
+	private JComboBox<String> timeIntervalMenu;
 	
 	private int getInterval()
 	{
-		if(timeIntervalField.getText() != null)
-		{
-			 return Integer.decode(timeIntervalField.getText());
+		String chosenInterval = (String) timeIntervalMenu.getSelectedItem();
+		int chosenIntervalSeconds;
+		if (chosenInterval.equals("1 hour")) {
+			chosenIntervalSeconds = 3600;
+		} else if (chosenInterval.equals("6 hours")) {
+			chosenIntervalSeconds = 43200;
+		} else {
+			chosenIntervalSeconds = 86400;
 		}
-		else
-		{
-			return 3600;
-		}
+		return chosenIntervalSeconds;
 	}
 	
 	ChartsPanel(Controller controller) 
@@ -43,8 +45,9 @@ class ChartsPanel extends JPanel
 		GridBagConstraints cons = new GridBagConstraints();
 		
 		JLabel intervalLabel = new JLabel("Time Interval (s):");
-		timeIntervalField = new JTextField();
-		timeIntervalField.setText("3600");
+		
+		String[] intervalSelection = {"1 hour", "12 hours", "24 hours"};
+		timeIntervalMenu = new JComboBox<String>(intervalSelection);
 		
 		final JComboBox<String> l = new JComboBox<String>();
 		for(int i = 0 ; i < list.length ; i++)
@@ -62,7 +65,7 @@ class ChartsPanel extends JPanel
 		this.add(intervalLabel, cons);
 		
 		cons.gridx = 2;
-		this.add(timeIntervalField, cons);
+		this.add(timeIntervalMenu, cons);
 		
 		cons.gridx = 0;
 		cons.gridy = 1;
