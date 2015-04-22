@@ -3,6 +3,7 @@ package filter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 public class Filter
@@ -42,8 +43,8 @@ public class Filter
 		LocalDateTime start = LocalDateTime.from(fmt.parse(startDate));
 		LocalDateTime end = LocalDateTime.from(fmt.parse(endDate));
 		
-		System.out.println("Start Date Filtered: " + start.toString() );
-		System.out.println("End Date Filtered: " + end.toString() );
+		//System.out.println("Start Date Filtered: " + start.toString() );
+		//System.out.println("End Date Filtered: " + end.toString() );
 		for (Hashtable<String, String> h : log)
 		{
 			LocalDateTime ldt;
@@ -56,12 +57,12 @@ public class Filter
 				ldt = LocalDateTime.from(fmt.parse(h.get("Entry Date")));
 			}
 			
-			if (ldt.isAfter(start) || ldt.isEqual(start) && ldt.isBefore(end))
+			if ((ldt.isAfter(start) || ldt.isEqual(start)) && ldt.isBefore(end))
 			{
 				newTable.add(h);
 			}
 		}
-		
+		System.out.println(newTable.size());
 		//Convert ArrayList to array
 		Hashtable<String, String>[] newArray = new Hashtable[newTable.size()];
 		for(int i = 0; i < newArray.length; i++)
@@ -99,6 +100,28 @@ public class Filter
 					newTable.add(h);
 					break;
 				}
+			}
+		}
+		
+		//Convert ArrayList to array
+		Hashtable<String, String>[] newArray = new Hashtable[newTable.size()];
+		for(int i = 0; i < newArray.length; i++)
+		{
+			newArray[i] = newTable.get(i);
+		}
+		
+		return newArray;
+	}
+	
+	public Hashtable<String, String>[] filterTablebyID(Hashtable<String, String>[] log, HashSet<String> idList)
+	{
+		
+		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		for (Hashtable<String, String> h : log)
+		{
+			if(idList.contains(h.get("ID")))
+			{
+				newTable.add(h);
 			}
 		}
 		

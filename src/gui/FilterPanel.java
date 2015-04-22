@@ -375,7 +375,7 @@ class FilterPanel extends JPanel
 			if (validDate(Integer.valueOf(chosenYear), Integer.valueOf(chosenMonth), Integer.valueOf(chosenDay))) {
 				chosenEnd = chosenYear + "-" + chosenMonth + "-" + chosenDay + " " + chosenHour + ":" + chosenMinute + ":00";
 			}
-			
+
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
 			LocalDateTime chosenStartRange = LocalDateTime.from(fmt.parse(chosenStart));
 			LocalDateTime chosenEndRange = LocalDateTime.from(fmt.parse(chosenEnd));
@@ -386,6 +386,7 @@ class FilterPanel extends JPanel
 				controller.SetDateRange(chosenStart, chosenEnd);
 			}
 			
+			controller.clearIDs();
 			System.out.println("-----Filter Applied-----");
 		
 		}
