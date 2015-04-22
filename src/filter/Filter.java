@@ -41,6 +41,9 @@ public class Filter
 		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
 		LocalDateTime start = LocalDateTime.from(fmt.parse(startDate));
 		LocalDateTime end = LocalDateTime.from(fmt.parse(endDate));
+		
+		System.out.println("Start Date Filtered: " + start.toString() );
+		System.out.println("End Date Filtered: " + end.toString() );
 		for (Hashtable<String, String> h : log)
 		{
 			LocalDateTime ldt;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.opencsv.CSVReader;
 
@@ -23,11 +24,13 @@ public class Decoder implements DecoderInterface
 		Hashtable<String, String>[] result = new Hashtable[getLogSize(new File(fileName))];
 
 		String[] nextLine;
+
 		Hashtable<String, String> currentRecord;
 		int i = 0;
 		while ((nextLine = reader.readNext()) != null)
 		{
 			currentRecord = new Hashtable<String, String>();
+
 			for (int j = 0; j < keys.length; ++j)
 			{
 				currentRecord.put(keys[j], nextLine[j]);	
@@ -50,7 +53,7 @@ public class Decoder implements DecoderInterface
 			int lines = lnr.getLineNumber();
 			System.out.println(lines);
 			lnr.close();
-			return lines;
+			return lines-1;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
