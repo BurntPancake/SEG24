@@ -43,19 +43,18 @@ public class CalculatorTest
 		Hashtable<String, String>[] serverLog;
 		try
 		{
-			impressionLog = dec.getData("ExampleInputData/impression_Log_test.csv");
+			impressionLog = dec.getData("ExampleInputData/impression_log.csv");
+			System.out.println("Finish readings");
 			clickLog = dec.getData("ExampleInputData/click_log.csv");
-			serverLog = dec.getData("ExampleInputData/server_Log_test.csv");
+			System.out.println("Finish readings");
+			serverLog = dec.getData("ExampleInputData/server_log.csv");
+			System.out.println("Finish readings");
 			Calculator cal = new Calculator(impressionLog, clickLog, serverLog);
 			System.out.println("Finish readings");
 			//Integer[] dataArray = cal.getClickNumber(86400);
 			
-			Integer[] dataArray = cal.getClickCostDistribution(1f);
+			//Integer[] dataArray = cal.getClickCostDistribution(1f);
 			
-			for (int i : dataArray)
-			{
-				System.out.println(i);
-			}
 		} 
 		catch (IOException e)
 		{
