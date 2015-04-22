@@ -57,9 +57,59 @@ public class Decoder implements DecoderInterface
 		int i = 0;
 		while ((nextLine = reader.readNext()) != null)
 		{
-			System.out.println("Decoding imp log line " + i);
+			//System.out.println("Decoding imp log line " + i);
 					
 			result[i] = new Impression(nextLine);
+			i++;
+		}
+		
+		System.out.println("Finish Decoding " + fileName);
+		return result;
+	
+	}
+	
+	public Click[] getClickLogData(String fileName) throws IOException
+	{
+		
+		CSVReader reader = new CSVReader(new FileReader(fileName));
+		
+		//Getting the fields
+		String[] keys = reader.readNext();
+		Click[] result = new Click[getLogSize(new File(fileName))];
+
+		String[] nextLine;
+
+		int i = 0;
+		while ((nextLine = reader.readNext()) != null)
+		{
+			//System.out.println("Decoding imp log line " + i);
+					
+			result[i] = new Click(nextLine);
+			i++;
+		}
+		
+		System.out.println("Finish Decoding " + fileName);
+		return result;
+	
+	}
+	
+	public Server[] getServerLogData(String fileName) throws IOException
+	{
+		
+		CSVReader reader = new CSVReader(new FileReader(fileName));
+		
+		//Getting the fields
+		String[] keys = reader.readNext();
+		Server[] result = new Server[getLogSize(new File(fileName))];
+
+		String[] nextLine;
+
+		int i = 0;
+		while ((nextLine = reader.readNext()) != null)
+		{
+			//System.out.println("Decoding imp log line " + i);
+					
+			result[i] = new Server(nextLine);
 			i++;
 		}
 		

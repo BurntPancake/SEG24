@@ -8,6 +8,8 @@ public class DecoderImpTest
 	{
 		Decoder dec = new Decoder();
 		Impression[] imps;
+		Long x = System.currentTimeMillis();
 		imps = dec.getImpressionLogData("LongInput/impression_log.csv");
+		System.out.println(System.currentTimeMillis() - x);
 	}
 }
