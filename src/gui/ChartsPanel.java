@@ -107,6 +107,9 @@ class ChartsPanel extends JPanel
 		
 		String x = (String) listOfCharts.getSelectedItem();
 		chartDisplayPanel.removeAll();
+		Long impStart = controller.getImpStartTime().getTime();
+		Long clickStart = controller.getClickStartTime().getTime();
+		Long serverStart = controller.getServerStartTime().getTime();
 		
 		switch (x)
 		{	
@@ -114,47 +117,47 @@ class ChartsPanel extends JPanel
 				break;
 				
             case "Number of Impressions":	
-            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(getInterval()), getInterval(), impStart));
             	break;
             	
             case "Number of Clicks":
-            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Number of Uniques":	
-            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Number of Bounces":
-            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Number of Conversions":
-            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Total Impression Cost":
-            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval(), impStart));
             	break; 
             	
             case "CTR":
-            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPA":
-            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPC":
-            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPM":
-            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Bounce Rate":
-            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(getInterval()), getInterval()));
+            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Click Cost":

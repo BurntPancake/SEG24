@@ -1,195 +1,187 @@
 package plotter;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import javax.swing.JPanel;
+import java.util.Date;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
-import org.jfree.data.xy.IntervalXYDataset;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleInsets;
+
+import controller.Controller;
 
 public class Plotter
 {
 	ChartPanel chartPanel;
+	Controller controller;
 
 	public Plotter()
 	{
         
     }
 
-	public ChartPanel nImpression(ArrayList<Integer> i, int time) 
+	public ChartPanel nImpression(ArrayList<Integer> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Number of Impressions");
+        TimeSeries first = new TimeSeries("Number of Impressions");
         for(int j = 0 ; j < i.size() ; j++)
         {
+        	
         	//System.out.println(i.get(j));
-	        first.add(time * j, i.get(j));
+	        first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of Impressions");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Number of Impressions");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nClicks(ArrayList<Integer> i,  int time) 
+	public ChartPanel nClicks(ArrayList<Integer> i,  int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Number of Clicks");
+        TimeSeries first = new TimeSeries("Number of Clicks");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of Clicks");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Number of Clicks");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nUniques(ArrayList<Integer> i, int time) 
+	public ChartPanel nUniques(ArrayList<Integer> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Number of Uniques");
+        TimeSeries first = new TimeSeries("Number of Uniques");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of Uniques");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Number of Uniques");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nBounces(ArrayList<Integer> i, int time) 
+	public ChartPanel nBounces(ArrayList<Integer> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Number of Bounces");
+        TimeSeries first = new TimeSeries("Number of Bounces");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of Bounces");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Number of Bounces");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nConversions(ArrayList<Integer> i, int time) 
+	public ChartPanel nConversions(ArrayList<Integer> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Number of Conversions");
+        TimeSeries first = new TimeSeries("Number of Conversions");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Number of Conversions");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Number of Conversions");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel totalCost(ArrayList<Float> i, int time) 
+	public ChartPanel totalCost(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-		XYSeries first = new XYSeries("Total Cost");
+		TimeSeries first = new TimeSeries("Total Cost");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Total Cost");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Total Cost");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nCTR(ArrayList<Float> i, int time) 
+	public ChartPanel nCTR(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("CTR");
+        TimeSeries first = new TimeSeries("CTR");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "CTR");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "CTR");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nCPA(ArrayList<Float> i, int time) 
+	public ChartPanel nCPA(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("CPA");
+        TimeSeries first = new TimeSeries("CPA");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "CPA");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "CPA");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nCPC(ArrayList<Float> i, int time) 
+	public ChartPanel nCPC(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("CPC");
+        TimeSeries first = new TimeSeries("CPC");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "CPC");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "CPC");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel nCPM(ArrayList<Float> i, int time) 
+	public ChartPanel nCPM(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("CPM");
+        TimeSeries first = new TimeSeries("CPM");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i.get(j));
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j));
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "CPM");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "CPM");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
 	
-	public ChartPanel bounceRate(ArrayList<Float> i, int time) 
+	public ChartPanel bounceRate(ArrayList<Float> i, int time, long startTimeMiliS) 
 	{
-        XYSeries first = new XYSeries("Bounce Rate");
+        TimeSeries first = new TimeSeries("Bounce Rate");
         
         for(int j = 0 ; j < i.size() ; j++)
         {
-	        first.add(time * j, i.get(j).doubleValue());
+        	first.add(new Second(new Date(startTimeMiliS + time * j * 1000)), i.get(j).doubleValue());
         }
-        XYSeriesCollection data = new XYSeriesCollection(first);
-        XYDataset dataSet = data;
-        JFreeChart chart = createChart(dataSet, "Bounce Rate");
+        TimeSeriesCollection data = new TimeSeriesCollection(first);
+        JFreeChart chart = createChart(data, "Bounce Rate");
         ChartPanel chartPanel = new ChartPanel(chart);
         return chartPanel;
     }
@@ -228,6 +220,24 @@ public class Plotter
 		            true,
 		            false);
 		 chart.setBackgroundPaint(Color.WHITE);
+		 
+		 return chart;
+	 }
+	 
+	 private JFreeChart createChart(TimeSeriesCollection dataSet, String title)
+	 {	        
+		
+		 JFreeChart chart = ChartFactory.createTimeSeriesChart(title + " Chart",
+		            "Time(s)", 
+		            title, 
+		            dataSet,
+		            true,
+		            true,
+		            false);
+		 chart.setBackgroundPaint(Color.WHITE);
+		 XYPlot plot = chart.getXYPlot();
+		 DateAxis axis = (DateAxis) plot.getDomainAxis();
+		 axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")); 
 		 
 		 return chart;
 	 }

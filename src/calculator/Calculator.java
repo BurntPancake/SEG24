@@ -44,65 +44,31 @@ public class Calculator
 		this.serverLog = serverLog;
 	}
 	
-	public LocalDateTime getStartTime()
-	{		
-		LocalDateTime ldt1 = LocalDateTime.from(fmt.parse(impressionLog.get(0).date));
-		LocalDateTime ldt2 = LocalDateTime.from(fmt.parse(clickLog.get(0).date));
-		LocalDateTime ldt3 = LocalDateTime.from(fmt.parse(serverLog.get(0).date));
-		
-		if(ldt1.isBefore(ldt2))
-		{
-			if(ldt1.isBefore(ldt3))
-			{
-				return ldt1;
-			}
-			else
-			{
-				return ldt3;
-			}
-		}
-		else
-		{
-			if(ldt2.isBefore(ldt3))
-			{
-				return ldt2;
-			}
-			else
-			{
-				return ldt3;
-			}
-		}
-	}
-	
-	public LocalDateTime getEndTime()
+	public LocalDateTime getImpStartTime()
 	{
-		LocalDateTime ldt1 = LocalDateTime.from(fmt.parse(impressionLog.get(impressionLog.size()-1).date));
-		LocalDateTime ldt2 = LocalDateTime.from(fmt.parse(clickLog.get(clickLog.size()-1).date));
-		LocalDateTime ldt3 = LocalDateTime.from(fmt.parse(serverLog.get(serverLog.size()-1).date));
-		
-		if(ldt1.isAfter(ldt2))
-		{
-			if(ldt1.isAfter(ldt3))
-			{
-				return ldt1;
-			}
-			else
-			{
-				return ldt3;
-			}
-		}
-		else
-		{
-			if(ldt2.isAfter(ldt3))
-			{
-				return ldt2;
-			}
-			else
-			{
-				return ldt3;
-			}
-		}
+		return LocalDateTime.from(fmt.parse(impressionLog.get(0).date));
 	}
+	public LocalDateTime getClickStartTime()
+	{
+		return LocalDateTime.from(fmt.parse(clickLog.get(0).date));
+	}
+	public LocalDateTime getServerStartTime()
+	{
+		return LocalDateTime.from(fmt.parse(serverLog.get(0).date));
+	}
+	public LocalDateTime getImpEndTime()
+	{
+		return LocalDateTime.from(fmt.parse(impressionLog.get(impressionLog.size()-1).date));
+	}
+	public LocalDateTime getClickEndTime()
+	{
+		return LocalDateTime.from(fmt.parse(clickLog.get(clickLog.size()-1).date));
+	}
+	public LocalDateTime getServerEndTime()
+	{
+		return LocalDateTime.from(fmt.parse(serverLog.get(serverLog.size()-1).date));
+	}
+		
 	
 	private ArrayList<Integer> ensureSize(ArrayList<Integer> log, int i)
 	{

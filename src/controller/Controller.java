@@ -4,6 +4,7 @@ import filter.Filter;
 import gui.GUI;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -82,14 +83,76 @@ public class Controller {
 		}
 	}
 	
+	public Date getImpStartTime()
+	{
+		return Date.valueOf(calc.getImpStartTime().toLocalDate());
+	}
+	public Date getClickStartTime()
+	{
+		return Date.valueOf(calc.getClickStartTime().toLocalDate());
+	}
+	public Date getServerStartTime()
+	{
+		return Date.valueOf(calc.getServerStartTime().toLocalDate());
+	}
 	public LocalDateTime getStartTime()
 	{
-		return calc.getStartTime();
+		LocalDateTime ldt1 = calc.getImpStartTime();
+		LocalDateTime ldt2 = calc.getClickStartTime();
+		LocalDateTime ldt3 = calc.getServerStartTime();
+		
+		if(ldt1.isBefore(ldt2))
+		{
+			if(ldt1.isBefore(ldt3))
+			{
+				return ldt1;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+		else
+		{
+			if(ldt2.isBefore(ldt3))
+			{
+				return ldt2;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
 	}
 	
 	public LocalDateTime getEndTime()
 	{
-		return calc.getEndTime();
+		LocalDateTime ldt1 = calc.getImpEndTime();
+		LocalDateTime ldt2 = calc.getClickEndTime();
+		LocalDateTime ldt3 = calc.getServerEndTime();
+		
+		if(ldt1.isAfter(ldt2))
+		{
+			if(ldt1.isAfter(ldt3))
+			{
+				return ldt1;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+		else
+		{
+			if(ldt2.isAfter(ldt3))
+			{
+				return ldt2;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
 	}
 	
 	public void resetFilterOptions()
