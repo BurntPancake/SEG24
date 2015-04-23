@@ -29,7 +29,7 @@ public class Server
 	
 	private void setID(String id)
 	{
-		this.id = Long.getLong(id);
+		this.id = Long.parseLong(id);
 	}
 	
 	private void setPage(String s)

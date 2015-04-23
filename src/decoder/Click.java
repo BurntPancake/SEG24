@@ -9,14 +9,14 @@ public class Click
 	public Click(String[] raw)
 	{
 		setDate(raw[0]);
-		setID(Long.valueOf(raw[1]));
+		setID(raw[1]);
 		setCost(raw[2]);
 	}
 	
-	private void setID(long s)
+	private void setID(String s)
 	{
 		//System.out.println(s);
-		id = s;
+		id = Long.parseLong(s);
 	}
 	
 	private void setDate(String s)
