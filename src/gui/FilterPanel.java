@@ -399,7 +399,7 @@ class FilterPanel extends JPanel
 			/*
 			 * Doesn't update chartsPanel when called here, but does inside chartsPanel. Lord if I know
 			 */
-			chartsPanel.updateChart();
+			chartsPanel.updateChart(chartsPanel);
 			chartsPanel.revalidate();
 			chartsPanel.repaint();
 			
