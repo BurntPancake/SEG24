@@ -155,7 +155,6 @@ class DataListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		dp.loadingLabel.setVisible(true);;
 		new Thread(new Runnable(){
 
 		    @Override
@@ -196,24 +195,18 @@ class DataListener implements ActionListener {
 						dp.errorField.setText("All three logs must be submitted");
 						dp.errorField.setVisible(true);
 					} else{
+						
+			    		dp.loadingLabel.setVisible(true);      
 						dp.errorField.setText("");
 						dp.errorField.setVisible(false);
+						
 						controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
+						
 						//mp.displayMetrics(controller.calculateMetrics());
 						mp.displayMetricsAllTime(controller.calculateMetricsAllTime());
+						dp.loadingLabel.setVisible(false);
 					}
-					
-
-			    	boolean done = true;
 			    	
-			    	if(done){
-			    		SwingUtilities.invokeLater(new Runnable(){
-			    			@Override public void run(){
-			                dp.loadingLabel.setVisible(false);      
-			    			}
-			    		});
-			    		
-			    	}
 			    	filterPanel.resetPanel();
 			    	dp.errorField.setText("Success! Change to Charts Tab");
 			    	dp.errorField.setVisible(true);
