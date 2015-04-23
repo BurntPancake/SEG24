@@ -5,6 +5,7 @@ import gui.GUI;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -79,6 +80,16 @@ public class Controller {
 		} else if (ratePreference.equals("Time")) {
 			bounceRatePreference = "Time";
 		}
+	}
+	
+	public LocalDateTime getStartTime()
+	{
+		return calc.getStartTime();
+	}
+	
+	public LocalDateTime getEndTime()
+	{
+		return calc.getEndTime();
 	}
 	
 	public void resetFilterOptions()

@@ -33,11 +33,13 @@ public class DataPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private Controller controller;
 	private MetricsPanel metricsPanel;
+	private FilterPanel filterPanel;
 	
-	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame){
+	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame, FilterPanel filterPanel){
 		
 		this.controller = controller;
 		this.metricsPanel = mp;
+		this.filterPanel = filterPanel;
 		
 		this.clickButton = new JButton("Choose Click Log");
 		this.impressionButton = new JButton("Choose Impression Log");
@@ -114,7 +116,7 @@ public class DataPanel extends JPanel{
 			}
 		}		
 		
-		DataListener dl = new DataListener(this.controller, this, mp);
+		DataListener dl = new DataListener(this.controller, this, mp, filterPanel);
 		this.clickButton.addActionListener(dl);
 		this.impressionButton.addActionListener(dl);
 		this.serverButton.addActionListener(dl);
@@ -141,11 +143,13 @@ class DataListener implements ActionListener {
 	private JFileChooser fc;
 	private DataPanel dp;
 	private MetricsPanel mp;
+	private FilterPanel filterPanel;
 	
-	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp) {
+	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp, FilterPanel filterPanel) {
 		this.controller = controller;
 		this.dp = dp;
 		this.mp = mp;
+		this.filterPanel = filterPanel;
 	}
 	
 	@Override
@@ -201,6 +205,7 @@ class DataListener implements ActionListener {
 		                dp.loadingLabel.setVisible(false);      
 		    			}
 		    		});
+		    		filterPanel.resetPanel();
 		    	}
 		    	
 		    	dp.errorField.setText("Success! Change to Charts Tab");
