@@ -11,6 +11,8 @@ public class GUI {
 	private Controller controller;
 	ChartsPanel chartPanel;
 	JTabbedPane tabbedPane;
+	JFrame frame;
+	JPanel chartsPane;
 	
 	public GUI(Controller controller){
 		this.controller = controller;
@@ -23,14 +25,14 @@ public class GUI {
 		
 	private void display(){
 		
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setTitle("Ad Auction Dashboard");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
 		tabbedPane = new JTabbedPane();
 		
-		JPanel chartsPane = new JPanel(new GridBagLayout());
+		chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
 		
 		cons.gridx = 0;
@@ -42,7 +44,7 @@ public class GUI {
 		
 		cons.gridx = 1;
 		cons.weightx = 0.4;
-		FilterPanel filterPane = new FilterPanel(this.controller, this.chartPanel);
+		FilterPanel filterPane = new FilterPanel(this.controller, this.chartPanel, this);
 		chartsPane.add(filterPane, cons);
 	
 		MetricsPanel mp = new MetricsPanel(this.controller);
@@ -51,7 +53,7 @@ public class GUI {
 		cons.gridwidth = 2;
 		chartsPane.add(mp, cons);
 		
-		JPanel dataPane = new DataPanel(this.controller, mp, frame, filterPane);
+		JPanel dataPane = new DataPanel(this.controller, mp, frame, filterPane, this);
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
@@ -67,10 +69,16 @@ public class GUI {
 	 * Wanted to make automatically change to Charts Tab upon submission completion
 	 * but not implemented
 	 * 
-	void changePane(int indexToView){
+	*/
+	void changePane(int indexToView, JTabbedPane tabbedPane){
 		
 		tabbedPane.setSelectedIndex(indexToView);
 		
+	}
+	/*
+	void updateFrame(JFrame frame){
+		chartsPane.revalidate();
+		chartsPane.repaint();
 	}
 	*/
 	

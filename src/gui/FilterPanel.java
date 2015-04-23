@@ -1,10 +1,15 @@
 package gui;
 
+import java.awt.AWTException;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,9 +59,12 @@ class FilterPanel extends JPanel
 	JComboBox<String> endHour;
 	JComboBox<String> endMinute;
 	
-	public FilterPanel(Controller controller, ChartsPanel chartsPanel) {
+	GUI gui;
+	
+	public FilterPanel(Controller controller, ChartsPanel chartsPanel, GUI gui) {
 		this.controller = controller;
 		this.chartsPanel = chartsPanel;
+		this.gui = gui;
 		init(); 
 	}
 	
@@ -396,14 +404,27 @@ class FilterPanel extends JPanel
 			controller.clearIDs();
 			System.out.println("-----Filter Applied-----");
 			
-			
-			/*
-			 * Doesn't update chartsPanel when called here, but does inside chartsPanel. Lord if I know
-			 */
+
 			chartsPanel.updateChart();
-			chartsPanel.revalidate();
-			chartsPanel.repaint();
 			
+			try {
+				Robot robot = new Robot();
+				
+				int x = MouseInfo.getPointerInfo().getLocation().x;
+				int y = MouseInfo.getPointerInfo().getLocation().y;
+				
+				robot.mouseMove(110, 80);
+				robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+				robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+				robot.keyPress(KeyEvent.VK_ENTER);
+				robot.keyRelease(KeyEvent.VK_ENTER);
+				
+				robot.mouseMove(x, y);
+
+			} catch (AWTException e1) {
+				e1.printStackTrace();
+			}
+
 		}
 		
 		private boolean validDate(int y, int m, int d) {

@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -34,12 +35,14 @@ public class DataPanel extends JPanel{
 	private Controller controller;
 	private MetricsPanel metricsPanel;
 	private FilterPanel filterPanel;
+	GUI gui;
 	
-	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame, FilterPanel filterPanel){
+	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame, FilterPanel filterPanel, GUI gui){
 		
 		this.controller = controller;
 		this.metricsPanel = mp;
 		this.filterPanel = filterPanel;
+		this.gui = gui;
 		
 		this.clickButton = new JButton("Choose Click Log");
 		this.impressionButton = new JButton("Choose Impression Log");
@@ -212,6 +215,8 @@ class DataListener implements ActionListener {
 			    	dp.errorField.setVisible(true);
 			    	dp.revalidate();
 			    	dp.repaint();
+			    	dp.gui.changePane(1, (JTabbedPane) dp.gui.frame.getContentPane());
+			    	
 				} 
 		    }
 
