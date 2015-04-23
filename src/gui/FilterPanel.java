@@ -26,6 +26,7 @@ class FilterPanel extends JPanel
 {
 	
 	private Controller controller;
+	private ChartsPanel chartsPanel;
 	
 	private String[] contexts = { "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
 	private String[] ages = { "<25", "25-34", "35-44", "45-54", ">54" };
@@ -52,8 +53,9 @@ class FilterPanel extends JPanel
 	JComboBox<String> endHour;
 	JComboBox<String> endMinute;
 	
-	public FilterPanel(Controller controller) {
+	public FilterPanel(Controller controller, ChartsPanel chartsPanel) {
 		this.controller = controller;
+		this.chartsPanel = chartsPanel;
 		init();
 	}
 	
@@ -388,7 +390,15 @@ class FilterPanel extends JPanel
 			
 			controller.clearIDs();
 			System.out.println("-----Filter Applied-----");
-		
+			
+			
+			/*
+			 * Doesn't update chartsPanel when called here, but does inside chartsPanel. Lord if I know
+			 */
+			chartsPanel.updateChart();
+			chartsPanel.revalidate();
+			chartsPanel.repaint();
+			
 		}
 		
 		private boolean validDate(int y, int m, int d) {
@@ -442,12 +452,3 @@ class MyListSelectionModel extends DefaultListSelectionModel {
         }
     }
 }
-
-
-
-
-
-
-
-
-

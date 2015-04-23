@@ -33,7 +33,7 @@ public class DataPanel extends JPanel{
 	private GridBagConstraints gbc;
 	private Controller controller;
 	private MetricsPanel metricsPanel;
-
+	
 	public DataPanel(Controller controller, MetricsPanel mp, JFrame frame){
 		
 		this.controller = controller;
@@ -52,6 +52,8 @@ public class DataPanel extends JPanel{
 		this.impressionField.setEditable(false);
 		this.serverField.setEditable(false);
 		this.errorField.setEditable(false);
+		
+		this.errorField.setVisible(false);
 		
 		this.setLayout(new GridBagLayout());
 		this.gbc = new GridBagConstraints();
@@ -90,9 +92,6 @@ public class DataPanel extends JPanel{
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		gbc.gridwidth = 4;
-		
-		JLabel loadingField = new JLabel("");
-		
 
 		blankLabel = new JLabel("");
 		ImageIcon loadingGif = new ImageIcon(this.getClass().getResource("/images/ajax-loader.gif"));
@@ -116,10 +115,10 @@ public class DataPanel extends JPanel{
 		}		
 		
 		DataListener dl = new DataListener(this.controller, this, mp);
-		this.clickButton.addActionListener(new DataListener(this.controller, this, mp));
-		this.impressionButton.addActionListener(new DataListener(this.controller, this, mp));
-		this.serverButton.addActionListener(new DataListener(this.controller, this, mp));
-		this.submitButton.addActionListener(new DataListener(this.controller, this, mp));
+		this.clickButton.addActionListener(dl);
+		this.impressionButton.addActionListener(dl);
+		this.serverButton.addActionListener(dl);
+		this.submitButton.addActionListener(dl);
 		
 	}
 	
@@ -184,12 +183,12 @@ class DataListener implements ActionListener {
 				} else if (e.getSource().equals(dp.submitButton)){
 					if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals("")){
 						dp.errorField.setText("All three logs must be submitted");
+						dp.errorField.setVisible(true);
 					} else{
-						
 						dp.errorField.setText("");
+						dp.errorField.setVisible(false);
 						controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
 						mp.displayMetrics(controller.calculateMetrics());
-						
 					}
 				} 
 		    	
@@ -202,6 +201,12 @@ class DataListener implements ActionListener {
 		    			}
 		    		});
 		    	}
+		    	
+		    	dp.errorField.setText("Success! Change to Charts Tab");
+		    	dp.errorField.setVisible(true);
+		    	dp.revalidate();
+		    	dp.repaint();
+		    	
 		    }
 
 		}).start();
