@@ -112,6 +112,21 @@ public class Filter
 		return newTable;
 	}
 	
+	public ArrayList<Impression> filterImpTablebyID(ArrayList<Impression> log, HashSet<Long> idList)
+	{
+		
+		ArrayList<Impression> newTable = new ArrayList<Impression>();
+		for (Impression h : log)
+		{
+			if(idList.contains(h.id))
+			{
+				newTable.add(h);
+			}
+		}
+		
+		return newTable;
+	}
+	
 	public ArrayList<Click> filterClickTablebyID(ArrayList<Click> log, HashSet<Long> idList)
 	{
 		

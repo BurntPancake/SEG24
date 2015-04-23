@@ -1,10 +1,12 @@
 package calculator;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -46,27 +48,70 @@ public class Calculator
 	
 	public LocalDateTime getImpStartTime()
 	{
-		return LocalDateTime.from(fmt.parse(impressionLog.get(0).date));
+		if(impressionLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(impressionLog.get(0).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
+		
 	}
 	public LocalDateTime getClickStartTime()
 	{
-		return LocalDateTime.from(fmt.parse(clickLog.get(0).date));
+		if(clickLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(clickLog.get(0).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
 	}
 	public LocalDateTime getServerStartTime()
 	{
-		return LocalDateTime.from(fmt.parse(serverLog.get(0).date));
+		if(serverLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(serverLog.get(0).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
 	}
 	public LocalDateTime getImpEndTime()
 	{
-		return LocalDateTime.from(fmt.parse(impressionLog.get(impressionLog.size()-1).date));
+		if(impressionLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(impressionLog.get(impressionLog.size()-1).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
 	}
 	public LocalDateTime getClickEndTime()
 	{
-		return LocalDateTime.from(fmt.parse(clickLog.get(clickLog.size()-1).date));
+		if(clickLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(clickLog.get(clickLog.size()-1).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
 	}
 	public LocalDateTime getServerEndTime()
 	{
-		return LocalDateTime.from(fmt.parse(serverLog.get(serverLog.size()-1).date));
+		if(serverLog.size() > 0)
+		{
+			return LocalDateTime.from(fmt.parse(serverLog.get(serverLog.size()-1).date));
+		}
+		else
+		{
+			return LocalDateTime.MIN;
+		}
 	}
 		
 	
