@@ -237,7 +237,7 @@ public class Plotter
 		 chart.setBackgroundPaint(Color.WHITE);
 		 XYPlot plot = chart.getXYPlot();
 		 DateAxis axis = (DateAxis) plot.getDomainAxis();
-		 axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")); 
+		 axis.setDateFormatOverride(new SimpleDateFormat("dd-MM HH:mm")); 
 		 
 		 return chart;
 	 }

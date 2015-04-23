@@ -311,6 +311,7 @@ class FilterPanel extends JPanel
 				System.out.println((String) contextList.getModel().getElementAt(contextSelects[i]));
 			}
 			controller.setContext(contextSelections);
+			controller.clearIDsUsingImp();
 			
 			//Age range
 			int[] ageSelects = ageRange.getSelectedIndices();
@@ -322,7 +323,7 @@ class FilterPanel extends JPanel
 				System.out.println((String) ageRange.getModel().getElementAt(ageSelects[i]));
 			}
 			controller.setAgeRange(ageSelections);
-			
+			controller.clearIDsUsingImp();
 			//Income
 			ArrayList<String> incomeSelections = new ArrayList<String>(3);
 			if(highBox.isSelected())
@@ -343,7 +344,7 @@ class FilterPanel extends JPanel
 				System.out.println("low selected");
 			}
 			controller.setIncomeRange(incomeSelections);
-			
+			controller.clearIDsUsingImp();
 			//Gender
 			ArrayList<String> genderSelections = new ArrayList<String>(2);
 			if(maleBox.isSelected())
@@ -358,7 +359,7 @@ class FilterPanel extends JPanel
 				System.out.println("female selected");
 			}
 			controller.setGender(genderSelections);
-			
+			controller.clearIDsUsingImp();
 			//Date
 			String chosenStart = "2015-01-01 12:00:00";
 			String chosenEnd = "2015-01-14 12:00:00";
@@ -392,8 +393,6 @@ class FilterPanel extends JPanel
 			} else {
 				controller.SetDateRange(chosenStart, chosenEnd);
 			}
-			
-			controller.clearIDs();
 			System.out.println("-----Filter Applied-----");
 			
 			
