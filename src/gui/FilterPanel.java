@@ -404,7 +404,7 @@ class FilterPanel extends JPanel
 			System.out.println("-----Filter Applied-----");
 			
 
-			chartsPanel.updateChart();
+			chartsPanel.updateChart(chartsPanel);
 			
 			try {
 				Robot robot = new Robot();
