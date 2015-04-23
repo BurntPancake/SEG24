@@ -44,6 +44,24 @@ public class Calculator
 		this.serverLog = serverLog;
 	}
 	
+	private ArrayList<Integer> ensureSize(ArrayList<Integer> log, int i)
+	{
+		while(log.size() < i)
+		{
+			log.add(0);
+		}
+		return log;
+	}
+	
+	private ArrayList<Float> ensureSizeFloat(ArrayList<Float> log, int i)
+	{
+		while(log.size() < i)
+		{
+			log.add(0f);
+		}
+		return log;
+	}
+	
 	/**
 	 * Count the entries in the log file, arrange the count number according to interval
 	 * @param interval
@@ -279,9 +297,21 @@ public class Calculator
 	{
 		System.out.println("Getting CTR");
 		ArrayList<Integer> clickArray = this.getClickNumber(interval);
+		int cLength = clickArray.size();
 		ArrayList<Integer> impressionList = this.getImpressionNumber(interval);
-		ArrayList<Float> CTRArray = new ArrayList<Float>();
-		for(int i = 0; i < clickArray.size(); i++)
+		int iLength = impressionList.size();
+		if(cLength > iLength)
+		{
+			impressionList = ensureSize(impressionList, cLength);
+			iLength = cLength;
+		}
+		else if(iLength > cLength)
+		{
+			clickArray = ensureSize(clickArray, iLength);
+			cLength = iLength;
+		}
+		ArrayList<Float> CTRArray = new ArrayList<Float>(cLength);
+		for(int i = 0; i < cLength; i++)
 		{
 			if(impressionList.get(i).equals(0))
 			{
@@ -303,9 +333,21 @@ public class Calculator
 		System.out.println("Getting CPA");
 		ArrayList<Float> clickCostArray = this.getClickCost(interval);
 		ArrayList<Integer> conversionCountArray = this.getConversionNumber(interval);
-		ArrayList<Float> CPAArray = new ArrayList<Float>();
+		int cLength = clickCostArray.size();
+		int iLength = conversionCountArray.size();
+		if(cLength > iLength)
+		{
+			conversionCountArray = ensureSize(conversionCountArray, cLength);
+			iLength = cLength;
+		}
+		else if(iLength > cLength)
+		{
+			clickCostArray = ensureSizeFloat(clickCostArray, iLength);
+			cLength = iLength;
+		}
+		ArrayList<Float> CPAArray = new ArrayList<Float>(cLength);
 		
-		for(int i = 0; i < clickCostArray.size(); i++)
+		for(int i = 0; i < cLength; i++)
 		{
 			if(conversionCountArray.get(i).equals(0))
 			{
@@ -415,8 +457,20 @@ public class Calculator
 		System.out.println("Getting bounce rate by pages");
 		ArrayList<Integer> bounceCountArray = this.getBounceNumberByPages(interval, pageViewed);
 		ArrayList<Integer> clickCountArray = this.getClickNumber(interval);
-		ArrayList<Float> bounceRateArray = new ArrayList<Float>(bounceCountArray.size());
-		for(int i = 0; i < bounceCountArray.size(); i++)
+		int cLength = bounceCountArray.size();
+		int iLength = clickCountArray.size();
+		if(cLength > iLength)
+		{
+			clickCountArray = ensureSize(clickCountArray, cLength);
+			iLength = cLength;
+		}
+		else if(iLength > cLength)
+		{
+			bounceCountArray = ensureSize(bounceCountArray, iLength);
+			cLength = iLength;
+		}
+		ArrayList<Float> bounceRateArray = new ArrayList<Float>(cLength);
+		for(int i = 0; i < cLength; i++)
 		{
 			if(clickCountArray.get(i).equals(0))
 			{
@@ -437,8 +491,20 @@ public class Calculator
 		System.out.println("Getting bounce rate by time");
 		ArrayList<Integer> bounceCountArray = this.getBounceNumberByTime(interval, timeSpent);
 		ArrayList<Integer> clickCountArray = this.getClickNumber(interval);
-		ArrayList<Float> bounceRateArray = new ArrayList<Float>(bounceCountArray.size());
-		for(int i = 0; i < bounceCountArray.size(); i++)
+		int cLength = bounceCountArray.size();
+		int iLength = clickCountArray.size();
+		if(cLength > iLength)
+		{
+			clickCountArray = ensureSize(clickCountArray, cLength);
+			iLength = cLength;
+		}
+		else if(iLength > cLength)
+		{
+			bounceCountArray = ensureSize(bounceCountArray, iLength);
+			cLength = iLength;
+		}
+		ArrayList<Float> bounceRateArray = new ArrayList<Float>(cLength);
+		for(int i = 0; i < cLength; i++)
 		{
 			if(clickCountArray.get(i).equals(0))
 			{
