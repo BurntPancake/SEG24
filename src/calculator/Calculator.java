@@ -44,6 +44,66 @@ public class Calculator
 		this.serverLog = serverLog;
 	}
 	
+	public LocalDateTime getStartTime()
+	{		
+		LocalDateTime ldt1 = LocalDateTime.from(fmt.parse(impressionLog.get(0).date));
+		LocalDateTime ldt2 = LocalDateTime.from(fmt.parse(clickLog.get(0).date));
+		LocalDateTime ldt3 = LocalDateTime.from(fmt.parse(serverLog.get(0).date));
+		
+		if(ldt1.isBefore(ldt2))
+		{
+			if(ldt1.isBefore(ldt3))
+			{
+				return ldt1;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+		else
+		{
+			if(ldt2.isBefore(ldt3))
+			{
+				return ldt2;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+	}
+	
+	public LocalDateTime getEndTime()
+	{
+		LocalDateTime ldt1 = LocalDateTime.from(fmt.parse(impressionLog.get(impressionLog.size()-1).date));
+		LocalDateTime ldt2 = LocalDateTime.from(fmt.parse(clickLog.get(clickLog.size()-1).date));
+		LocalDateTime ldt3 = LocalDateTime.from(fmt.parse(serverLog.get(serverLog.size()-1).date));
+		
+		if(ldt1.isAfter(ldt2))
+		{
+			if(ldt1.isAfter(ldt3))
+			{
+				return ldt1;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+		else
+		{
+			if(ldt2.isAfter(ldt3))
+			{
+				return ldt2;
+			}
+			else
+			{
+				return ldt3;
+			}
+		}
+	}
+	
 	private ArrayList<Integer> ensureSize(ArrayList<Integer> log, int i)
 	{
 		while(log.size() < i)

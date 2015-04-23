@@ -27,6 +27,7 @@ class FilterPanel extends JPanel
 	
 	private Controller controller;
 	private ChartsPanel chartsPanel;
+	private DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy,MM,dd,HH,mm,ss");
 	
 	private String[] contexts = { "News", "Shopping", "Social Media", "Blog", "Hobbies", "Travel" };
 	private String[] ages = { "<25", "25-34", "35-44", "45-54", ">54" };
@@ -56,7 +57,7 @@ class FilterPanel extends JPanel
 	public FilterPanel(Controller controller, ChartsPanel chartsPanel) {
 		this.controller = controller;
 		this.chartsPanel = chartsPanel;
-		init();
+		init(); 
 	}
 	
 	private void selectAllFileds(JList jlist)
@@ -70,7 +71,7 @@ class FilterPanel extends JPanel
 		}
 	}
 	
-	private void resetPanel()
+	public void resetPanel()
 	{
 		selectAllFileds(contextList);
 		selectAllFileds(ageRange);
@@ -82,17 +83,21 @@ class FilterPanel extends JPanel
 		maleBox.setSelected(true);
 		femaleBox.setSelected(true);
 		
-		startYear.setSelectedIndex(0);
-		startMonth.setSelectedIndex(0);
-		startDay.setSelectedIndex(0);
-		startHour.setSelectedIndex(12);
-		startMinute.setSelectedIndex(0);
+		LocalDateTime time = controller.getStartTime();
+		String[] timeString = time.format(fmt).split(",");
+		startYear.setSelectedItem(timeString[0]);
+		startMonth.setSelectedItem(timeString[1]);
+		startDay.setSelectedItem(timeString[2]);
+		startHour.setSelectedItem(timeString[3]);
+		startMinute.setSelectedItem(timeString[4]);
 		
-		endYear.setSelectedIndex(0);
-		endMonth.setSelectedIndex(0);
-		endDay.setSelectedIndex(13);
-		endHour.setSelectedIndex(12);
-		endMinute.setSelectedIndex(0);
+		time = controller.getEndTime();
+		timeString = time.format(fmt).split(",");
+		endYear.setSelectedItem(timeString[0]);
+		endMonth.setSelectedItem(timeString[1]);
+		endDay.setSelectedItem(timeString[2]);
+		endHour.setSelectedItem(timeString[3]);
+		endMinute.setSelectedItem(timeString[4]);
 		
 	}
 	
@@ -120,7 +125,7 @@ class FilterPanel extends JPanel
 		JLabel startLabel = new JLabel("Start date:");
 		JLabel endLabel = new JLabel("End date:");
 		
-		String[] years = {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"};
+		String[] years = {"2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"};
 		
 		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
 		
@@ -152,7 +157,7 @@ class FilterPanel extends JPanel
 		startHour.setSelectedIndex(12);
 		endHour.setSelectedIndex(12);
 		
-		resetPanel();
+		//resetPanel();
 		
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener(new ActionListener(){

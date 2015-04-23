@@ -51,7 +51,7 @@ public class GUI {
 		cons.gridwidth = 2;
 		chartsPane.add(mp, cons);
 		
-		JPanel dataPane = new DataPanel(this.controller, mp, frame);
+		JPanel dataPane = new DataPanel(this.controller, mp, frame, filterPane);
 		
 		tabbedPane.addTab("Data", dataPane);
 		tabbedPane.addTab("Charts", chartsPane);
