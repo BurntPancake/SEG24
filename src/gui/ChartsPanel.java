@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,7 +9,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -54,7 +57,9 @@ class ChartsPanel extends JPanel
 		String[] intervalSelection = {"1 hour", "6 hours", "24 hours"};
 		timeIntervalMenu = new JComboBox<String>(intervalSelection);
 		
-
+		JButton newWindowButton = new JButton("New Chart Window");
+		newWindowButton.addActionListener(new WindowListener());
+		
 		for(int i = 0 ; i < list.length ; i++)
 		{
 			listOfCharts.addItem(list[i]);
@@ -66,11 +71,14 @@ class ChartsPanel extends JPanel
 		cons.insets = new Insets(0, 5, 0, 5);
 		this.add(listOfCharts, cons);
 		
-		cons.gridx = 1;
+		cons.gridx = 2;
 		this.add(intervalLabel, cons);
 		
-		cons.gridx = 2;
+		cons.gridx = 3;
 		this.add(timeIntervalMenu, cons);
+		
+		cons.gridx = 1;
+		this.add(newWindowButton, cons);
 		
 		cons.gridx = 0;
 		cons.gridy = 1;
@@ -89,7 +97,7 @@ class ChartsPanel extends JPanel
 				if (listOfCharts.getItemAt(0).equals("Click to Access Charts"))
 					listOfCharts.removeItemAt(0);
 					
-				updateChart();
+				updateChart(chartDisplayPanel);
 			}
 		});
 		
@@ -98,15 +106,15 @@ class ChartsPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e) 
 			{		
-				updateChart();
+				updateChart(chartDisplayPanel);
 			}
 		});
 	}
 	
-	public void updateChart(){
+	public void updateChart(JPanel updatePanel){
 		
 		String x = (String) listOfCharts.getSelectedItem();
-		chartDisplayPanel.removeAll();
+		updatePanel.removeAll();
 		Long impStart = controller.getImpStartTime().getTime();
 		Long clickStart = controller.getClickStartTime().getTime();
 		Long serverStart = controller.getServerStartTime().getTime();
@@ -117,58 +125,74 @@ class ChartsPanel extends JPanel
 				break;
 				
             case "Number of Impressions":	
-            	chartDisplayPanel.add(plotter.nImpression(controller.getImpressionNumber(getInterval()), getInterval(), impStart));
+            	updatePanel.add(plotter.nImpression(controller.getImpressionNumber(getInterval()), getInterval(), impStart));
             	break;
             	
             case "Number of Clicks":
-            	chartDisplayPanel.add(plotter.nClicks(controller.getClicks(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nClicks(controller.getClicks(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Number of Uniques":	
-            	chartDisplayPanel.add(plotter.nUniques(controller.getUniques(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nUniques(controller.getUniques(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Number of Bounces":
-            	chartDisplayPanel.add(plotter.nBounces(controller.getBounces(getInterval()), getInterval(), serverStart));
+            	updatePanel.add(plotter.nBounces(controller.getBounces(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Number of Conversions":
-            	chartDisplayPanel.add(plotter.nConversions(controller.getConversions(getInterval()), getInterval(), serverStart));
+            	updatePanel.add(plotter.nConversions(controller.getConversions(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Total Impression Cost":
-            	chartDisplayPanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval(), impStart));
+            	updatePanel.add(plotter.totalCost(controller.getTotalImpressionCost(getInterval()), getInterval(), impStart));
             	break; 
             	
             case "CTR":
-            	chartDisplayPanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nCTR(controller.getCTR(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPA":
-            	chartDisplayPanel.add(plotter.nCPA(controller.getCPA(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nCPA(controller.getCPA(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPC":
-            	chartDisplayPanel.add(plotter.nCPC(controller.getCPC(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nCPC(controller.getCPC(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "CPM":
-            	chartDisplayPanel.add(plotter.nCPM(controller.getCPM(getInterval()), getInterval(), clickStart));
+            	updatePanel.add(plotter.nCPM(controller.getCPM(getInterval()), getInterval(), clickStart));
             	break;
             	
             case "Bounce Rate":
-            	chartDisplayPanel.add(plotter.bounceRate(controller.getBounceRate(getInterval()), getInterval(), serverStart));
+            	updatePanel.add(plotter.bounceRate(controller.getBounceRate(getInterval()), getInterval(), serverStart));
             	break;
             	
             case "Click Cost":
-            	chartDisplayPanel.add(plotter.clickCost(controller.getClickCost()));
+            	updatePanel.add(plotter.clickCost(controller.getClickCost()));
             	break;
 		}
 		
-		chartDisplayPanel.revalidate();
-    	chartDisplayPanel.repaint();
+		updatePanel.revalidate();
+		updatePanel.repaint();
     	ChartsPanel.this.revalidate();
     	ChartsPanel.this.repaint();
 		
 	}
+	
+	class WindowListener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent e) {
+			
+			JDialog dialog = new JDialog();
+        	JPanel chartDisplayPanelPopUp = new JPanel();
+        	ChartsPanel.this.updateChart(chartDisplayPanelPopUp);
+        	dialog.add(chartDisplayPanelPopUp);
+        	dialog.pack();
+        	dialog.setVisible(true);
+		
+		}
+		
+	}
+	
 }

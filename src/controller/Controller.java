@@ -55,12 +55,6 @@ public class Controller {
 			originalServerRecords = serverRecords;
 			originalClickRecords = clickRecords;
 			
-			/**
-			RecordSorter rs = new RecordSorter();
-			rs.sortRecords(impressionRecords, "Date");
-			rs.sortRecords(serverRecords, "Entry Date");
-			rs.sortRecords(clickRecords, "Date");*/
-			
 			this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 			this.originalCalc = calc;
 			
