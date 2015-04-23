@@ -9,6 +9,8 @@ import controller.Controller;
 public class GUI {
 
 	private Controller controller;
+	ChartsPanel chartPanel;
+	JTabbedPane tabbedPane;
 	
 	public GUI(Controller controller){
 		this.controller = controller;
@@ -26,7 +28,7 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 		
 		JPanel chartsPane = new JPanel(new GridBagLayout());
 		GridBagConstraints cons = new GridBagConstraints();
@@ -34,13 +36,13 @@ public class GUI {
 		cons.gridx = 0;
 		cons.gridy = 0;
 		cons.weightx = 0.6;
-		ChartsPanel chartPanel = new ChartsPanel(this.controller);
+		chartPanel = new ChartsPanel(this.controller);
 		chartPanel.setPreferredSize(new Dimension(600, 300));
 		chartsPane.add(new ChartsPanel(this.controller), cons);
 		
 		cons.gridx = 1;
 		cons.weightx = 0.4;
-		FilterPanel filterPane = new FilterPanel(this.controller);
+		FilterPanel filterPane = new FilterPanel(this.controller, this.chartPanel);
 		chartsPane.add(filterPane, cons);
 	
 		MetricsPanel mp = new MetricsPanel(this.controller);
@@ -59,6 +61,17 @@ public class GUI {
 	
 		frame.pack();
 		frame.setVisible(true);		
-	}	
+	}
+	
+	/*
+	 * Wanted to make automatically change to Charts Tab upon submission completion
+	 * but not implemented
+	 * 
+	void changePane(int indexToView){
+		
+		tabbedPane.setSelectedIndex(indexToView);
+		
+	}
+	*/
 	
 }
