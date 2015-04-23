@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
+import decoder.Click;
+import decoder.Impression;
+import decoder.Server;
+
 public class Filter
 {
 	private DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
@@ -36,26 +40,19 @@ public class Filter
 	 * @param endDate
 	 * @return
 	 */
-	public Hashtable<String, String>[] filterTableByTimeInterval(
-			Hashtable<String, String>[] log, String startDate, String endDate) 
+	public ArrayList<Impression> filterImpTableByTimeInterval(
+			ArrayList<Impression> log, String startDate, String endDate) 
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
+		ArrayList<Impression> newTable = new ArrayList<Impression>();
 		LocalDateTime start = LocalDateTime.from(fmt.parse(startDate));
 		LocalDateTime end = LocalDateTime.from(fmt.parse(endDate));
 		
 		//System.out.println("Start Date Filtered: " + start.toString() );
 		//System.out.println("End Date Filtered: " + end.toString() );
-		for (Hashtable<String, String> h : log)
+		for (Impression h : log)
 		{
 			LocalDateTime ldt;
-			if(h.get("Date") != null)
-			{
-				ldt = LocalDateTime.from(fmt.parse(h.get("Date")));
-			}
-			else
-			{
-				ldt = LocalDateTime.from(fmt.parse(h.get("Entry Date")));
-			}
+			ldt = LocalDateTime.from(fmt.parse(h.date));
 			
 			if ((ldt.isAfter(start) || ldt.isEqual(start)) && ldt.isBefore(end))
 			{
@@ -63,14 +60,86 @@ public class Filter
 			}
 		}
 		System.out.println(newTable.size());
-		//Convert ArrayList to array
-		Hashtable<String, String>[] newArray = new Hashtable[newTable.size()];
-		for(int i = 0; i < newArray.length; i++)
+		
+		return newTable;
+	}
+	
+	public ArrayList<Click> filterClickTableByTimeInterval(
+			ArrayList<Click> log, String startDate, String endDate) 
+	{
+		ArrayList<Click> newTable = new ArrayList<Click>();
+		LocalDateTime start = LocalDateTime.from(fmt.parse(startDate));
+		LocalDateTime end = LocalDateTime.from(fmt.parse(endDate));
+		
+		//System.out.println("Start Date Filtered: " + start.toString() );
+		//System.out.println("End Date Filtered: " + end.toString() );
+		for (Click h : log)
 		{
-			newArray[i] = newTable.get(i);
+			LocalDateTime ldt;
+			ldt = LocalDateTime.from(fmt.parse(h.date));
+			
+			if ((ldt.isAfter(start) || ldt.isEqual(start)) && ldt.isBefore(end))
+			{
+				newTable.add(h);
+			}
+		}
+		System.out.println(newTable.size());
+		
+		return newTable;
+	}
+	
+	public ArrayList<Server> filterServerTableByTimeInterval(
+			ArrayList<Server> log, String startDate, String endDate) 
+	{
+		ArrayList<Server> newTable = new ArrayList<Server>();
+		LocalDateTime start = LocalDateTime.from(fmt.parse(startDate));
+		LocalDateTime end = LocalDateTime.from(fmt.parse(endDate));
+		
+		//System.out.println("Start Date Filtered: " + start.toString() );
+		//System.out.println("End Date Filtered: " + end.toString() );
+		for (Server h : log)
+		{
+			LocalDateTime ldt;
+			ldt = LocalDateTime.from(fmt.parse(h.date));
+			
+			if ((ldt.isAfter(start) || ldt.isEqual(start)) && ldt.isBefore(end))
+			{
+				newTable.add(h);
+			}
+		}
+		System.out.println(newTable.size());
+		
+		return newTable;
+	}
+	
+	public ArrayList<Click> filterClickTablebyID(ArrayList<Click> log, HashSet<Long> idList)
+	{
+		
+		ArrayList<Click> newTable = new ArrayList<Click>();
+		for (Click h : log)
+		{
+			if(idList.contains(h.id))
+			{
+				newTable.add(h);
+			}
 		}
 		
-		return newArray;
+		return newTable;
+	}
+	
+	public ArrayList<Server> filterServerTablebyID(ArrayList<Server> log, HashSet<Long> idList)
+	{
+		
+		ArrayList<Server> newTable = new ArrayList<Server>();
+		for (Server h : log)
+		{
+			if(idList.contains(h.id))
+			{
+				newTable.add(h);
+			}
+		}
+		
+		return newTable;
 	}
 	
 	/**
@@ -85,55 +154,58 @@ public class Filter
 	 * @param value
 	 * @return
 	 */
-	public Hashtable<String, String>[] filterTablebyField(
-			Hashtable<String, String>[] log, String field, ArrayList<String> values)
+	public ArrayList<Impression> filterTablebyField(
+			ArrayList<Impression> log, String field, ArrayList<String> values)
 	{
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
-		for (Hashtable<String, String> h : log)
+		ArrayList<Impression> newTable = new ArrayList<Impression>();
+		boolean qualified = false;
+		int value;
+		for (Impression h : log)
 		{
-			
 			for(String v : values)
 			{
-				//System.out.println(v + h.get(field));
-				if(h.get(field).equals(v))
+				value = Impression.translate(v);
+				
+				if(field.equals("Gender"))
 				{
-					newTable.add(h);
-					break;
+					if(h.gender == value)
+					{
+						newTable.add(h);
+						break;
+					}
 				}
+				else if(field.equals("Context"))
+				{
+					if(h.context == value)
+					{
+						newTable.add(h);
+						break;
+					}
+				}
+				else if(field.equals("Age"))
+				{
+					if(h.age == value)
+					{
+						newTable.add(h);
+						break;
+					}
+				}
+				else if(field.equals("Income"))
+				{
+					if(h.income == value)
+					{
+						newTable.add(h);
+						break;
+					}
+				}
+				
 			}
 		}
 		
-		//Convert ArrayList to array
-		Hashtable<String, String>[] newArray = new Hashtable[newTable.size()];
-		for(int i = 0; i < newArray.length; i++)
-		{
-			newArray[i] = newTable.get(i);
-		}
-		
-		return newArray;
+		return newTable;
 	}
 	
-	public Hashtable<String, String>[] filterTablebyID(Hashtable<String, String>[] log, HashSet<String> idList)
-	{
-		
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>();
-		for (Hashtable<String, String> h : log)
-		{
-			if(idList.contains(h.get("ID")))
-			{
-				newTable.add(h);
-			}
-		}
-		
-		//Convert ArrayList to array
-		Hashtable<String, String>[] newArray = new Hashtable[newTable.size()];
-		for(int i = 0; i < newArray.length; i++)
-		{
-			newArray[i] = newTable.get(i);
-		}
-		
-		return newArray;
-	}
+
 	
 }
 

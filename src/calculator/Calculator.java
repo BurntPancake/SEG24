@@ -281,7 +281,7 @@ public class Calculator
 		ArrayList<Integer> clickArray = this.getClickNumber(interval);
 		ArrayList<Integer> impressionList = this.getImpressionNumber(interval);
 		ArrayList<Float> CTRArray = new ArrayList<Float>();
-		for(int i = 0; i < CTRArray.size(); i++)
+		for(int i = 0; i < clickArray.size(); i++)
 		{
 			if(impressionList.get(i).equals(0))
 			{
@@ -305,18 +305,15 @@ public class Calculator
 		ArrayList<Integer> conversionCountArray = this.getConversionNumber(interval);
 		ArrayList<Float> CPAArray = new ArrayList<Float>();
 		
-		System.out.println(clickCostArray.length);
-		System.out.println(conversionCountArray.length);
-		
-		for(int i = 0; i < CPAArray.length; i++)
+		for(int i = 0; i < clickCostArray.size(); i++)
 		{
-			if(conversionCountArray[i].equals(0))
+			if(conversionCountArray.get(i).equals(0))
 			{
-				CPAArray[i] = (float)clickCostArray[i]/1f;
+				CPAArray.add((float)clickCostArray.get(i)/1f);
 			}
 			else
 			{
-				CPAArray[i] = clickCostArray[i]/(float)conversionCountArray[i];
+				CPAArray.add((float)clickCostArray.get(i)/(float)conversionCountArray.get(i));
 			}
 			
 		}
@@ -330,17 +327,17 @@ public class Calculator
 	{
 		System.out.println("Getting CPC");
 		ArrayList<Float> clickCostArray = this.getClickCost(interval);
-		Integer[] clickCountArray = this.getClickNumber(interval);
-		ArrayList<Float> CPCArray = new Float[clickCostArray.length];
-		for(int i = 0; i < clickCostArray.length; i++)
+		ArrayList<Integer> clickCountArray = this.getClickNumber(interval);
+		ArrayList<Float> CPCArray = new ArrayList<Float>(clickCostArray.size());
+		for(int i = 0; i < clickCostArray.size(); i++)
 		{
-			if(clickCountArray[i].equals(0))
+			if(clickCountArray.get(i).equals(0))
 			{
-				CPCArray[i] = (float)clickCostArray[i]/1f;
+				CPCArray.add((float)clickCostArray.get(i)/1f);
 			}
 			else
 			{
-				CPCArray[i] = clickCostArray[i]/(float)clickCountArray[i];
+				CPCArray.add((float)clickCostArray.get(i)/(float)clickCountArray.get(i));
 			}	
 		}
 		return CPCArray;
@@ -353,17 +350,17 @@ public class Calculator
 	{
 		System.out.println("Getting CPM");
 		ArrayList<Float> impressionCostArray = this.getImpressionCost(interval);
-		Integer[] impressionCountArray = this.getImpressionNumber(interval);
-		ArrayList<Float> CPMArray = new Float[impressionCostArray.length];
-		for(int i = 0; i < impressionCostArray.length; i++)
+		ArrayList<Integer> impressionCountArray = this.getImpressionNumber(interval);
+		ArrayList<Float> CPMArray = new ArrayList<Float>(impressionCostArray.size());
+		for(int i = 0; i < impressionCostArray.size(); i++)
 		{
-			if(impressionCountArray[i].equals(0))
+			if(impressionCountArray.get(i).equals(0))
 			{
-				CPMArray[i] = impressionCostArray[i]*1000f;
+				CPMArray.add(impressionCostArray.get(i)*1000f);
 			}
 			else
 			{
-				CPMArray[i] = impressionCostArray[i]/(float)impressionCountArray[i]*1000f;
+				CPMArray.add(impressionCostArray.get(i)/(float)impressionCountArray.get(i)*1000f);
 			}
 			
 		}
@@ -373,67 +370,61 @@ public class Calculator
 	/**
 	 * if smaller or equal => count as a bounce
 	 */
-	public Integer[] getBounceNumberByPages(int interval, int pageViewed)
+	public ArrayList<Integer> getBounceNumberByPages(int interval, int pageViewed)
 	{
 		System.out.println("Getting bounce number by pages");
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
-		for(int i = 0; i < serverLog.length; i++)
+		ArrayList<Server> newTable = new ArrayList<Server>(serverLog.size());
+		for(int i = 0; i < serverLog.size(); i++)
 		{
-			if(Integer.parseInt(serverLog[i].get("Pages Viewed")) <= pageViewed)
+			if(serverLog.get(i).page <= pageViewed)
 			{
-				newTable.add(serverLog[i]);
+				newTable.add(serverLog.get(i));
 			}
 		}
-
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
-		newTable.toArray(newLog);
 		
-		return this.getCount(interval, newLog);
+		return this.getServerCount(interval, newTable);
 	}
 	
 	/**
 	 * if smaller or equal => count as a bounce
 	 */
-	public Integer[] getBounceNumberByTime(int interval, int timeSpent)
+	public ArrayList<Integer> getBounceNumberByTime(int interval, int timeSpent)
 	{
 		System.out.println("Getting bounce number by time");
-		ArrayList<Hashtable<String, String>> newTable = new ArrayList<Hashtable<String, String>>(serverLog.length);
-		for(int i = 0; i < serverLog.length; i++)
+		ArrayList<Server> newTable = new ArrayList<Server>(serverLog.size());
+		for(int i = 0; i < serverLog.size(); i++)
 		{
-			if(!serverLog[i].get("Exit Date").equals("n/a"))
+			if(!serverLog.get(i).endDate.equals("n/a"))
 			{
-				LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Entry Date")));
-				LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog[i].get("Exit Date")));
+				LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog.get(i).date));
+				LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog.get(i).endDate));
 				
 				if(Duration.between(entryDate, exitDate).getSeconds() <= timeSpent)
 				{
-					newTable.add(serverLog[i]);
+					newTable.add(serverLog.get(i));
 				}
 			}	
 		}
-
-		Hashtable<String, String>[] newLog = (Hashtable<String, String>[]) new Hashtable[newTable.size()];;
-		newTable.toArray(newLog);
 		
-		return this.getCount(interval, newLog);
+		return this.getServerCount(interval, newTable);
 	}
 	
 
 	public ArrayList<Float> getBounceRateByPages(int interval, int pageViewed)
 	{
 		System.out.println("Getting bounce rate by pages");
-		Integer[] bounceCountArray = this.getBounceNumberByPages(interval, pageViewed);
-		Integer[] clickCountArray = this.getClickNumber(interval);
-		ArrayList<Float> bounceRateArray = new Float[bounceCountArray.length];
-		for(int i = 0; i < bounceCountArray.length; i++)
+		ArrayList<Integer> bounceCountArray = this.getBounceNumberByPages(interval, pageViewed);
+		ArrayList<Integer> clickCountArray = this.getClickNumber(interval);
+		ArrayList<Float> bounceRateArray = new ArrayList<Float>(bounceCountArray.size());
+		for(int i = 0; i < bounceCountArray.size(); i++)
 		{
-			if(clickCountArray[i].equals(0))
+			if(clickCountArray.get(i).equals(0))
 			{
-				bounceRateArray[i] = (float)bounceCountArray[i]/1f;
+				bounceRateArray.add((float)bounceCountArray.get(i)/1f);
 			}
 			else
 			{
-				bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+				bounceRateArray.add((float)bounceCountArray.get(i)/(float)clickCountArray.get(i));
 			}
 			
 		}
@@ -444,30 +435,30 @@ public class Calculator
 	public ArrayList<Float> getBounceRateByTime(int interval, int timeSpent)
 	{
 		System.out.println("Getting bounce rate by time");
-		Integer[] bounceCountArray = this.getBounceNumberByTime(interval, timeSpent);
-		Integer[] clickCountArray = this.getClickNumber(interval);
-		ArrayList<Float> bounceRateArray = new Float[bounceCountArray.length];
-		for(int i = 0; i < bounceCountArray.length; i++)
+		ArrayList<Integer> bounceCountArray = this.getBounceNumberByTime(interval, timeSpent);
+		ArrayList<Integer> clickCountArray = this.getClickNumber(interval);
+		ArrayList<Float> bounceRateArray = new ArrayList<Float>(bounceCountArray.size());
+		for(int i = 0; i < bounceCountArray.size(); i++)
 		{
-			if(clickCountArray[i].equals(0))
+			if(clickCountArray.get(i).equals(0))
 			{
-				bounceRateArray[i] = (float)bounceCountArray[i]/1f;
+				bounceRateArray.add((float)bounceCountArray.get(i)/1f);
 			}
 			else
 			{
-				bounceRateArray[i] = (float)bounceCountArray[i]/(float)clickCountArray[i];
+				bounceRateArray.add((float)bounceCountArray.get(i)/(float)clickCountArray.get(i));
 			}
 			
 		}
 		return bounceRateArray;
 	}
-	
+	/**
 	private float getLargestClickCost()
 	{
 		float max = 0f;
-		for(Hashtable<String, String> h : clickLog)
+		for(Click h : clickLog)
 		{
-			float cost = Float.parseFloat(h.get("Click Cost"));
+			float cost = h.cost;
 			if(cost > max)
 			{
 				max = cost;
@@ -477,10 +468,11 @@ public class Calculator
 		return max;
 	}
 
-	public Integer[] getClickCostDistribution(float costInterval)
+	
+	public ArrayList<Integer> getClickCostDistribution(float costInterval)
 	{
 		System.out.println("Getting click cost distribution");
-		Integer[] dataSet = new Integer[(int) (getLargestClickCost()/costInterval) + 1];
+		ArrayList<Integer> dataSet = new Integer[(int) (getLargestClickCost()/costInterval) + 1];
 		for(Hashtable<String, String> h : clickLog)
 		{
 			float cost = Float.valueOf(h.get("Click Cost"));
@@ -504,6 +496,6 @@ public class Calculator
 		}
 		
 		return dataSet;
-	}
+	}**/
 	
 }

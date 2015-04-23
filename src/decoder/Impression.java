@@ -94,10 +94,57 @@ public class Impression
 			case "Social Media" :
 				context = 3;
 				break;
+			case "Travel" :
+				context = 4;
+				break;
+			case "Hobbies" :
+				context = 5;
+				break;
 		}
 	}
 	private void setCost(String s)
 	{
 		cost = Float.valueOf(s);
+	}
+	
+	public static int translate(String s)
+	{
+		switch(s)
+		{
+		case "Blogs" : 
+			return 0; 
+		case "News":
+			return 1;
+		case "Shopping" :
+			return 2;
+		case "Social Media" :
+			return 3;
+		case "Travel" :
+			return 4;
+		case "Hobbies" :
+			return 5;
+		case "High" : 
+			return 0;
+		case "Medium":
+			return 1;
+		case "Low" :
+			return 2;
+		case "<25" : 
+			return 0;
+		case "25-34":
+			return 1;
+		case "35-44" :
+			return 2;
+		case "45-54" :
+			return 3;
+		case ">54" :
+			return 4;
+		case "Male" :
+			return 0;
+		case "Female" :
+			return 1;
+		}
+		
+		return -1;
 	}
 }

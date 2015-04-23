@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import com.opencsv.CSVReader;
@@ -43,14 +44,14 @@ public class Decoder implements DecoderInterface
 	
 	}**/
 	
-	public Impression[] getImpressionLogData(String fileName) throws IOException
+	public ArrayList<Impression> getImpressionLogData(String fileName) throws IOException
 	{
 		
 		CSVReader reader = new CSVReader(new FileReader(fileName));
 		
 		//Getting the fields
 		String[] keys = reader.readNext();
-		Impression[] result = new Impression[getLogSize(new File(fileName))];
+		ArrayList<Impression> result = new ArrayList<Impression>(10000);
 
 		String[] nextLine;
 
@@ -59,7 +60,7 @@ public class Decoder implements DecoderInterface
 		{
 			//System.out.println("Decoding imp log line " + i);
 					
-			result[i] = new Impression(nextLine);
+			result.add(new Impression(nextLine));
 			i++;
 		}
 		
@@ -68,14 +69,14 @@ public class Decoder implements DecoderInterface
 	
 	}
 	
-	public Click[] getClickLogData(String fileName) throws IOException
+	public ArrayList<Click> getClickLogData(String fileName) throws IOException
 	{
 		
 		CSVReader reader = new CSVReader(new FileReader(fileName));
 		
 		//Getting the fields
 		String[] keys = reader.readNext();
-		Click[] result = new Click[getLogSize(new File(fileName))];
+		ArrayList<Click> result = new ArrayList<Click>(10000);
 
 		String[] nextLine;
 
@@ -84,7 +85,7 @@ public class Decoder implements DecoderInterface
 		{
 			//System.out.println("Decoding imp log line " + i);
 					
-			result[i] = new Click(nextLine);
+			result.add(new Click(nextLine));
 			i++;
 		}
 		
@@ -93,14 +94,14 @@ public class Decoder implements DecoderInterface
 	
 	}
 	
-	public Server[] getServerLogData(String fileName) throws IOException
+	public ArrayList<Server> getServerLogData(String fileName) throws IOException
 	{
 		
 		CSVReader reader = new CSVReader(new FileReader(fileName));
 		
 		//Getting the fields
 		String[] keys = reader.readNext();
-		Server[] result = new Server[getLogSize(new File(fileName))];
+		ArrayList<Server> result = new ArrayList<Server>(10000);
 
 		String[] nextLine;
 
@@ -109,7 +110,7 @@ public class Decoder implements DecoderInterface
 		{
 			//System.out.println("Decoding imp log line " + i);
 					
-			result[i] = new Server(nextLine);
+			result.add(new Server(nextLine));
 			i++;
 		}
 		
@@ -118,6 +119,7 @@ public class Decoder implements DecoderInterface
 	
 	}
 	
+	/**
 	private int getLogSize(File log) {
 		
 		try {
@@ -133,6 +135,6 @@ public class Decoder implements DecoderInterface
 		
 		return 0;
 		
-	}
+	}**/
 	
 }

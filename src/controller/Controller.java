@@ -15,27 +15,26 @@ import decoder.DecoderInterface;
 import decoder.Impression;
 import decoder.Server;
 import calculator.Calculator;
-import calculator.CalculatorInterface;
 import plotter.Plotter;
 import sorter.RecordSorter;
 
 public class Controller {
 
 	private DecoderInterface decoder;
-	private CalculatorInterface calc;
+	private Calculator calc;
 	private Plotter plotter;
 	private String bounceNumberPreference, bounceRatePreference;
 	
 	private Filter filter = new Filter();
-	private Impression[] impressionRecords;
-	private Server[] serverRecords;
-	private Click[] clickRecords;
+	private ArrayList<Impression> impressionRecords;
+	private ArrayList<Server> serverRecords;
+	private ArrayList<Click> clickRecords;
 	
-	private Impression[] originalImpressionRecords;
-	private Server[] originalServerRecords;
-	private Click[] originalClickRecords;
+	private ArrayList<Impression> originalImpressionRecords;
+	private ArrayList<Server> originalServerRecords;
+	private ArrayList<Click> originalClickRecords;
 	
-	private CalculatorInterface originalCalc;
+	private Calculator originalCalc;
 
 	public Controller(DecoderInterface decoder, Plotter plotter) {
 		this.decoder = decoder;
@@ -92,14 +91,14 @@ public class Controller {
 	
 	public void clearIDs()
 	{
-		HashSet<String> idList = new HashSet<String>(impressionRecords.length);
-		for(int i = 0; i < impressionRecords.length; i++)
+		HashSet<Long> idList = new HashSet<Long>(impressionRecords.size());
+		for(int i = 0; i < impressionRecords.size(); i++)
 		{
-			idList.add(impressionRecords[i].id);
+			idList.add(impressionRecords.get(i).id);
 		}
 		
-		clickRecords = filter.filterTablebyID(clickRecords, idList);
-		serverRecords = filter.filterTablebyID(serverRecords, idList);
+		clickRecords = filter.filterClickTablebyID(clickRecords, idList);
+		serverRecords = filter.filterServerTablebyID(serverRecords, idList);
 	}
 	
 	public void setContext(ArrayList<String> contexts)
@@ -128,9 +127,9 @@ public class Controller {
 	
 	public void SetDateRange(String startDate, String endDate)
 	{
-		impressionRecords = filter.filterTableByTimeInterval(impressionRecords, startDate, endDate);
-		serverRecords = filter.filterTableByTimeInterval(serverRecords, startDate, endDate);
-		clickRecords = filter.filterTableByTimeInterval(clickRecords, startDate, endDate);
+		impressionRecords = filter.filterImpTableByTimeInterval(impressionRecords, startDate, endDate);
+		serverRecords = filter.filterServerTableByTimeInterval(serverRecords, startDate, endDate);
+		clickRecords = filter.filterClickTableByTimeInterval(clickRecords, startDate, endDate);
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
@@ -138,11 +137,11 @@ public class Controller {
 	{
 		String[] metrics = new String[2];
 		if (bounceNumberPreference.equals("Pages")) {
-			metrics[0] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(3600, 2))));
-			metrics[1] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(86400, 2))));
+			metrics[0] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByPages(3600, 2))));
+			metrics[1] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByPages(86400, 2))));
 		} else {
-			metrics[0] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(3600, 120))));
-			metrics[1] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(86400, 120))));
+			metrics[0] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByTime(3600, 120))));
+			metrics[1] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByTime(86400, 120))));
 		}
 		
 		return metrics;
@@ -154,11 +153,11 @@ public class Controller {
 		
 		String[] metrics = new String[2];
 		if (bounceRatePreference.equals("Pages")) {
-			metrics[0] = df.format(100 * getMean(calc.getBounceRateByPages(3600, 2)));
-			metrics[1] = df.format(100 * getMean(calc.getBounceRateByPages(86400, 2)));
+			metrics[0] = df.format(100 * getMeanFloat(calc.getBounceRateByPages(3600, 2)));
+			metrics[1] = df.format(100 * getMeanFloat(calc.getBounceRateByPages(86400, 2)));
 		} else {
-			metrics[0] = df.format(100 * getMean(calc.getBounceRateByTime(3600, 120)));
-			metrics[1] = df.format(100 * getMean(calc.getBounceRateByTime(86400, 120)));
+			metrics[0] = df.format(100 * getMeanFloat(calc.getBounceRateByTime(3600, 120)));
+			metrics[1] = df.format(100 * getMeanFloat(calc.getBounceRateByTime(86400, 120)));
 		}
 		
 		return metrics;
@@ -168,26 +167,26 @@ public class Controller {
 		
 		String[] metrics = new String[22];
 		
-		metrics[0] = Integer.toString(Math.round(getMean(calc.getImpressionNumber(3600))));
-		metrics[1] = Integer.toString(Math.round(getMean(calc.getImpressionNumber(86400))));
-		metrics[2] = Integer.toString(Math.round(getMean(calc.getClickNumber(3600))));
-		metrics[3] = Integer.toString(Math.round(getMean(calc.getClickNumber(86400))));
-		metrics[4] = Integer.toString(Math.round(getMean(calc.getUniqueNumber(3600))));
-		metrics[5] = Integer.toString(Math.round(getMean(calc.getUniqueNumber(86400))));
+		metrics[0] = Integer.toString(Math.round(getMeanInteger(calc.getImpressionNumber(3600))));
+		metrics[1] = Integer.toString(Math.round(getMeanInteger(calc.getImpressionNumber(86400))));
+		metrics[2] = Integer.toString(Math.round(getMeanInteger(calc.getClickNumber(3600))));
+		metrics[3] = Integer.toString(Math.round(getMeanInteger(calc.getClickNumber(86400))));
+		metrics[4] = Integer.toString(Math.round(getMeanInteger(calc.getUniqueNumber(3600))));
+		metrics[5] = Integer.toString(Math.round(getMeanInteger(calc.getUniqueNumber(86400))));
 		if (bounceNumberPreference.equals("Pages")) {
-			metrics[6] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(3600, 2))));
-			metrics[7] = Integer.toString(Math.round(getMean(calc.getBounceNumberByPages(86400, 2))));
+			metrics[6] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByPages(3600, 2))));
+			metrics[7] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByPages(86400, 2))));
 		} else {
-			metrics[6] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(3600, 120))));
-			metrics[7] = Integer.toString(Math.round(getMean(calc.getBounceNumberByTime(86400, 120))));
+			metrics[6] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByTime(3600, 120))));
+			metrics[7] = Integer.toString(Math.round(getMeanInteger(calc.getBounceNumberByTime(86400, 120))));
 		}
-		metrics[8] = Integer.toString(Math.round(getMean(calc.getConversionNumber(3600))));
-		metrics[9] = Integer.toString(Math.round(getMean(calc.getConversionNumber(86400))));
+		metrics[8] = Integer.toString(Math.round(getMeanInteger(calc.getConversionNumber(3600))));
+		metrics[9] = Integer.toString(Math.round(getMeanInteger(calc.getConversionNumber(86400))));
 		
 		DecimalFormat df = new DecimalFormat("###,###.##");
 		
 		float totalCost = 0;
-		Float[] impressionCost = calc.getImpressionCost(86400);
+		ArrayList<Float> impressionCost = calc.getImpressionCost(86400);
 		
 		for (Float imp : impressionCost)
 			totalCost = totalCost + imp;
@@ -195,7 +194,7 @@ public class Controller {
 		metrics[10] = df.format(totalCost / 100);
 	
 		totalCost = 0;
-		Float[] clickCost = calc.getClickCost(86400);
+		ArrayList<Float> clickCost = calc.getClickCost(86400);
 		
 		for (Float click : clickCost)
 			totalCost = totalCost + click;
@@ -206,122 +205,123 @@ public class Controller {
 		
 		DecimalFormat cpm = new DecimalFormat("#.######");
 		
-		metrics[12] = df.format(100 * getMean(calc.getCTR(3600)));
-		metrics[13] = df.format(100 * getMean(calc.getCTR(86400)));
-		metrics[14] = df.format(getMean(calc.getCPA(3600)));
-		metrics[15] = df.format(getMean(calc.getCPA(86400)));
-		metrics[16] = df.format(getMean(calc.getCPC(3600)));
-		metrics[17] = df.format(getMean(calc.getCPC(86400)));
-		metrics[18] = cpm.format(getMean(calc.getCPM(3600)));
-		metrics[19] = cpm.format(getMean(calc.getCPM(86400)));
+		metrics[12] = df.format(100 * getMeanFloat(calc.getCTR(3600)));
+		metrics[13] = df.format(100 * getMeanFloat(calc.getCTR(86400)));
+		metrics[14] = df.format(getMeanFloat(calc.getCPA(3600)));
+		metrics[15] = df.format(getMeanFloat(calc.getCPA(86400)));
+		metrics[16] = df.format(getMeanFloat(calc.getCPC(3600)));
+		metrics[17] = df.format(getMeanFloat(calc.getCPC(86400)));
+		metrics[18] = cpm.format(getMeanFloat(calc.getCPM(3600)));
+		metrics[19] = cpm.format(getMeanFloat(calc.getCPM(86400)));
 		if (bounceRatePreference.equals("Pages")) {
-			metrics[20] = df.format(100 * getMean(calc.getBounceRateByPages(3600, 2)));
-			metrics[21] = df.format(100 * getMean(calc.getBounceRateByPages(86400, 2)));
+			metrics[20] = df.format(100 * getMeanFloat(calc.getBounceRateByPages(3600, 2)));
+			metrics[21] = df.format(100 * getMeanFloat(calc.getBounceRateByPages(86400, 2)));
 		} else {
-			metrics[20] = df.format(100 * getMean(calc.getBounceRateByTime(3600, 120)));
-			metrics[21] = df.format(100 * getMean(calc.getBounceRateByTime(86400, 120)));
+			metrics[20] = df.format(100 * getMeanFloat(calc.getBounceRateByTime(3600, 120)));
+			metrics[21] = df.format(100 * getMeanFloat(calc.getBounceRateByTime(86400, 120)));
 		}
 		System.out.println("****Done****");
 		return metrics;
 	}
 	
-	private float getMean(Integer[] values) {
-		int limit = values.length;
+	private float getMeanInteger(ArrayList<Integer> values) {
+		int limit = values.size();
 		int total = 0;
 		
 		for (int i = 0; i < limit; ++i) {
-			total = total + values[i];
+			total = total + values.get(i);
 		}
 		
 		float mean = total / limit;
 		return mean;
 	}
 	
-	private float getMean(Float[] values) {
-		int limit = values.length;
+	private float getMeanFloat(ArrayList<Float> values) 
+	{
+		int limit = values.size();
 		float total = 0;
 		
 		for (int i = 0; i < limit; ++i) {
-			total = total + values[i];
+			total = total + values.get(i);
 		}
 		
 		float mean = total / limit;
 		return mean;
 	}
 	
-	public Integer[] getImpressionNumber(int interval)
+	public ArrayList<Integer> getImpressionNumber(int interval)
 	{
-		Integer[] data = calc.getImpressionNumber(interval);
+		ArrayList<Integer> data = calc.getImpressionNumber(interval);
 		return data;
 	}
 	
-	public Integer[] getClicks(int interval)
+	public ArrayList<Integer> getClicks(int interval)
 	{
-		Integer[] data = calc.getClickNumber(interval);
+		ArrayList<Integer> data = calc.getClickNumber(interval);
 		return data;
 	}
 	
-	public Integer[] getUniques(int interval)
+	public ArrayList<Integer> getUniques(int interval)
 	{
-		Integer[] data = calc.getUniqueNumber(interval);
+		ArrayList<Integer> data = calc.getUniqueNumber(interval);
 		return data;
 	}
 	
-	public Integer[] getBounces(int interval)
+	public ArrayList<Integer> getBounces(int interval)
 	{
-		Integer[] data = calc.getBounceNumberByPages(interval, 2);
+		ArrayList<Integer> data = calc.getBounceNumberByPages(interval, 2);
 		return data;
 	}
 	
-	public Integer[] getConversions(int interval)
+	public ArrayList<Integer> getConversions(int interval)
 	{
-		Integer[] data = calc.getConversionNumber(interval);
+		ArrayList<Integer> data = calc.getConversionNumber(interval);
 		return data;
 	}
 	
-	public Float[] getTotalImpressionCost(int interval)
+	public ArrayList<Float> getTotalImpressionCost(int interval)
 	{
-		//Float[] data = calc.getClickCost(interval);
-		Float[] data = calc.getImpressionCost(interval);
+		//ArrayList<Float> data = calc.getClickCost(interval);
+		ArrayList<Float> data = calc.getImpressionCost(interval);
 		return data;
 	}
 	
-	public Float[] getCTR(int interval)
+	public ArrayList<Float> getCTR(int interval)
 	{
-		Float[] data = calc.getCTR(interval);
+		ArrayList<Float> data = calc.getCTR(interval);
 		return data;
 	}
 	
-	public Float[] getCPA(int interval)
+	public ArrayList<Float> getCPA(int interval)
 	{
-		Float[] data = calc.getCPA(interval);
+		ArrayList<Float> data = calc.getCPA(interval);
 		return data;
 	}
 	
-	public Float[] getCPC(int interval)
+	public ArrayList<Float> getCPC(int interval)
 	{
-		Float[] data = calc.getCPC(interval);
+		ArrayList<Float> data = calc.getCPC(interval);
 		return data;
 	}
 	
-	public Float[] getCPM(int interval)
+	public ArrayList<Float> getCPM(int interval)
 	{
-		Float[] data = calc.getCPM(interval);
+		ArrayList<Float> data = calc.getCPM(interval);
 		return data;
 	}
 	
-	public Float[] getBounceRate(int interval)
+	public ArrayList<Float> getBounceRate(int interval)
 	{
-		Float[] data = calc.getBounceRateByPages(interval, 2);
+		ArrayList<Float> data = calc.getBounceRateByPages(interval, 2);
 		return data;
 	}
 	
-	public double[] getClickCost()
+	public ArrayList<Float> getClickCost()
 	{
-		Float[] temp = calc.getHistogramClicks();
-		double[] vals = new double[temp.length];
-		for (int i = 0; i < temp.length; i++) {
-			vals[i] = temp[i];
+		ArrayList<Float> temp = calc.getHistogramClicks();
+		ArrayList<Float> vals = new ArrayList<Float>(temp.size());
+		for (int i = 0; i < temp.size(); i++) {
+			vals.add(temp.get(i));
 		}
 		
 		return vals;

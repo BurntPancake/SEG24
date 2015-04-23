@@ -11,6 +11,7 @@ import decoder.Decoder;
 
 public class CalculatorTest
 {
+	
 	public static void main(String[] args)
 	{
 		/*
@@ -37,6 +38,7 @@ public class CalculatorTest
 		entry4.put("Date", "2015-01-01 12:00:10");
 		entry4.put("Impression Cost", "0.002064");
 		*/
+		/*
 		Decoder dec = new Decoder();
 		Hashtable<String, String>[] impressionLog;
 		Hashtable<String, String>[] clickLog;
@@ -61,7 +63,7 @@ public class CalculatorTest
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		/**
 		Hashtable<String, String>[] impressionLog = new Hashtable[]{
 				entry0, entry1, entry2, entry3, entry4
