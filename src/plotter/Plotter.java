@@ -1,6 +1,7 @@
 package plotter;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -28,13 +29,13 @@ public class Plotter
         
     }
 
-	public ChartPanel nImpression(Integer[] i, int time) 
+	public ChartPanel nImpression(ArrayList<Integer> i, int time) 
 	{
         XYSeries first = new XYSeries("Number of Impressions");
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	//System.out.println(i[j]);
-	        first.add(time * j, i[j]);
+        	//System.out.println(i.get(j));
+	        first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -43,13 +44,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nClicks(Integer[] i,  int time) 
+	public ChartPanel nClicks(ArrayList<Integer> i,  int time) 
 	{
         XYSeries first = new XYSeries("Number of Clicks");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -58,13 +59,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nUniques(Integer[] i, int time) 
+	public ChartPanel nUniques(ArrayList<Integer> i, int time) 
 	{
         XYSeries first = new XYSeries("Number of Uniques");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -73,13 +74,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nBounces(Integer[] i, int time) 
+	public ChartPanel nBounces(ArrayList<Integer> i, int time) 
 	{
         XYSeries first = new XYSeries("Number of Bounces");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -88,13 +89,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nConversions(Integer[] i, int time) 
+	public ChartPanel nConversions(ArrayList<Integer> i, int time) 
 	{
         XYSeries first = new XYSeries("Number of Conversions");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -103,13 +104,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel totalCost(Float[] i, int time) 
+	public ChartPanel totalCost(ArrayList<Float> i, int time) 
 	{
 		XYSeries first = new XYSeries("Total Cost");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -118,13 +119,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nCTR(Float[] i, int time) 
+	public ChartPanel nCTR(ArrayList<Float> i, int time) 
 	{
         XYSeries first = new XYSeries("CTR");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -133,13 +134,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nCPA(Float[] i, int time) 
+	public ChartPanel nCPA(ArrayList<Float> i, int time) 
 	{
         XYSeries first = new XYSeries("CPA");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -148,13 +149,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nCPC(Float[] i, int time) 
+	public ChartPanel nCPC(ArrayList<Float> i, int time) 
 	{
         XYSeries first = new XYSeries("CPC");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -163,13 +164,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel nCPM(Float[] i, int time) 
+	public ChartPanel nCPM(ArrayList<Float> i, int time) 
 	{
         XYSeries first = new XYSeries("CPM");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-        	first.add(time * j, i[j]);
+        	first.add(time * j, i.get(j));
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -178,13 +179,13 @@ public class Plotter
         return chartPanel;
     }
 	
-	public ChartPanel bounceRate(Float[] i, int time) 
+	public ChartPanel bounceRate(ArrayList<Float> i, int time) 
 	{
         XYSeries first = new XYSeries("Bounce Rate");
         
-        for(int j = 0 ; j < i.length ; j++)
+        for(int j = 0 ; j < i.size() ; j++)
         {
-	        first.add(time * j, i[j].doubleValue());
+	        first.add(time * j, i.get(j).doubleValue());
         }
         XYSeriesCollection data = new XYSeriesCollection(first);
         XYDataset dataSet = data;
@@ -193,12 +194,16 @@ public class Plotter
         return chartPanel;
     }
 
-	public ChartPanel clickCost(double[] d) 
+	public ChartPanel clickCost(ArrayList<Float> dd) 
 	{
-		
+		double[] dList = new double[dd.size()];
+		for(int i = 0; i < dd.size(); i++)
+		{
+			dList[i] = (double) dd.get(i);
+		}
 		HistogramDataset hd = new HistogramDataset();
 		hd.setType(HistogramType.FREQUENCY);
-		hd.addSeries("Click Cost", d, 5);
+		hd.addSeries("Click Cost", dList, 5);
 		JFreeChart chart = ChartFactory.createHistogram("Click Cost Histogram", 
 				"Cost of Click (GB Pence)", 
 				"Frequency", 
