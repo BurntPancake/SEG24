@@ -140,7 +140,8 @@ public class DataPanel extends JPanel{
 	}
 }
 
-class DataListener implements ActionListener {
+class DataListener implements ActionListener 
+{
 
 	private Controller controller;
 	private JFileChooser fc;
@@ -148,16 +149,84 @@ class DataListener implements ActionListener {
 	private MetricsPanel mp;
 	private FilterPanel filterPanel;
 	
-	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp, FilterPanel filterPanel) {
+	public DataListener(Controller controller, DataPanel dp, MetricsPanel mp, FilterPanel filterPanel)
+	{
 		this.controller = controller;
 		this.dp = dp;
 		this.mp = mp;
 		this.filterPanel = filterPanel;
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if (e.getSource().equals(dp.clickButton))
+    	{
+			
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.clickField.setText(filePath);
+			}
+		} 
+    	else if (e.getSource().equals(dp.impressionButton))
+    	{
+			
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.impressionField.setText(filePath);
+			}
+		} 
+    	else if (e.getSource().equals(dp.serverButton))
+    	{
+			fc = new JFileChooser();
+			int returnVal = fc.showOpenDialog(dp);
+			if (returnVal == JFileChooser.APPROVE_OPTION){
+				String filePath = fc.getSelectedFile().getAbsolutePath();
+				dp.serverField.setText(filePath);
+			}
+		} 
+    	else if (e.getSource().equals(dp.submitButton))
+    	{
+    		new Thread(new Runnable()
+    		{
+
+    		    @Override
+    		    public void run()
+    		    {
+    		    	if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals(""))
+    		    	{
+    					dp.errorField.setText("All three logs must be submitted");
+    					dp.errorField.setVisible(true);
+    				} 
+    		    	else
+    		    	{
+    					
+    		    		dp.loadingLabel.setVisible(true);      
+    					dp.errorField.setText("");
+    					dp.errorField.setVisible(false);
+    					
+    					controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
+    					
+    					//mp.displayMetrics(controller.calculateMetrics());
+    					mp.displayMetricsAllTime(controller.calculateMetricsAllTime());
+    					dp.loadingLabel.setVisible(false);
+    				}
+    		    	
+    		    	filterPanel.resetPanel();
+    		    	dp.errorField.setText("Success! Change to Charts Tab");
+    		    	dp.errorField.setVisible(true);
+    		    	dp.revalidate();
+    		    	dp.repaint();
+    		    	dp.gui.changePane(1, (JTabbedPane) dp.gui.frame.getContentPane());
+    		    	
+    		    }
+    		}).start();
+    	}
+		
+		/*
 		new Thread(new Runnable(){
 
 		    @Override
@@ -220,7 +289,7 @@ class DataListener implements ActionListener {
 				} 
 		    }
 
-		}).start();
+		}).start();*/
 		
 	}
 }
