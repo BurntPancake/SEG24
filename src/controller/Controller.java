@@ -133,6 +133,32 @@ public class Controller {
 		this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 	}
 	
+	public String getUpdatedBounceNumberAllTime()
+	{
+		if (bounceNumberPreference.equals("Pages")) 
+		{
+			return calc.getUpdatedBounceNumber(true, 2);
+		}
+		else
+		{
+			
+			return calc.getUpdatedBounceNumber(false, 120);
+		}			
+	}
+	
+	public String getUpdatedBounceRateAllTime()
+	{
+		if (bounceRatePreference.equals("Pages")) 
+		{
+			return calc.getUpdatedBounceRate(true, 2);
+		}
+		else
+		{
+			
+			return calc.getUpdatedBounceRate(false, 120);
+		}			
+	}
+	/*
 	public String[] getUpdatedMetrixBounceNumber()
 	{
 		String[] metrics = new String[2];
@@ -161,6 +187,22 @@ public class Controller {
 		}
 		
 		return metrics;
+	}*/
+	
+	public String[] calculateMetricsAllTime()
+	{
+		boolean byPage = false;
+		if (bounceNumberPreference.equals("Pages"))
+		{
+			byPage = true;
+			return calc.getMetrics(impressionRecords, clickRecords, serverRecords, byPage, 2);
+		}
+		else
+		{
+			byPage = false;
+			return calc.getMetrics(impressionRecords, clickRecords, serverRecords, byPage, 120);
+		}
+		
 	}
 	
 	public String[] calculateMetrics() {

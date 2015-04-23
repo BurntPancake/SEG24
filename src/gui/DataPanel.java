@@ -188,7 +188,8 @@ class DataListener implements ActionListener {
 						dp.errorField.setText("");
 						dp.errorField.setVisible(false);
 						controller.setFileLocation(dp.impressionField.getText(), dp.clickField.getText(), dp.serverField.getText());
-						mp.displayMetrics(controller.calculateMetrics());
+						//mp.displayMetrics(controller.calculateMetrics());
+						mp.displayMetricsAllTime(controller.calculateMetricsAllTime());
 					}
 				} 
 		    	

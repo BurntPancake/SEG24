@@ -39,8 +39,9 @@ class MetricsPanel extends JPanel{
 		
 		Object[] metricColumnNames = {
 				"Metrics",
-				"Per Hour",
-				"Per Day"
+				"Total value"
+//				"Per Hour",
+//				"Per Day"
 		};
 		
 		Object[] costColumnNames = {
@@ -61,12 +62,25 @@ class MetricsPanel extends JPanel{
 				{ 	"Bounce Rate (%):", "0", "0"	}
 		};
 		
+		Object[][] metricDataAllTime = {
+				{ 	"Number of Impressions:", "0"	},
+				{ 	"Number of Clicks:", "0"	},
+				{ 	"Number of Uniques:", "0"	},
+				{ 	"Number of Bounces:",  "0"	},
+				{ 	"Number of Conversions:", "0"},
+				{ 	"Click-through rate (%):", "0"},
+				{ 	"Cost-per-aquisition (GB Pence):", "0"},
+				{ 	"Cost-per-click (GB Pence):", "0"},
+				{ 	"Cost-per-thousand-impressions (GB Pence):", "0"},
+				{ 	"Bounce Rate (%):", "0"}
+		};
+		
 		Object[][] costData = {
 				{	"Impressions", "0"	},
 				{	"Clicks",	"0"			}
 		};
 		
-		MetricTableModel metricModel = new MetricTableModel(metricData, metricColumnNames);
+		MetricTableModel metricModel = new MetricTableModel(metricDataAllTime, metricColumnNames);
 		metricTable = new JTable(metricModel);
 		
 		MetricTableModel costModel = new MetricTableModel(costData, costColumnNames);
@@ -78,8 +92,8 @@ class MetricsPanel extends JPanel{
 		column.setPreferredWidth(300);
 		column = metricTable.getColumnModel().getColumn(1);
 		column.setPreferredWidth(75);
-		column = metricTable.getColumnModel().getColumn(2);
-		column.setPreferredWidth(75);
+		//column = metricTable.getColumnModel().getColumn(2);
+		//column.setPreferredWidth(75);
 		
 		column = costTable.getColumnModel().getColumn(0);
 		column.setPreferredWidth(150);
@@ -153,6 +167,33 @@ class MetricsPanel extends JPanel{
 		costTable.setValueAt(metrics[11], 1, 1);	
 	}
 	
+	public void displayMetricsAllTime(String[] metrics) {
+		
+		metricTable.setValueAt(metrics[0], NO_OF_IMPRESSIONS, PER_HOUR);
+		metricTable.setValueAt(metrics[1], NO_OF_CLICKS, PER_HOUR);
+		metricTable.setValueAt(metrics[2], NO_OF_UNIQUES, PER_HOUR);
+		metricTable.setValueAt(metrics[3], NO_OF_BOUNCES, PER_HOUR);
+		metricTable.setValueAt(metrics[4], NO_OF_CONVERSIONS, PER_HOUR);
+		metricTable.setValueAt(metrics[5], CTR, PER_HOUR);
+		metricTable.setValueAt(metrics[6], CPA, PER_HOUR);
+		metricTable.setValueAt(metrics[7], CPC, PER_HOUR);
+		metricTable.setValueAt(metrics[8], CPM, PER_HOUR);
+		metricTable.setValueAt(metrics[9], BOUNCE_RATE, PER_HOUR);
+		costTable.setValueAt(metrics[10], 0, 1);
+		costTable.setValueAt(metrics[11], 1, 1);	
+	}
+
+	public void updateBounceNumberAllTime(String bb)
+	{
+		metricTable.setValueAt(bb, NO_OF_BOUNCES, PER_HOUR);	
+	}
+	
+	public void updateBounceRateAllTime(String bb)
+	{
+		metricTable.setValueAt(bb, BOUNCE_RATE, PER_HOUR);
+	}
+	
+	/*
 	public void updateBounceNumber(String[] metrics)
 	{
 		metricTable.setValueAt(metrics[0], NO_OF_BOUNCES, PER_HOUR);
@@ -163,7 +204,7 @@ class MetricsPanel extends JPanel{
 	{
 		metricTable.setValueAt(metrics[0], BOUNCE_RATE, PER_HOUR);
 		metricTable.setValueAt(metrics[1], BOUNCE_RATE, PER_DAY);
-	}
+	}*/
 	
 }
 

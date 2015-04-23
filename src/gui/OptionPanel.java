@@ -88,12 +88,13 @@ class OptionPanel extends JPanel {
 											(String) rateOptions.getSelectedItem());
 			if(!previousNumberOption.equals(numberOptions.getSelectedItem()))
 			{
-				mp.updateBounceNumber(controller.getUpdatedMetrixBounceNumber());
+				mp.updateBounceNumberAllTime(controller.getUpdatedBounceNumberAllTime());
 			}
 			
 			if(!previousRateOption.equals(rateOptions.getSelectedItem()))
 			{
-				mp.updateBounceRate(controller.getUpdatedMetrixBounceRate());
+				
+				mp.updateBounceRateAllTime(controller.getUpdatedBounceRateAllTime());
 			}
 			
 			 previousNumberOption = (String) numberOptions.getSelectedItem();

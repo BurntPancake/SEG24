@@ -518,50 +518,174 @@ public class Calculator
 		}
 		return bounceRateArray;
 	}
-	/**
-	private float getLargestClickCost()
-	{
-		float max = 0f;
-		for(Click h : clickLog)
-		{
-			float cost = h.cost;
-			if(cost > max)
-			{
-				max = cost;
-			}
-		}
-		
-		return max;
-	}
-
 	
-	public ArrayList<Integer> getClickCostDistribution(float costInterval)
+	public String[] getMetrics(ArrayList<Impression> impLog, ArrayList<Click> clickLog, ArrayList<Server> serverLog,
+			boolean byPage, int bounceValue)
 	{
-		System.out.println("Getting click cost distribution");
-		ArrayList<Integer> dataSet = new Integer[(int) (getLargestClickCost()/costInterval) + 1];
-		for(Hashtable<String, String> h : clickLog)
+		String[] metrix = new String[12];
+		int impCount= impLog.size();
+		metrix[0] = Integer.toString(impCount);
+		int clickCount= clickLog.size();
+		metrix[1] = Integer.toString(clickCount);
+		//Unique number
+		int uniqueCount = 0;
+		HashSet<Long> userIds = new HashSet<Long>(clickCount);
+		for(int i = 0; i < clickCount; i++)
 		{
-			float cost = Float.valueOf(h.get("Click Cost"));
-			Integer currentCostInterval = (int) (cost/costInterval); //Not round! Only the integer part matters!
-			if(dataSet[currentCostInterval] == null)
+			long userId = clickLog.get(i).id;
+			
+			if(userIds.contains(userId))
 			{
-				dataSet[currentCostInterval] = 1;
+				
 			}
 			else
 			{
-				dataSet[currentCostInterval] = dataSet[currentCostInterval]+1;
+				userIds.add(userId);
+				uniqueCount++;
 			}
-			
-			for(Integer i : dataSet)
+		}
+		metrix[2] = Integer.toString(uniqueCount);
+		//Bounce number
+		int bounceNumber = 0;
+		if(byPage)
+		{
+			for(int i = 0; i < serverLog.size(); i++)
 			{
-				if (i == null)
+				if(serverLog.get(i).page <= bounceValue)
 				{
-					i = 0;
+					bounceNumber++;
 				}
 			}
 		}
+		else
+		{
+			for(int i = 0; i < serverLog.size(); i++)
+			{
+				if(!serverLog.get(i).endDate.equals("n/a"))
+				{
+					LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog.get(i).date));
+					LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog.get(i).endDate));
+					
+					if(Duration.between(entryDate, exitDate).getSeconds() <= bounceValue)
+					{
+						bounceNumber++;
+					}
+				}	
+			}
+		}		
+		metrix[3] = Integer.toString(bounceNumber);
+		//Conversion Number
+		int conversionNumber = 0;
+		for(Server h : serverLog)
+		{
+			if(h.conversion)
+			{
+				conversionNumber++;
+			}
+		}
+		metrix[4] = Integer.toString(conversionNumber);
+		//CTR
+		float CTR = (float)clickCount/(float)impCount;
+		metrix[5] = Float.toString(100 * CTR);
+		//CTA
+		float clickCost = 0f;
+		for(Click c : clickLog)
+		{
+			clickCost += c.cost;
+		}
+		float CTA = clickCost/(float)conversionNumber;
+		metrix[6] = Float.toString(CTA);
+		//CPC
+		float CPC = clickCost/(float)clickCount;
+		metrix[7] = Float.toString(CPC);
+		//CPM
+		float impCost = 0;
+		for(Impression c : impressionLog)
+		{
+			impCost += c.cost;
+		}
+		float CPM = impCost/(float) impCount * 1000f;
+		metrix[8] = Float.toString(CPM);
+		//Bounce Rate
+		float bounceRate = (float)bounceNumber/(float)clickCount;
+		metrix[9] = Float.toString(bounceRate * 100);
 		
-		return dataSet;
-	}**/
+		//Total Imp cost
+		metrix[10] = Float.toString(impCost);
+		
+		//Total Click cost
+		metrix[11] = Float.toString(clickCost);
+		
+		
+		return metrix;
+	}
+	
+	public String getUpdatedBounceNumber(boolean byPage, int bounceValue)
+	{
+		//Bounce number
+		int bounceNumber = 0;
+		if(byPage)
+		{
+			for(int i = 0; i < serverLog.size(); i++)
+			{
+				if(serverLog.get(i).page <= bounceValue)
+				{
+					bounceNumber++;
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i < serverLog.size(); i++)
+			{
+				if(!serverLog.get(i).endDate.equals("n/a"))
+				{
+					LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog.get(i).date));
+					LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog.get(i).endDate));
+							
+					if(Duration.between(entryDate, exitDate).getSeconds() <= bounceValue)
+					{
+						bounceNumber++;						
+					}
+				}
+			}
+		}		
+		return Integer.toString(bounceNumber);
+	}
+	
+	public String getUpdatedBounceRate(boolean byPage, int bounceValue)
+	{
+		//Bounce number
+		int bounceNumber = 0;
+		if(byPage)
+		{
+			for(int i = 0; i < serverLog.size(); i++)
+			{
+				if(serverLog.get(i).page <= bounceValue)
+				{
+					bounceNumber++;
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i < serverLog.size(); i++)
+			{
+				if(!serverLog.get(i).endDate.equals("n/a"))
+				{
+					LocalDateTime entryDate = LocalDateTime.from(fmt.parse(serverLog.get(i).date));
+					LocalDateTime exitDate = LocalDateTime.from(fmt.parse(serverLog.get(i).endDate));
+							
+					if(Duration.between(entryDate, exitDate).getSeconds() <= bounceValue)
+					{
+						bounceNumber++;						
+					}
+				}
+			}
+		}		
+		//Bounce Rate
+		float bounceRate = (float)bounceNumber/(float)clickLog.size();
+		return Float.toString(bounceRate * 100);
+	}
 	
 }
