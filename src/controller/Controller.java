@@ -55,12 +55,6 @@ public class Controller {
 			originalServerRecords = serverRecords;
 			originalClickRecords = clickRecords;
 			
-			/**
-			RecordSorter rs = new RecordSorter();
-			rs.sortRecords(impressionRecords, "Date");
-			rs.sortRecords(serverRecords, "Entry Date");
-			rs.sortRecords(clickRecords, "Date");*/
-			
 			this.calc = new Calculator(impressionRecords, clickRecords, serverRecords);
 			this.originalCalc = calc;
 			
@@ -163,7 +157,7 @@ public class Controller {
 		this.calc = originalCalc;
 	}
 	
-	public void clearIDs()
+	public void clearIDsUsingImp()
 	{
 		HashSet<Long> idList = new HashSet<Long>(impressionRecords.size());
 		for(int i = 0; i < impressionRecords.size(); i++)
@@ -173,6 +167,30 @@ public class Controller {
 		
 		clickRecords = filter.filterClickTablebyID(clickRecords, idList);
 		serverRecords = filter.filterServerTablebyID(serverRecords, idList);
+	}
+	
+	public void clearIDsUsingClick()
+	{
+		HashSet<Long> idList = new HashSet<Long>(clickRecords.size());
+		for(int i = 0; i < clickRecords.size(); i++)
+		{
+			idList.add(clickRecords.get(i).id);
+		}
+		
+		impressionRecords = filter.filterImpTablebyID(impressionRecords, idList);
+		serverRecords = filter.filterServerTablebyID(serverRecords, idList);
+	}
+	
+	public void clearIDsUsingServer()
+	{
+		HashSet<Long> idList = new HashSet<Long>(serverRecords.size());
+		for(int i = 0; i < serverRecords.size(); i++)
+		{
+			idList.add(serverRecords.get(i).id);
+		}
+		
+		clickRecords = filter.filterClickTablebyID(clickRecords, idList);
+		impressionRecords = filter.filterImpTablebyID(impressionRecords, idList);
 	}
 	
 	public void setContext(ArrayList<String> contexts)
