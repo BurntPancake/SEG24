@@ -161,7 +161,8 @@ class DataListener implements ActionListener {
 		    @Override
 		    public void run(){
 		       
-		    	if (e.getSource().equals(dp.clickButton)){
+		    	if (e.getSource().equals(dp.clickButton))
+		    	{
 					
 					fc = new JFileChooser();
 					int returnVal = fc.showOpenDialog(dp);
@@ -169,7 +170,9 @@ class DataListener implements ActionListener {
 						String filePath = fc.getSelectedFile().getAbsolutePath();
 						dp.clickField.setText(filePath);
 					}
-				} else if (e.getSource().equals(dp.impressionButton)){
+				} 
+		    	else if (e.getSource().equals(dp.impressionButton))
+		    	{
 					
 					fc = new JFileChooser();
 					int returnVal = fc.showOpenDialog(dp);
@@ -177,14 +180,18 @@ class DataListener implements ActionListener {
 						String filePath = fc.getSelectedFile().getAbsolutePath();
 						dp.impressionField.setText(filePath);
 					}
-				} else if (e.getSource().equals(dp.serverButton)){
+				} 
+		    	else if (e.getSource().equals(dp.serverButton))
+		    	{
 					fc = new JFileChooser();
 					int returnVal = fc.showOpenDialog(dp);
 					if (returnVal == JFileChooser.APPROVE_OPTION){
 						String filePath = fc.getSelectedFile().getAbsolutePath();
 						dp.serverField.setText(filePath);
 					}
-				} else if (e.getSource().equals(dp.submitButton)){
+				} 
+		    	else if (e.getSource().equals(dp.submitButton))
+		    	{
 					if (dp.impressionField.getText().equals("") || dp.clickField.getText().equals("") || dp.serverField.getText().equals("")){
 						dp.errorField.setText("All three logs must be submitted");
 						dp.errorField.setVisible(true);
@@ -195,24 +202,24 @@ class DataListener implements ActionListener {
 						//mp.displayMetrics(controller.calculateMetrics());
 						mp.displayMetricsAllTime(controller.calculateMetricsAllTime());
 					}
+					
+
+			    	boolean done = true;
+			    	
+			    	if(done){
+			    		SwingUtilities.invokeLater(new Runnable(){
+			    			@Override public void run(){
+			                dp.loadingLabel.setVisible(false);      
+			    			}
+			    		});
+			    		
+			    	}
+			    	filterPanel.resetPanel();
+			    	dp.errorField.setText("Success! Change to Charts Tab");
+			    	dp.errorField.setVisible(true);
+			    	dp.revalidate();
+			    	dp.repaint();
 				} 
-		    	
-		    	boolean done = true;
-		    	
-		    	if(done){
-		    		SwingUtilities.invokeLater(new Runnable(){
-		    			@Override public void run(){
-		                dp.loadingLabel.setVisible(false);      
-		    			}
-		    		});
-		    		filterPanel.resetPanel();
-		    	}
-		    	
-		    	dp.errorField.setText("Success! Change to Charts Tab");
-		    	dp.errorField.setVisible(true);
-		    	dp.revalidate();
-		    	dp.repaint();
-		    	
 		    }
 
 		}).start();

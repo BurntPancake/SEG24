@@ -85,7 +85,6 @@ class FilterPanel extends JPanel
 		
 		LocalDateTime time = controller.getStartTime();
 		String[] timeString = time.format(fmt).split(",");
-		System.out.println(timeString[2]);
 		startYear.setSelectedItem(timeString[0]);
 		startMonth.setSelectedItem(timeString[1]);
 		startDay.setSelectedItem(timeString[2]);
@@ -93,7 +92,6 @@ class FilterPanel extends JPanel
 		startMinute.setSelectedItem(timeString[4]);
 		
 		time = controller.getEndTime();
-		System.out.println(timeString[2]);
 		timeString = time.format(fmt).split(",");
 		endYear.setSelectedItem(timeString[0]);
 		endMonth.setSelectedItem(timeString[1]);
